@@ -134,6 +134,12 @@ namespace SupportAlerter
             }
         }
 
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings frmSettings = new Settings();
+            frmSettings.ShowDialog();
+        }
+
 		
     }
 }
