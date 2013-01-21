@@ -35,6 +35,9 @@
     <ApplicationIcon>icon\sms-32.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenPop">
+      <HintPath>..\Resources\OpenPop.NET 2.0.4\binaries\signed (strong name)\OpenPop.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,6 +57,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TreeNodeBuilder.cs" />
     <EmbeddedResource Include="SupportAlerter.resx">
       <DependentUpon>SupportAlerter.cs</DependentUpon>
     </EmbeddedResource>
