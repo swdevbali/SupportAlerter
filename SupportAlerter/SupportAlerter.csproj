@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cryptho.cs" />
+    <Compile Include="ModifyRegistry.cs" />
+    <Compile Include="RegistrySettings.cs" />
     <Compile Include="Settings.cs">
       <SubType>Form</SubType>
     </Compile>

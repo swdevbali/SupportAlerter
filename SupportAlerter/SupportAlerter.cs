@@ -40,10 +40,7 @@ namespace SupportAlerter
 
             try
             {
-                if (pop3Client.Connected)
-                    pop3Client.Disconnect();
-                pop3Client.Connect(popServerTextBox.Text, int.Parse(portTextBox.Text), useSslCheckBox.Checked);
-                pop3Client.Authenticate(loginTextBox.Text, passwordTextBox.Text);
+                TestConnection();
                 int count = pop3Client.GetMessageCount();
                 totalMessagesTextBox.Text = count.ToString();
                 messageTextBox.Text = "";
@@ -134,10 +131,48 @@ namespace SupportAlerter
             }
         }
 
+        public bool  TestConnection()
+        {
+            try
+            {
+                if (pop3Client.Connected) pop3Client.Disconnect();
+                pop3Client.Connect(RegistrySettings.pop3ServerAddress, RegistrySettings.pop3ServerPort, RegistrySettings.pop3UseSSL.Equals("True"));
+                pop3Client.Authenticate(RegistrySettings.pop3Username, Cryptho.Decrypt(RegistrySettings.pop3Password));
+                return true;
+            }
+            catch (InvalidLoginException)
+            {
+                MessageBox.Show(this, "The server did not accept the user credentials!", "POP3 Server Authentication");
+            }
+            catch (PopServerNotFoundException)
+            {
+                MessageBox.Show(this, "The server could not be found", "POP3 Retrieval");
+            }
+            catch (PopServerLockedException)
+            {
+                MessageBox.Show(this, "The mailbox is locked. It might be in use or under maintenance. Are you connected elsewhere?", "POP3 Account Locked");
+            }
+            catch (LoginDelayException)
+            {
+                MessageBox.Show(this, "Login not allowed. Server enforces delay between logins. Have you connected recently?", "POP3 Account Login Delay");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(this, "Error occurred retrieving mail. " + e.Message, "POP3 Retrieval");
+            }
+            return false;
+        }
+
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings frmSettings = new Settings();
             frmSettings.ShowDialog();
+            frmSettings.Dispose();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
 		
