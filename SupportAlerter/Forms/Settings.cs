@@ -80,22 +80,12 @@ namespace SupportAlerter
             Close();
         }
 
-        private void btnTestConnection_Click(object sender, EventArgs e)
-        {
-            SaveValues();
-            RegistrySettings.writeValues();
-            if (Program.supportAlerter.TestConnection())
-            {
-                MessageBox.Show(this,"Connection succeeded!");
-            }
-        }
-
         private void lvAccount_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lvAccount.SelectedIndex >= 0)
             {
                 panelAccountDetail.Controls.Clear();
-                panelAccountDetail.Controls.Add(new EmailAccount(lvAccount.Text));
+                panelAccountDetail.Controls.Add(new EmailAccount(lvAccount.Text, this));
 
             }
             else
@@ -109,7 +99,7 @@ namespace SupportAlerter
         {
             if (lvAccount.SelectedIndex >= 0)
             {
-                if (MessageBox.Show("Are you sure you want to delete this account?", Application.ProductName, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Are you sure you want to delete this account?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     string dbfile = "|DataDirectory|\\Database\\AccountDatabase.sdf";
                     using (SqlCeConnection connection = new SqlCeConnection("Data Source=" + dbfile))
@@ -131,6 +121,11 @@ namespace SupportAlerter
         {
             lvAccount.Items.Add("");
             lvAccount.SelectedIndex = lvAccount.Items.Count - 1;
+        }
+
+        internal void updateListAccountName(string p)
+        {
+            lvAccount.Items[lvAccount.SelectedIndex] = p;
         }
     }
 }

@@ -57,10 +57,10 @@
             this.panelProperties = new System.Windows.Forms.Panel();
             this.gridHeaders = new System.Windows.Forms.DataGrid();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelTop.SuspendLayout();
             this.panelMiddle.SuspendLayout();
             this.panelMessageBody.SuspendLayout();
@@ -86,7 +86,8 @@
             this.panelTop.Controls.Add(this.portTextBox);
             this.panelTop.Controls.Add(this.labelServerAddress);
             this.panelTop.Controls.Add(this.popServerTextBox);
-            this.panelTop.Location = new System.Drawing.Point(48, 73);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Location = new System.Drawing.Point(0, 24);
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(806, 64);
             this.panelTop.TabIndex = 1;
@@ -205,9 +206,10 @@
             this.panelMiddle.Controls.Add(this.panelMessageBody);
             this.panelMiddle.Controls.Add(this.panelMessagesView);
             this.panelMiddle.Controls.Add(this.attachmentPanel);
-            this.panelMiddle.Location = new System.Drawing.Point(128, 183);
+            this.panelMiddle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelMiddle.Location = new System.Drawing.Point(0, 88);
             this.panelMiddle.Name = "panelMiddle";
-            this.panelMiddle.Size = new System.Drawing.Size(678, 303);
+            this.panelMiddle.Size = new System.Drawing.Size(806, 143);
             this.panelMiddle.TabIndex = 3;
             // 
             // panelMessageBody
@@ -218,16 +220,16 @@
             this.panelMessageBody.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMessageBody.Location = new System.Drawing.Point(281, 0);
             this.panelMessageBody.Name = "panelMessageBody";
-            this.panelMessageBody.Size = new System.Drawing.Size(189, 303);
+            this.panelMessageBody.Size = new System.Drawing.Size(317, 143);
             this.panelMessageBody.TabIndex = 6;
             // 
             // progressBar
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(7, 279);
+            this.progressBar.Location = new System.Drawing.Point(7, 119);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(173, 12);
+            this.progressBar.Size = new System.Drawing.Size(301, 12);
             this.progressBar.TabIndex = 10;
             // 
             // messageTextBox
@@ -240,7 +242,7 @@
             this.messageTextBox.Multiline = true;
             this.messageTextBox.Name = "messageTextBox";
             this.messageTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.messageTextBox.Size = new System.Drawing.Size(173, 250);
+            this.messageTextBox.Size = new System.Drawing.Size(301, 90);
             this.messageTextBox.TabIndex = 9;
             // 
             // labelMessageBody
@@ -258,7 +260,7 @@
             this.panelMessagesView.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMessagesView.Location = new System.Drawing.Point(0, 0);
             this.panelMessagesView.Name = "panelMessagesView";
-            this.panelMessagesView.Size = new System.Drawing.Size(281, 303);
+            this.panelMessagesView.Size = new System.Drawing.Size(281, 143);
             this.panelMessagesView.TabIndex = 5;
             // 
             // listMessages
@@ -268,7 +270,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listMessages.Location = new System.Drawing.Point(8, 24);
             this.listMessages.Name = "listMessages";
-            this.listMessages.Size = new System.Drawing.Size(266, 267);
+            this.listMessages.Size = new System.Drawing.Size(266, 107);
             this.listMessages.TabIndex = 8;
             // 
             // labelMessageNumber
@@ -284,9 +286,9 @@
             this.attachmentPanel.Controls.Add(this.listAttachments);
             this.attachmentPanel.Controls.Add(this.labelAttachments);
             this.attachmentPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.attachmentPanel.Location = new System.Drawing.Point(470, 0);
+            this.attachmentPanel.Location = new System.Drawing.Point(598, 0);
             this.attachmentPanel.Name = "attachmentPanel";
-            this.attachmentPanel.Size = new System.Drawing.Size(208, 303);
+            this.attachmentPanel.Size = new System.Drawing.Size(208, 143);
             this.attachmentPanel.TabIndex = 4;
             this.attachmentPanel.Visible = false;
             // 
@@ -299,7 +301,7 @@
             this.listAttachments.Name = "listAttachments";
             this.listAttachments.ShowLines = false;
             this.listAttachments.ShowRootLines = false;
-            this.listAttachments.Size = new System.Drawing.Size(192, 267);
+            this.listAttachments.Size = new System.Drawing.Size(192, 107);
             this.listAttachments.TabIndex = 10;
             // 
             // labelAttachments
@@ -313,9 +315,10 @@
             // panelProperties
             // 
             this.panelProperties.Controls.Add(this.gridHeaders);
-            this.panelProperties.Location = new System.Drawing.Point(0, 302);
+            this.panelProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelProperties.Location = new System.Drawing.Point(0, 231);
             this.panelProperties.Name = "panelProperties";
-            this.panelProperties.Size = new System.Drawing.Size(806, 184);
+            this.panelProperties.Size = new System.Drawing.Size(806, 255);
             this.panelProperties.TabIndex = 4;
             // 
             // gridHeaders
@@ -329,7 +332,7 @@
             this.gridHeaders.Name = "gridHeaders";
             this.gridHeaders.PreferredColumnWidth = 400;
             this.gridHeaders.ReadOnly = true;
-            this.gridHeaders.Size = new System.Drawing.Size(806, 108);
+            this.gridHeaders.Size = new System.Drawing.Size(806, 179);
             this.gridHeaders.TabIndex = 3;
             // 
             // menuStrip1
@@ -343,21 +346,6 @@
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.optionsToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem.Text = "&Tools";
-            // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.optionsToolStripMenuItem.Text = "&Options";
-            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
-            // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -369,9 +357,24 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Text = "&Tools";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.optionsToolStripMenuItem.Text = "&Options";
+            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // SupportAlerter
             // 

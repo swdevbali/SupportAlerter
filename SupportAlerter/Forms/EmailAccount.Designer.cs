@@ -29,7 +29,10 @@
         private void InitializeComponent()
         {
             this.panelTop = new System.Windows.Forms.Panel();
-            this.btnTestConnection = new System.Windows.Forms.Button();
+            this.btnSaveTest = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.btnSave = new System.Windows.Forms.Button();
             this.txtPort = new System.Windows.Forms.NumericUpDown();
             this.chkUseSSL = new System.Windows.Forms.CheckBox();
             this.labelPassword = new System.Windows.Forms.Label();
@@ -39,17 +42,18 @@
             this.labelServerPort = new System.Windows.Forms.Label();
             this.labelServerAddress = new System.Windows.Forms.Label();
             this.txtServer = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
+            this.chkActive = new System.Windows.Forms.CheckBox();
             this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort)).BeginInit();
             this.SuspendLayout();
             // 
             // panelTop
             // 
+            this.panelTop.Controls.Add(this.chkActive);
+            this.panelTop.Controls.Add(this.btnSaveTest);
             this.panelTop.Controls.Add(this.label1);
             this.panelTop.Controls.Add(this.txtName);
-            this.panelTop.Controls.Add(this.btnTestConnection);
+            this.panelTop.Controls.Add(this.btnSave);
             this.panelTop.Controls.Add(this.txtPort);
             this.panelTop.Controls.Add(this.chkUseSSL);
             this.panelTop.Controls.Add(this.labelPassword);
@@ -62,18 +66,44 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(401, 277);
+            this.panelTop.Size = new System.Drawing.Size(305, 248);
             this.panelTop.TabIndex = 3;
             // 
-            // btnTestConnection
+            // btnSaveTest
             // 
-            this.btnTestConnection.Location = new System.Drawing.Point(67, 184);
-            this.btnTestConnection.Name = "btnTestConnection";
-            this.btnTestConnection.Size = new System.Drawing.Size(129, 23);
-            this.btnTestConnection.TabIndex = 10;
-            this.btnTestConnection.Text = "&Test connection";
-            this.btnTestConnection.UseVisualStyleBackColor = true;
-            this.btnTestConnection.Click += new System.EventHandler(this.btnTestConnection_Click);
+            this.btnSaveTest.Location = new System.Drawing.Point(119, 209);
+            this.btnSaveTest.Name = "btnSaveTest";
+            this.btnSaveTest.Size = new System.Drawing.Size(159, 23);
+            this.btnSaveTest.TabIndex = 7;
+            this.btnSaveTest.Text = "Save and Test &Connection";
+            this.btnSaveTest.UseVisualStyleBackColor = true;
+            this.btnSaveTest.Click += new System.EventHandler(this.btnSaveTest_Click);
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(16, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 23);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Account name";
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(128, 11);
+            this.txtName.Name = "txtName";
+            this.txtName.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.txtName.Size = new System.Drawing.Size(150, 20);
+            this.txtName.TabIndex = 0;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(67, 209);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(45, 23);
+            this.btnSave.TabIndex = 6;
+            this.btnSave.Text = "&Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // txtPort
             // 
@@ -85,7 +115,7 @@
             0});
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(120, 20);
-            this.txtPort.TabIndex = 9;
+            this.txtPort.TabIndex = 2;
             // 
             // chkUseSSL
             // 
@@ -93,7 +123,7 @@
             this.chkUseSSL.Location = new System.Drawing.Point(128, 94);
             this.chkUseSSL.Name = "chkUseSSL";
             this.chkUseSSL.Size = new System.Drawing.Size(68, 17);
-            this.chkUseSSL.TabIndex = 4;
+            this.chkUseSSL.TabIndex = 3;
             this.chkUseSSL.Text = "Use SSL";
             this.chkUseSSL.UseVisualStyleBackColor = true;
             // 
@@ -111,7 +141,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(150, 20);
-            this.txtPassword.TabIndex = 2;
+            this.txtPassword.TabIndex = 5;
             // 
             // labelUsername
             // 
@@ -126,7 +156,7 @@
             this.txtUsername.Location = new System.Drawing.Point(128, 117);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(150, 20);
-            this.txtUsername.TabIndex = 1;
+            this.txtUsername.TabIndex = 4;
             // 
             // labelServerPort
             // 
@@ -150,23 +180,17 @@
             this.txtServer.Name = "txtServer";
             this.txtServer.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.txtServer.Size = new System.Drawing.Size(150, 20);
-            this.txtServer.TabIndex = 0;
+            this.txtServer.TabIndex = 1;
             // 
-            // label1
+            // chkActive
             // 
-            this.label1.Location = new System.Drawing.Point(16, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 23);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Account name";
-            // 
-            // txtName
-            // 
-            this.txtName.Location = new System.Drawing.Point(128, 11);
-            this.txtName.Name = "txtName";
-            this.txtName.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.txtName.Size = new System.Drawing.Size(150, 20);
-            this.txtName.TabIndex = 11;
+            this.chkActive.AutoSize = true;
+            this.chkActive.Location = new System.Drawing.Point(128, 174);
+            this.chkActive.Name = "chkActive";
+            this.chkActive.Size = new System.Drawing.Size(56, 17);
+            this.chkActive.TabIndex = 14;
+            this.chkActive.Text = "&Active";
+            this.chkActive.UseVisualStyleBackColor = true;
             // 
             // EmailAccount
             // 
@@ -174,7 +198,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panelTop);
             this.Name = "EmailAccount";
-            this.Size = new System.Drawing.Size(401, 277);
+            this.Size = new System.Drawing.Size(305, 248);
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort)).EndInit();
@@ -185,7 +209,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panelTop;
-        private System.Windows.Forms.Button btnTestConnection;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.NumericUpDown txtPort;
         private System.Windows.Forms.CheckBox chkUseSSL;
         private System.Windows.Forms.Label labelPassword;
@@ -197,5 +221,7 @@
         private System.Windows.Forms.TextBox txtServer;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.Button btnSaveTest;
+        private System.Windows.Forms.CheckBox chkActive;
     }
 }

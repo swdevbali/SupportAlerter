@@ -40,7 +40,7 @@ namespace SupportAlerter
 
             try
             {
-                TestConnection();
+                TestConnection(RegistrySettings.pop3ServerAddress, RegistrySettings.pop3ServerPort, RegistrySettings.pop3UseSSL.Equals("True"), RegistrySettings.pop3Username, Cryptho.Decrypt(RegistrySettings.pop3Password));
                 int count = pop3Client.GetMessageCount();
                 totalMessagesTextBox.Text = count.ToString();
                 messageTextBox.Text = "";
@@ -131,13 +131,13 @@ namespace SupportAlerter
             }
         }
 
-        public bool  TestConnection()
+        public bool TestConnection(string server, int port, bool use_ssl,string username, string password)
         {
             try
             {
                 if (pop3Client.Connected) pop3Client.Disconnect();
-                pop3Client.Connect(RegistrySettings.pop3ServerAddress, RegistrySettings.pop3ServerPort, RegistrySettings.pop3UseSSL.Equals("True"));
-                pop3Client.Authenticate(RegistrySettings.pop3Username, Cryptho.Decrypt(RegistrySettings.pop3Password));
+                pop3Client.Connect(server, port, use_ssl);
+                pop3Client.Authenticate(username, password);
                 return true;
             }
             catch (InvalidLoginException)
