@@ -15,6 +15,30 @@ namespace SupportAlerterService
         public ProjectInstaller()
         {
             InitializeComponent();
+
+            EventLogInstaller installer = FindInstaller(this.Installers);
+            if (installer != null)
+            {
+                installer.Log = "Suport Alerter Service"; // enter your event log name here
+            }
+        }
+
+        private EventLogInstaller FindInstaller(InstallerCollection installers)
+        {
+            foreach (Installer installer in installers)
+            {
+                if (installer is EventLogInstaller)
+                {
+                    return (EventLogInstaller)installer;
+                }
+
+                EventLogInstaller eventLogInstaller = FindInstaller(installer.Installers);
+                if (eventLogInstaller != null)
+                {
+                    return eventLogInstaller;
+                }
+            }
+            return null;
         }
     }
 }
