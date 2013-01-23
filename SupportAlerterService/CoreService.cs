@@ -23,7 +23,7 @@ namespace SupportAlerterService
         protected override void OnStart(string[] args)
         {
             EventLog.WriteEntry(Program.EventLogName, "The service was started successfully.", EventLogEntryType.Information);
-            _timer = new Timer(10 * 60 * 1000);// 1 minute
+            _timer = new Timer(/*10 * 60 */ 1000);// 1 minute
             _timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
             _timer.Start(); // <- important
         }
@@ -37,8 +37,16 @@ namespace SupportAlerterService
         {
             _timer.Stop();
             try
-            {
-                EventLog.WriteEntry(Program.EventLogName, "Checking emails " + _count++);
+            {   
+                if (SupportAlerterLibrary.CoreFeature.TestConnection(false,"mail.swdevbali.com", 110, false, "ekowibowo@swdevbali.com", "muhammad"))
+                {
+                    EventLog.WriteEntry(Program.EventLogName, "Login success : " + _count++);
+                }
+
+                if (!SupportAlerterLibrary.CoreFeature.TestConnection(false, "xmail.swdevbali.com", 110, false, "ekowibowo@swdevbali.com", "muhammad"))
+                {
+                    EventLog.WriteEntry(Program.EventLogName, "Login success : " + _count++);
+                }
             }
             catch (Exception ex)
             {
