@@ -9,6 +9,7 @@ namespace SupportAlerterService
 {
     static class Program
     {
+        public const string EventLogName = "eMail To SMS";
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

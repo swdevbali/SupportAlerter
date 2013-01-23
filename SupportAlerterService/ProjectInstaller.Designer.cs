@@ -40,8 +40,8 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.Description = "This service is the core part of eMail to SMS alert in support system";
-            this.serviceInstaller1.DisplayName = "SupportAlerterService";
-            this.serviceInstaller1.ServiceName = "SupportAlerterService";
+            this.serviceInstaller1.DisplayName = "eMail To SMS";
+            this.serviceInstaller1.ServiceName = "eMail To SMS";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
@@ -49,6 +49,7 @@
             this.Installers.AddRange(new System.Configuration.Install.Installer[] {
             this.serviceProcessInstaller1,
             this.serviceInstaller1});
+            this.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.ProjectInstaller_AfterInstall);
 
         }
 

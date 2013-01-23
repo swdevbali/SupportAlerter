@@ -19,12 +19,12 @@ namespace SupportAlerterService
 
         protected override void OnStart(string[] args)
         {
-            EventLog.WriteEntry("Suport Alerter Service", "The service was started successfully.", EventLogEntryType.Information);
+            EventLog.WriteEntry(Program.EventLogName, "The service was started successfully.", EventLogEntryType.Information);
         }
 
         protected override void OnStop()
         {
-            EventLog.WriteEntry("Suport Alerter Service", "The service was stopped successfully.", EventLogEntryType.Information);
+            EventLog.WriteEntry(Program.EventLogName, "The service was stopped successfully.", EventLogEntryType.Information);
         }
     }
 }

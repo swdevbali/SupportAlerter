@@ -32,7 +32,7 @@
             // CoreService
             // 
             this.AutoLog = false;
-            this.ServiceName = "SupportAlerterService";
+            this.ServiceName = "eMail To SMS";
 
         }
 
