@@ -68,11 +68,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\AccountDatabaseDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccountDatabaseDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Helper\Cryptho.cs" />
     <Compile Include="Forms\EmailAccount.cs">
       <SubType>UserControl</SubType>
@@ -116,17 +111,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Database\AccountDatabaseDataSet.xsc">
-      <DependentUpon>AccountDatabaseDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Database\AccountDatabaseDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>AccountDatabaseDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Database\AccountDatabaseDataSet.xss">
-      <DependentUpon>AccountDatabaseDataSet.xsd</DependentUpon>
-    </None>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -139,9 +123,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database\AccountDatabase.sdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="icon\sms-32.ico" />
     <None Include="Resources\1358786845_add-user.png" />
     <None Include="Resources\1358787521_delete.png" />

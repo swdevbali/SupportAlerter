@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace SupportAlerter.Database {
+namespace SupportAlerterLibrary.Database {
     
     
     /// <summary>
@@ -757,7 +757,7 @@ namespace SupportAlerter.Database {
         }
     }
 }
-namespace SupportAlerter.Database.AccountDatabaseDataSetTableAdapters {
+namespace SupportAlerterLibrary.Database.AccountDatabaseDataSetTableAdapters {
     
     
     /// <summary>
@@ -923,7 +923,7 @@ namespace SupportAlerter.Database.AccountDatabaseDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlServerCe.SqlCeConnection();
-            this._connection.ConnectionString = global::SupportAlerter.Properties.Settings.Default.AccountDatabaseConnectionString;
+            this._connection.ConnectionString = global::SupportAlerterLibrary.Properties.Settings.Default.AccountDatabaseConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
