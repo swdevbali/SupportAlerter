@@ -2,6 +2,7 @@
 using OpenPop.Pop3.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlServerCe;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,30 @@ namespace SupportAlerterLibrary
 {
     public class CoreFeature
     {
-        private static readonly Pop3Client pop3Client = new Pop3Client();
+        private readonly Pop3Client pop3Client = new Pop3Client();
+        private readonly SqlCeConnection dataConnection = null;
 
-        public static bool TestConnection(bool guiMode, string server, int port, bool use_ssl, string username, string password)
+        private static CoreFeature instance = null;
+        private CoreFeature()
+        {
+            dataConnection = new SqlCeConnection("Data Source=|DataDirectory|\\Database\\AccountDatabase.sdf");
+        }
+
+        public static CoreFeature getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new CoreFeature();
+              }
+            return instance;
+        }
+
+        public SqlCeConnection getDataConnection()
+        {
+            return dataConnection;
+        }
+
+        public bool TestConnection(bool guiMode, string server, int port, bool use_ssl, string username, string password)
         {
             try
             {

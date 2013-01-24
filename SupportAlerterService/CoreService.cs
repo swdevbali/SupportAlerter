@@ -1,7 +1,9 @@
-﻿using System;
+﻿using SupportAlerterLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlServerCe;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
@@ -23,9 +25,9 @@ namespace SupportAlerterService
         protected override void OnStart(string[] args)
         {
             EventLog.WriteEntry(Program.EventLogName, "The service was started successfully.", EventLogEntryType.Information);
-            _timer = new Timer(/*10 * 60 */ 1000);// 1 minute
+            _timer = new Timer(/*10 * 60 */ 5 * 1000);// 1 minute
             _timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
-            _timer.Start(); // <- important
+            //_timer.Start(); // <- important
         }
 
         protected override void OnStop()
@@ -37,15 +39,18 @@ namespace SupportAlerterService
         {
             _timer.Stop();
             try
-            {   
-                if (SupportAlerterLibrary.CoreFeature.TestConnection(false,"mail.swdevbali.com", 110, false, "ekowibowo@swdevbali.com", "muhammad"))
+            {
+                CoreFeature.getInstance().getDataConnection().Open();
+                SqlCeCommand cmd = CoreFeature.getInstance().getDataConnection().CreateCommand();
+                cmd.CommandText = "select server,port,use_ssl,username,password from account where active=true'";
+                cmd.CommandType = CommandType.Text;
+                SqlCeDataReader rdr = cmd.ExecuteReader();
+                while(rdr.Read())
                 {
-                    EventLog.WriteEntry(Program.EventLogName, "Login success : " + _count++);
-                }
-
-                if (!SupportAlerterLibrary.CoreFeature.TestConnection(false, "xmail.swdevbali.com", 110, false, "ekowibowo@swdevbali.com", "muhammad"))
-                {
-                    EventLog.WriteEntry(Program.EventLogName, "Login success : " + _count++);
+                    if (SupportAlerterLibrary.CoreFeature.getInstance().TestConnection(false,"mail.swdevbali.com", 110, false, "ekowibowo@swdevbali.com", "muhammad"))
+                    {
+                        EventLog.WriteEntry(Program.EventLogName, "Login success : " + _count++);
+                    }
                 }
             }
             catch (Exception ex)
