@@ -79,7 +79,7 @@ namespace SupportAlerter
             }
             catch
             {
-                throw;
+                //throw
             }
 
             return result;

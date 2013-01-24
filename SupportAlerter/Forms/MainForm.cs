@@ -14,11 +14,11 @@ using OpenPop.Common.Logging;
 using Message = OpenPop.Mime.Message;
 namespace SupportAlerter
 {
-    public partial class SupportAlerter : Form
+    public partial class MainForm : Form
     {
         private readonly Pop3Client pop3Client;
         private readonly Dictionary<int, Message> messages = new Dictionary<int, Message>();
-        public SupportAlerter()
+        public MainForm()
         {
             pop3Client = new Pop3Client();
 
@@ -165,9 +165,7 @@ namespace SupportAlerter
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings frmSettings = new Settings();
-            frmSettings.ShowDialog();
-            frmSettings.Dispose();
+            
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

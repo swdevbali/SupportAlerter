@@ -2,6 +2,7 @@
 using OpenPop.Pop3.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlServerCe;
 using System.Diagnostics;
 using System.Linq;
@@ -33,6 +34,10 @@ namespace SupportAlerterLibrary
 
         public SqlCeConnection getDataConnection()
         {
+            if (dataConnection.State == ConnectionState.Closed)
+            {
+                dataConnection.Open();
+            }
             return dataConnection;
         }
 

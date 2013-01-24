@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SupportAlerterLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,31 +25,22 @@ namespace SupportAlerter
             loginTextBox.Text = RegistrySettings.pop3Username;
             passwordTextBox.Text = RegistrySettings.pop3Password;*/
 
-            string dbfile = "|DataDirectory|\\Database\\AccountDatabase.sdf";
-            using (SqlCeConnection connection = new SqlCeConnection("Data Source=" + dbfile))
-            {
-                connection.Open();
-                SqlCeCommand cmd = connection.CreateCommand();
-                cmd.CommandText = "select name from account order by name";
-                cmd.CommandType = CommandType.Text;
-                SqlCeDataReader rdr = cmd.ExecuteReader();
-                lvAccount.Items.Clear();
-                /*if (!rdr.HasRows)
-                {
-                    lblAccountInfo.Text = "You don't have any email account configured. Please add an account";
-                }*/
-                while (rdr.Read())
-                {
-                  lvAccount.Items.Add(rdr.GetString(0));
-                }
 
-                cmd.Dispose();
-                rdr.Dispose();
-                connection.Dispose();
+            SqlCeConnection connection = CoreFeature.getInstance().getDataConnection();
+            SqlCeCommand cmd = connection.CreateCommand();
+            cmd.CommandText = "select name from account order by name";
+            cmd.CommandType = CommandType.Text;
+            SqlCeDataReader rdr = cmd.ExecuteReader();
+            lvAccount.Items.Clear();
+
+            while (rdr.Read())
+            {
+                lvAccount.Items.Add(rdr.GetString(0));
             }
 
-
-
+            cmd.Dispose();
+            rdr.Dispose();
+            connection.Close();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -101,18 +93,15 @@ namespace SupportAlerter
             {
                 if (MessageBox.Show("Are you sure you want to delete this account?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    string dbfile = "|DataDirectory|\\Database\\AccountDatabase.sdf";
-                    using (SqlCeConnection connection = new SqlCeConnection("Data Source=" + dbfile))
-                    {
-                        connection.Open();
-                        SqlCeCommand cmd = connection.CreateCommand();
-                        cmd.CommandText = "delete from account where name='" + lvAccount.Text + "'";
-                        cmd.CommandType = CommandType.Text;
-                        cmd.ExecuteNonQuery();
-                        lvAccount.Items.RemoveAt(lvAccount.SelectedIndex);
-                        cmd.Dispose();
-                        connection.Dispose();
-                    }
+                    SqlCeConnection connection = CoreFeature.getInstance().getDataConnection();
+                    SqlCeCommand cmd = connection.CreateCommand();
+                    cmd.CommandText = "delete from account where name='" + lvAccount.Text + "'";
+                    cmd.CommandType = CommandType.Text;
+                    cmd.ExecuteNonQuery();
+                    lvAccount.Items.RemoveAt(lvAccount.SelectedIndex);
+                    cmd.Dispose();
+                    connection.Close();
+                   
                 }
             }
         }
