@@ -1,3 +1,4 @@
+!include "nsProcess.nsh"
 OutFile "Setup.exe"
 
 installDir "$PROGRAMFILES\Swdev Bali\eMailToSMS"
@@ -8,17 +9,15 @@ RequestExecutionLevel admin
 section
 	SetShellVarContext all
 	setOutPath $INSTDIR
-	File OpenPop.dll
-	File SupportAlerter.exe
-	File SupportAlerterLibrary.dll
-	File database\*
-	File icon\*
-	File SupportAlerterService.exe
-	File InstallUtil.exe
+	${nsProcess::KillProcess} "SupportAlerter.exe" $R0
+	ExecWait "$INSTDIR\InstallUtil.exe /u SupportAlerterService.exe"
+	File /r "source\*"
 	writeUninstaller $INSTDIR\uninstaller.exe
 	CreateDirectory "${shortcutDir}" 
 	createShortCut "${shortcutDir}\eMail To SMS.lnk" "$INSTDIR\SupportAlerter.exe"
 	createShortCut "${shortcutDir}\Uninstall.lnk" "$INSTDIR\uninstaller.exe"
+	ExecWait "$INSTDIR\InstallUtil.exe SupportAlerterService.exe"
+	
 sectionEnd
 
 	section "Uninstall"
