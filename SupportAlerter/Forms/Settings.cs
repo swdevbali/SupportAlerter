@@ -1,4 +1,5 @@
-﻿using SupportAlerterLibrary;
+﻿using SupportAlerter.Helper;
+using SupportAlerterLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,13 +20,9 @@ namespace SupportAlerter
             InitializeComponent();
 
             RegistrySettings.loadValues();
-            /*popServerTextBox.Text = RegistrySettings.pop3ServerAddress;
-            portTextBox.Text = RegistrySettings.pop3ServerPort+"";
-            useSslCheckBox.Checked  = RegistrySettings.pop3UseSSL.Equals("True");
-            loginTextBox.Text = RegistrySettings.pop3Username;
-            passwordTextBox.Text = RegistrySettings.pop3Password;*/
 
 
+            ReadValues();
             SqlCeConnection connection = CoreFeature.getInstance().getDataConnection();
             SqlCeCommand cmd = connection.CreateCommand();
             cmd.CommandText = "select name from account order by name";
@@ -43,6 +40,27 @@ namespace SupportAlerter
             connection.Close();
         }
 
+        private void ReadValues()
+        {
+            numEmailCheckInterval.Value = RegistrySettings.emailCheckInterval;
+            updateServiceStatus();
+        }
+
+        private void updateServiceStatus()
+        {
+            lblInfoService.Text = ServiceManagement.getServiceStatus();
+            if (lblInfoService.Text.Contains("Running"))
+            {
+                btnStart.Enabled = false;
+                btnStop.Enabled = true;
+            }
+            else if (lblInfoService.Text.Contains("Stopped"))
+            {
+                btnStart.Enabled = true;
+                btnStop.Enabled = false;
+            }
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             SaveValues();
@@ -52,13 +70,8 @@ namespace SupportAlerter
 
         private void SaveValues()
         {
-            /*
-            RegistrySettings.pop3ServerAddress = popServerTextBox.Text;
-            RegistrySettings.pop3ServerPort = Convert.ToInt32(portTextBox.Text);
-            RegistrySettings.pop3UseSSL = useSslCheckBox.Checked + "";
-            RegistrySettings.pop3Username = loginTextBox.Text;
-            RegistrySettings.pop3Password = Cryptho.Encrypt(passwordTextBox.Text);
-            */
+
+            RegistrySettings.emailCheckInterval = Convert.ToInt32(numEmailCheckInterval.Value);
         }
 
         private void btnApply_Click(object sender, EventArgs e)
@@ -116,5 +129,27 @@ namespace SupportAlerter
         {
             lvAccount.Items[lvAccount.SelectedIndex] = p;
         }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            btnStart.Enabled = false;
+            btnStop.Enabled = false;
+            ServiceManagement.startService();
+            updateServiceStatus();
+            btnStop.Enabled = true;
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            btnStart.Enabled = false;
+            btnStop.Enabled = false;
+            ServiceManagement.stopService();
+            updateServiceStatus();
+            btnStart.Enabled = true;
+        }
+
+
+       
+
     }
 }

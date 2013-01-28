@@ -40,7 +40,7 @@ namespace SupportAlerter
 
             try
             {
-                TestConnection(RegistrySettings.pop3ServerAddress, RegistrySettings.pop3ServerPort, RegistrySettings.pop3UseSSL.Equals("True"), RegistrySettings.pop3Username, Cryptho.Decrypt(RegistrySettings.pop3Password));
+                //TestConnection(RegistrySettings.pop3ServerAddress, RegistrySettings.pop3ServerPort, RegistrySettings.pop3UseSSL.Equals("True"), RegistrySettings.pop3Username, Cryptho.Decrypt(RegistrySettings.pop3Password));
                 int count = pop3Client.GetMessageCount();
                 totalMessagesTextBox.Text = count.ToString();
                 messageTextBox.Text = "";

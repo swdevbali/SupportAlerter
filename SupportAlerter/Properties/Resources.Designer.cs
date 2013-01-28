@@ -63,9 +63,9 @@ namespace SupportAlerter.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _1358786845_add_user {
+        internal static System.Drawing.Bitmap add_account {
             get {
-                object obj = ResourceManager.GetObject("1358786845_add-user", resourceCulture);
+                object obj = ResourceManager.GetObject("add_account", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace SupportAlerter.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _1358787521_delete {
+        internal static System.Drawing.Bitmap delete_account {
             get {
-                object obj = ResourceManager.GetObject("1358787521_delete", resourceCulture);
+                object obj = ResourceManager.GetObject("delete_account", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
