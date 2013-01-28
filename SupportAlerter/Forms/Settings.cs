@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
-using System.Data.SqlServerCe;
+using MySql.Data.MySqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -23,27 +22,36 @@ namespace SupportAlerter
 
 
             ReadValues();
-            SqlCeConnection connection = CoreFeature.getInstance().getDataConnection();
-            SqlCeCommand cmd = connection.CreateCommand();
-            cmd.CommandText = "select name from account order by name";
-            cmd.CommandType = CommandType.Text;
-            SqlCeDataReader rdr = cmd.ExecuteReader();
+            MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
             lvAccount.Items.Clear();
 
-            while (rdr.Read())
+            if (connection != null)
             {
-                lvAccount.Items.Add(rdr.GetString(0));
-            }
+                MySqlCommand cmd = connection.CreateCommand();
+                cmd.CommandText = "select name from account order by name";
+                cmd.CommandType = CommandType.Text;
+                MySqlDataReader rdr = cmd.ExecuteReader();
 
-            cmd.Dispose();
-            rdr.Dispose();
-            connection.Close();
+                while (rdr.Read())
+                {
+                    lvAccount.Items.Add(rdr.GetString(0));
+                }
+
+                cmd.Dispose();
+                rdr.Dispose();
+                connection.Close();
+            }
+            cboDatabaseType.SelectedIndex = 0;
         }
 
         private void ReadValues()
         {
             numEmailCheckInterval.Value = RegistrySettings.emailCheckInterval;
             updateServiceStatus();
+            txtHost.Text = RegistrySettings.mysqlHost;
+            txtDatabase.Text = RegistrySettings.mysqlDatabase;
+            txtUsername.Text = RegistrySettings.mysqlUsername;
+            txtPassword.Text = RegistrySettings.mysqlPassword;
         }
 
         private void updateServiceStatus()
@@ -72,6 +80,10 @@ namespace SupportAlerter
         {
 
             RegistrySettings.emailCheckInterval = Convert.ToInt32(numEmailCheckInterval.Value);
+            RegistrySettings.mysqlHost = txtHost.Text;
+            RegistrySettings.mysqlDatabase = txtDatabase.Text;
+            RegistrySettings.mysqlUsername = txtUsername.Text;
+            RegistrySettings.mysqlPassword = txtPassword.Text;
         }
 
         private void btnApply_Click(object sender, EventArgs e)
@@ -106,8 +118,8 @@ namespace SupportAlerter
             {
                 if (MessageBox.Show("Are you sure you want to delete this account?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    SqlCeConnection connection = CoreFeature.getInstance().getDataConnection();
-                    SqlCeCommand cmd = connection.CreateCommand();
+                    MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
+                    MySqlCommand cmd = connection.CreateCommand();
                     cmd.CommandText = "delete from account where name='" + lvAccount.Text + "'";
                     cmd.CommandType = CommandType.Text;
                     cmd.ExecuteNonQuery();
@@ -146,6 +158,27 @@ namespace SupportAlerter
             ServiceManagement.stopService();
             updateServiceStatus();
             btnStart.Enabled = true;
+        }
+
+        private void btnTestDatabaseConnection_Click(object sender, EventArgs e)
+        {
+            SaveValues();
+            RegistrySettings.writeValues();
+            try
+            {
+                MySqlConnection con = new MySqlConnection("Server=" + RegistrySettings.mysqlHost + ";Database=" + RegistrySettings.mysqlDatabase + ";Uid=" + RegistrySettings.mysqlUsername + ";Pwd=" + RegistrySettings.mysqlPassword);
+                con.Open();
+                if (con.State == ConnectionState.Open)
+                {
+                    MessageBox.Show("Connection succees!");
+                    con.Close();
+                    con.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Connection error : " + ex.Message);
+            }
         }
 
 

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using SupportAlerterLibrary;
 
 namespace SupportAlerter
 {

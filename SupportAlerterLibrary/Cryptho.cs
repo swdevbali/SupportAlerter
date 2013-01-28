@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SupportAlerter
+namespace SupportAlerterLibrary
 {
-    static class Cryptho
+    public static class Cryptho
     {
         private const string cryptoKey = "swdevbali.com";
 

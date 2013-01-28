@@ -3,7 +3,7 @@ using OpenPop.Pop3.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlServerCe;
+using MySql.Data.MySqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -15,12 +15,13 @@ namespace SupportAlerterLibrary
     public class CoreFeature
     {
         private readonly Pop3Client pop3Client = new Pop3Client();
-        private readonly SqlCeConnection dataConnection = null;
+        private readonly MySqlConnection  dataConnection = null;
         private static CoreFeature instance = null;
         
         private CoreFeature()
         {
-            dataConnection = new SqlCeConnection("Data Source=|DataDirectory|\\Database\\AccountDatabase.sdf");
+            RegistrySettings.loadValues();
+            dataConnection = new MySqlConnection("Server="+ RegistrySettings.mysqlHost + ";Database=" + RegistrySettings.mysqlDatabase  +";Uid=" + RegistrySettings.mysqlUsername + ";Pwd=" + RegistrySettings.mysqlPassword);
         }
 
         public static CoreFeature getInstance()
@@ -32,11 +33,19 @@ namespace SupportAlerterLibrary
             return instance;
         }
 
-        public SqlCeConnection getDataConnection()
+        public MySqlConnection getDataConnection()
         {
             if (dataConnection.State == ConnectionState.Closed)
             {
-                dataConnection.Open();
+                try
+                {
+                    dataConnection.Open();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Database connection error : " + ex.Message);
+                    return null;
+                }
             }
             return dataConnection;
         }

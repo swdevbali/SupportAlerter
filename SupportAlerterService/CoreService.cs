@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
+using MySql.Data.MySqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
@@ -40,10 +40,10 @@ namespace SupportAlerterService
             try
             {   
                 if(CoreFeature.getInstance().getDataConnection().State==ConnectionState.Closed) CoreFeature.getInstance().getDataConnection().Open();
-                SqlCeCommand cmd = CoreFeature.getInstance().getDataConnection().CreateCommand();
+                MySqlCommand cmd = CoreFeature.getInstance().getDataConnection().CreateCommand();
                 cmd.CommandText = "select name, server,port,use_ssl,username,password from account where active=1";
                 cmd.CommandType = CommandType.Text;
-                SqlCeDataReader rdr = cmd.ExecuteReader();
+                MySqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
                     string name = rdr.GetString(rdr.GetOrdinal("name"));

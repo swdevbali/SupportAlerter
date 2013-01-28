@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlServerCe;
+using MySql.Data.MySqlClient;
 using SupportAlerterLibrary;
 
 namespace SupportAlerter
@@ -27,11 +27,11 @@ namespace SupportAlerter
             InitializeComponent();
             this.accountName = accountName;
             this.settings = settings;
-            SqlCeConnection connection = CoreFeature.getInstance().getDataConnection();
-            SqlCeCommand cmd = connection.CreateCommand();
+            MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
+            MySqlCommand cmd = connection.CreateCommand();
             cmd.CommandText = "select * from account where name='" + accountName  + "' order by name";
             cmd.CommandType = CommandType.Text;
-            SqlCeDataReader rdr = cmd.ExecuteReader();
+            MySqlDataReader rdr = cmd.ExecuteReader();
                 
             if (rdr.Read())
             {
@@ -52,8 +52,8 @@ namespace SupportAlerter
 
         private bool saveConnection()
         {
-            SqlCeConnection connection = CoreFeature.getInstance().getDataConnection();
-            SqlCeCommand cmd = connection.CreateCommand();
+            MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
+            MySqlCommand cmd = connection.CreateCommand();
             if (accountName == "")
             {
                 cmd.CommandText = "insert into account(name,server,port,use_ssl,username,password,active) values ('" + txtName.Text + "','" + txtServer.Text + "'," + txtPort.Value + "," + Convert.ToInt32(chkUseSSL.Checked) + ",'" + txtUsername.Text + "','" + Cryptho.Encrypt(txtPassword.Text) + "'," + Convert.ToInt32(chkActive.Checked) + ")";

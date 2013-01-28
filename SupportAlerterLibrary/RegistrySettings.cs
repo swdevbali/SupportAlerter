@@ -4,15 +4,19 @@ using System.Linq;
 using System.Text;
 using Utility.ModifyRegistry;
 
-namespace SupportAlerter
+namespace SupportAlerterLibrary
 {
-    class RegistrySettings
+    public class RegistrySettings
     {
         private static RegistrySettings instance = null;
         private static ModifyRegistry reg = new ModifyRegistry();
 
        
         public static int emailCheckInterval;
+        public static string mysqlHost;
+        public static string mysqlDatabase;
+        public static string mysqlUsername;
+        public static string mysqlPassword;
 
         private RegistrySettings()
         {
@@ -30,15 +34,24 @@ namespace SupportAlerter
 
         }
 
-        internal static void loadValues()
+        public static void loadValues()
         {
             emailCheckInterval = (int)reg.Read("emailCheckInterval", 1);//in minutes
+            mysqlHost = (string) reg.Read("mysqlHost", "localhost");
+            mysqlDatabase = (string)reg.Read("mysqlDatabase", "email2sms");
+            mysqlUsername = (string)reg.Read("mysqlUsername", "root");
+            mysqlPassword = Cryptho.Decrypt((string)reg.Read("mysqlPassword", Cryptho.Encrypt("adminadmin")));
            
         }
 
-        internal static void writeValues()
+        public static void writeValues()
         {
             reg.Write("emailCheckInterval", emailCheckInterval);
+            reg.Write("mysqlHost", mysqlHost);
+            reg.Write("mysqlDatabase", mysqlDatabase);
+            reg.Write("mysqlUsername", mysqlUsername);
+            reg.Write("mysqlPassword", Cryptho.Encrypt(mysqlPassword));
+
 
         }
     }
