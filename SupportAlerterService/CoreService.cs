@@ -21,10 +21,15 @@ namespace SupportAlerterService
             InitializeComponent();
         }
 
+        public void DoStart()
+        {
+            OnStart(null);
+        }
         protected override void OnStart(string[] args)
         {
-            EventLog.WriteEntry(Program.EventLogName, "The service was started successfully.", EventLogEntryType.Information);
-            timer = new Timer(/*10 * 60 */ 1000);// 1 minute
+            RegistrySettings.loadValues();
+            EventLog.WriteEntry(Program.EventLogName, "The service was started successfully. Will checking email every " + RegistrySettings.emailCheckInterval + " minute(s)", EventLogEntryType.Information);
+            timer = new Timer(RegistrySettings.emailCheckInterval * 60 * 1000/60);// minimum of a minute, but let me tweak it here for a second
             timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
             timer.Start(); // <- important
         }
@@ -51,9 +56,9 @@ namespace SupportAlerterService
                     int port = rdr.GetInt32(rdr.GetOrdinal("port"));
                     bool use_ssl = rdr.GetByte(rdr.GetOrdinal("use_ssl")) == 1;
                     string username = rdr.GetString(rdr.GetOrdinal("username"));
-                    string password = rdr.GetString(rdr.GetOrdinal("password"));//TOFIX: use decrypt
+                    string password = Cryptho.Decrypt(rdr.GetString(rdr.GetOrdinal("password")));
 
-                    if (SupportAlerterLibrary.CoreFeature.getInstance().TestConnection(false,name, server, port, use_ssl, username, password))
+                    if (SupportAlerterLibrary.CoreFeature.getInstance().TestConnection(name, server, port, use_ssl, username, password))
                     {
                         EventLog.WriteEntry(Program.EventLogName, "Login success for " + name);
                     }
@@ -66,6 +71,11 @@ namespace SupportAlerterService
                 EventLog.WriteEntry(Program.EventLogName, "This is my error " + ex.Message);
             }
             timer.Start();
+        }
+
+        internal void DoStop()
+        {
+            Stop();
         }
     }
 }

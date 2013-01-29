@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panelTop = new System.Windows.Forms.Panel();
+            this.chkActive = new System.Windows.Forms.CheckBox();
             this.btnSaveTest = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
@@ -42,7 +43,6 @@
             this.labelServerPort = new System.Windows.Forms.Label();
             this.labelServerAddress = new System.Windows.Forms.Label();
             this.txtServer = new System.Windows.Forms.TextBox();
-            this.chkActive = new System.Windows.Forms.CheckBox();
             this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtPort)).BeginInit();
             this.SuspendLayout();
@@ -69,13 +69,23 @@
             this.panelTop.Size = new System.Drawing.Size(305, 248);
             this.panelTop.TabIndex = 3;
             // 
+            // chkActive
+            // 
+            this.chkActive.AutoSize = true;
+            this.chkActive.Location = new System.Drawing.Point(128, 174);
+            this.chkActive.Name = "chkActive";
+            this.chkActive.Size = new System.Drawing.Size(56, 17);
+            this.chkActive.TabIndex = 14;
+            this.chkActive.Text = "&Active";
+            this.chkActive.UseVisualStyleBackColor = true;
+            // 
             // btnSaveTest
             // 
-            this.btnSaveTest.Location = new System.Drawing.Point(119, 209);
+            this.btnSaveTest.Location = new System.Drawing.Point(182, 209);
             this.btnSaveTest.Name = "btnSaveTest";
-            this.btnSaveTest.Size = new System.Drawing.Size(159, 23);
+            this.btnSaveTest.Size = new System.Drawing.Size(96, 23);
             this.btnSaveTest.TabIndex = 7;
-            this.btnSaveTest.Text = "Save and Test &Connection";
+            this.btnSaveTest.Text = "Test &Connection";
             this.btnSaveTest.UseVisualStyleBackColor = true;
             this.btnSaveTest.Click += new System.EventHandler(this.btnSaveTest_Click);
             // 
@@ -97,7 +107,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(67, 209);
+            this.btnSave.Location = new System.Drawing.Point(128, 209);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(45, 23);
             this.btnSave.TabIndex = 6;
@@ -181,16 +191,6 @@
             this.txtServer.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.txtServer.Size = new System.Drawing.Size(150, 20);
             this.txtServer.TabIndex = 1;
-            // 
-            // chkActive
-            // 
-            this.chkActive.AutoSize = true;
-            this.chkActive.Location = new System.Drawing.Point(128, 174);
-            this.chkActive.Name = "chkActive";
-            this.chkActive.Size = new System.Drawing.Size(56, 17);
-            this.chkActive.TabIndex = 14;
-            this.chkActive.Text = "&Active";
-            this.chkActive.UseVisualStyleBackColor = true;
             // 
             // EmailAccount
             // 

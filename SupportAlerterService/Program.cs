@@ -42,7 +42,22 @@ namespace SupportAlerterService
             { 
                 new CoreService() 
             };
-            ServiceBase.Run(ServicesToRun);
+            if (Environment.UserInteractive)
+            {
+                // This used to run the service as a console (development phase only)
+
+                
+                CoreService service = (CoreService) ServicesToRun[0];
+                service.DoStart();
+                Console.WriteLine("Press Enter to terminate ...");
+                Console.ReadLine();
+
+                service.DoStop();
+            }
+            else
+            {
+                ServiceBase.Run(ServicesToRun);
+            }
         }
     }
 }

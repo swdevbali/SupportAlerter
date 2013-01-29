@@ -16,9 +16,10 @@
 
 using System;
 // it's required for reading/writing into the registry:
-using Microsoft.Win32;      
+using Microsoft.Win32;
+using System.Diagnostics;
+using SupportAlerterLibrary;      
 // and for the MessageBox function:
-using System.Windows.Forms; 
 
 namespace Utility.ModifyRegistry
 {
@@ -38,7 +39,7 @@ namespace Utility.ModifyRegistry
 			set	{ showError = value; }
 		}
 
-		private string subKey = "SOFTWARE\\" + Application.ProductName.ToUpper();
+        private string subKey = "SOFTWARE\\Untitled";
 		/// <summary>
 		/// A property to set the SubKey value
 		/// (default = "SOFTWARE\\" + Application.ProductName.ToUpper())
@@ -260,10 +261,8 @@ namespace Utility.ModifyRegistry
 		private void ShowErrorMessage(Exception e, string Title)
 		{
 			if (showError == true)
-				MessageBox.Show(e.Message,
-								Title
-								,MessageBoxButtons.OK
-								,MessageBoxIcon.Error);
+                EventLog.WriteEntry(Program.EventLogName, "[RegistrySettings] " + e.Message, EventLogEntryType.FailureAudit, 1);
+            
 		}
 	}
 }
