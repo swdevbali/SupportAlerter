@@ -32,6 +32,11 @@ namespace SupportAlerterLibrary
             return instance;
         }
 
+        public Pop3Client getPop3Client()
+        {
+            return pop3Client;
+        }
+
         public MySqlConnection getDataConnection()
         {
             if (dataConnection.State == ConnectionState.Closed)

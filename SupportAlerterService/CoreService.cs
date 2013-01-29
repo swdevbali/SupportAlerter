@@ -10,6 +10,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using OpenPop.Mime;
 
 namespace SupportAlerterService
 {
@@ -42,13 +43,14 @@ namespace SupportAlerterService
         private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             timer.Stop();
+            MySqlDataReader rdr = null;
             try
             {   
                 if(CoreFeature.getInstance().getDataConnection().State==ConnectionState.Closed) CoreFeature.getInstance().getDataConnection().Open();
                 MySqlCommand cmd = CoreFeature.getInstance().getDataConnection().CreateCommand();
                 cmd.CommandText = "select name, server,port,use_ssl,username,password from account where active=1";
                 cmd.CommandType = CommandType.Text;
-                MySqlDataReader rdr = cmd.ExecuteReader();
+                rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
                     string name = rdr.GetString(rdr.GetOrdinal("name"));
@@ -60,15 +62,27 @@ namespace SupportAlerterService
 
                     if (SupportAlerterLibrary.CoreFeature.getInstance().TestConnection(name, server, port, use_ssl, username, password))
                     {
-                        EventLog.WriteEntry(Program.EventLogName, "Login success for " + name);
+                        int count = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessageCount();
+                        EventLog.WriteEntry(Program.EventLogName, "Login success for " + name + " will processed " + count + " message(s)");
+                        for (int i = 1; i <= count; i++)
+                        {
+                            //Regards to : http://hpop.sourceforge.net/exampleSpecificParts.php
+                            Message message = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessage(i);
+                            string messageBody = message.FindFirstPlainTextVersion().GetBodyAsText();
+                            //NEXT : processed this messageBody based on rules!
+                            EventLog.WriteEntry(Program.EventLogName, message.Headers.Subject + " -- " + messageBody);
+                        }
                     }
                 }
-                rdr.Dispose();
+                rdr.Close();
                 CoreFeature.getInstance().getDataConnection().Close();
             }
             catch (Exception ex)
             {
                 EventLog.WriteEntry(Program.EventLogName, "This is my error " + ex.Message);
+                rdr.Close();
+                CoreFeature.getInstance().getDataConnection().Close();
+                
             }
             timer.Start();
         }
