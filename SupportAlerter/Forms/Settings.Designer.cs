@@ -38,38 +38,49 @@
             this.label3 = new System.Windows.Forms.Label();
             this.numEmailCheckInterval = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnTestDatabaseConnection = new System.Windows.Forms.Button();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtDatabase = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtHost = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cboDatabaseType = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.btnRemoveAccount = new System.Windows.Forms.Button();
             this.btnAddAccount = new System.Windows.Forms.Button();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tabLayoutEmailAccount = new System.Windows.Forms.TableLayoutPanel();
             this.panelAccountDetail = new System.Windows.Forms.Panel();
             this.lblAccountInfo = new System.Windows.Forms.Label();
             this.lvAccount = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btnRuleDelete = new System.Windows.Forms.Button();
+            this.btnRuleAdd = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlRuleDetail = new System.Windows.Forms.Panel();
+            this.lblRuleInfo = new System.Windows.Forms.Label();
+            this.listRuleName = new System.Windows.Forms.ListBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cboDatabaseType = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtHost = new System.Windows.Forms.TextBox();
-            this.txtDatabase = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.btnTestDatabaseConnection = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEmailCheckInterval)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tabLayoutEmailAccount.SuspendLayout();
             this.panelAccountDetail.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.pnlRuleDetail.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -77,11 +88,12 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(593, 357);
+            this.tabControl1.Size = new System.Drawing.Size(693, 483);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage2
@@ -96,7 +108,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(585, 331);
+            this.tabPage2.Size = new System.Drawing.Size(685, 457);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "General";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -174,128 +186,6 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Check email every";
             // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.btnRemoveAccount);
-            this.tabPage1.Controls.Add(this.btnAddAccount);
-            this.tabPage1.Controls.Add(this.tableLayoutPanel2);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(585, 331);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Email accounts";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // btnRemoveAccount
-            // 
-            this.btnRemoveAccount.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRemoveAccount.Image = global::SupportAlerter.Properties.Resources.delete_account;
-            this.btnRemoveAccount.Location = new System.Drawing.Point(47, 293);
-            this.btnRemoveAccount.Name = "btnRemoveAccount";
-            this.btnRemoveAccount.Size = new System.Drawing.Size(32, 32);
-            this.btnRemoveAccount.TabIndex = 3;
-            this.btnRemoveAccount.UseVisualStyleBackColor = true;
-            this.btnRemoveAccount.Click += new System.EventHandler(this.btnRemoveAccount_Click);
-            // 
-            // btnAddAccount
-            // 
-            this.btnAddAccount.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddAccount.Image = global::SupportAlerter.Properties.Resources.add_account;
-            this.btnAddAccount.Location = new System.Drawing.Point(9, 293);
-            this.btnAddAccount.Name = "btnAddAccount";
-            this.btnAddAccount.Size = new System.Drawing.Size(32, 32);
-            this.btnAddAccount.TabIndex = 2;
-            this.btnAddAccount.UseVisualStyleBackColor = true;
-            this.btnAddAccount.Click += new System.EventHandler(this.btnAddAccount_Click);
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.24561F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.75439F));
-            this.tableLayoutPanel2.Controls.Add(this.panelAccountDetail, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lvAccount, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(9, 33);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(570, 244);
-            this.tableLayoutPanel2.TabIndex = 1;
-            // 
-            // panelAccountDetail
-            // 
-            this.panelAccountDetail.Controls.Add(this.lblAccountInfo);
-            this.panelAccountDetail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelAccountDetail.Location = new System.Drawing.Point(163, 3);
-            this.panelAccountDetail.Name = "panelAccountDetail";
-            this.panelAccountDetail.Size = new System.Drawing.Size(404, 238);
-            this.panelAccountDetail.TabIndex = 1;
-            // 
-            // lblAccountInfo
-            // 
-            this.lblAccountInfo.AutoSize = true;
-            this.lblAccountInfo.Location = new System.Drawing.Point(12, 12);
-            this.lblAccountInfo.Name = "lblAccountInfo";
-            this.lblAccountInfo.Size = new System.Drawing.Size(259, 13);
-            this.lblAccountInfo.TabIndex = 0;
-            this.lblAccountInfo.Text = "Click on an account name to configure its connection";
-            // 
-            // lvAccount
-            // 
-            this.lvAccount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvAccount.FormattingEnabled = true;
-            this.lvAccount.Location = new System.Drawing.Point(3, 3);
-            this.lvAccount.Name = "lvAccount";
-            this.lvAccount.Size = new System.Drawing.Size(154, 238);
-            this.lvAccount.TabIndex = 2;
-            this.lvAccount.SelectedIndexChanged += new System.EventHandler(this.lvAccount_SelectedIndexChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(266, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "You can configure multiple email account for each user";
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88.23529F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.76471F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(599, 412);
-            this.tableLayoutPanel1.TabIndex = 4;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.btnOK);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 366);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(593, 43);
-            this.panel1.TabIndex = 4;
-            // 
-            // btnOK
-            // 
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(505, 11);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 0;
-            this.btnOK.Text = "&Close";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.btnTestDatabaseConnection);
@@ -312,78 +202,20 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(585, 331);
+            this.tabPage3.Size = new System.Drawing.Size(685, 457);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Database";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // btnTestDatabaseConnection
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 17);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(76, 13);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "Database type";
-            // 
-            // cboDatabaseType
-            // 
-            this.cboDatabaseType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboDatabaseType.FormattingEnabled = true;
-            this.cboDatabaseType.Items.AddRange(new object[] {
-            "MySQL"});
-            this.cboDatabaseType.Location = new System.Drawing.Point(98, 17);
-            this.cboDatabaseType.Name = "cboDatabaseType";
-            this.cboDatabaseType.Size = new System.Drawing.Size(121, 21);
-            this.cboDatabaseType.TabIndex = 0;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 44);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(29, 13);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "Host";
-            // 
-            // txtHost
-            // 
-            this.txtHost.Location = new System.Drawing.Point(98, 44);
-            this.txtHost.Name = "txtHost";
-            this.txtHost.Size = new System.Drawing.Size(121, 20);
-            this.txtHost.TabIndex = 1;
-            // 
-            // txtDatabase
-            // 
-            this.txtDatabase.Location = new System.Drawing.Point(98, 70);
-            this.txtDatabase.Name = "txtDatabase";
-            this.txtDatabase.Size = new System.Drawing.Size(121, 20);
-            this.txtDatabase.TabIndex = 2;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(15, 70);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 13);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "Database";
-            // 
-            // txtUsername
-            // 
-            this.txtUsername.Location = new System.Drawing.Point(98, 96);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(121, 20);
-            this.txtUsername.TabIndex = 3;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(15, 96);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Username";
+            this.btnTestDatabaseConnection.Location = new System.Drawing.Point(98, 149);
+            this.btnTestDatabaseConnection.Name = "btnTestDatabaseConnection";
+            this.btnTestDatabaseConnection.Size = new System.Drawing.Size(121, 23);
+            this.btnTestDatabaseConnection.TabIndex = 10;
+            this.btnTestDatabaseConnection.Text = "&Test Connection";
+            this.btnTestDatabaseConnection.UseVisualStyleBackColor = true;
+            this.btnTestDatabaseConnection.Click += new System.EventHandler(this.btnTestDatabaseConnection_Click);
             // 
             // txtPassword
             // 
@@ -402,24 +234,292 @@
             this.label9.TabIndex = 9;
             this.label9.Text = "Password";
             // 
-            // btnTestDatabaseConnection
+            // txtUsername
             // 
-            this.btnTestDatabaseConnection.Location = new System.Drawing.Point(98, 149);
-            this.btnTestDatabaseConnection.Name = "btnTestDatabaseConnection";
-            this.btnTestDatabaseConnection.Size = new System.Drawing.Size(121, 23);
-            this.btnTestDatabaseConnection.TabIndex = 10;
-            this.btnTestDatabaseConnection.Text = "&Test Connection";
-            this.btnTestDatabaseConnection.UseVisualStyleBackColor = true;
-            this.btnTestDatabaseConnection.Click += new System.EventHandler(this.btnTestDatabaseConnection_Click);
+            this.txtUsername.Location = new System.Drawing.Point(98, 96);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(121, 20);
+            this.txtUsername.TabIndex = 3;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(15, 96);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Username";
+            // 
+            // txtDatabase
+            // 
+            this.txtDatabase.Location = new System.Drawing.Point(98, 70);
+            this.txtDatabase.Name = "txtDatabase";
+            this.txtDatabase.Size = new System.Drawing.Size(121, 20);
+            this.txtDatabase.TabIndex = 2;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 70);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 13);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Database";
+            // 
+            // txtHost
+            // 
+            this.txtHost.Location = new System.Drawing.Point(98, 44);
+            this.txtHost.Name = "txtHost";
+            this.txtHost.Size = new System.Drawing.Size(121, 20);
+            this.txtHost.TabIndex = 1;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(15, 44);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Host";
+            // 
+            // cboDatabaseType
+            // 
+            this.cboDatabaseType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDatabaseType.FormattingEnabled = true;
+            this.cboDatabaseType.Items.AddRange(new object[] {
+            "MySQL"});
+            this.cboDatabaseType.Location = new System.Drawing.Point(98, 17);
+            this.cboDatabaseType.Name = "cboDatabaseType";
+            this.cboDatabaseType.Size = new System.Drawing.Size(121, 21);
+            this.cboDatabaseType.TabIndex = 0;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(15, 17);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(76, 13);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Database type";
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.btnRemoveAccount);
+            this.tabPage1.Controls.Add(this.btnAddAccount);
+            this.tabPage1.Controls.Add(this.tabLayoutEmailAccount);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(685, 457);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Email Accounts";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // btnRemoveAccount
+            // 
+            this.btnRemoveAccount.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemoveAccount.Image = global::SupportAlerter.Properties.Resources.delete_account;
+            this.btnRemoveAccount.Location = new System.Drawing.Point(48, 402);
+            this.btnRemoveAccount.Name = "btnRemoveAccount";
+            this.btnRemoveAccount.Size = new System.Drawing.Size(32, 32);
+            this.btnRemoveAccount.TabIndex = 3;
+            this.btnRemoveAccount.UseVisualStyleBackColor = true;
+            this.btnRemoveAccount.Click += new System.EventHandler(this.btnRemoveAccount_Click);
+            // 
+            // btnAddAccount
+            // 
+            this.btnAddAccount.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddAccount.Image = global::SupportAlerter.Properties.Resources.add_account;
+            this.btnAddAccount.Location = new System.Drawing.Point(10, 402);
+            this.btnAddAccount.Name = "btnAddAccount";
+            this.btnAddAccount.Size = new System.Drawing.Size(32, 32);
+            this.btnAddAccount.TabIndex = 2;
+            this.btnAddAccount.UseVisualStyleBackColor = true;
+            this.btnAddAccount.Click += new System.EventHandler(this.btnAddAccount_Click);
+            // 
+            // tabLayoutEmailAccount
+            // 
+            this.tabLayoutEmailAccount.ColumnCount = 2;
+            this.tabLayoutEmailAccount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.24561F));
+            this.tabLayoutEmailAccount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.75439F));
+            this.tabLayoutEmailAccount.Controls.Add(this.panelAccountDetail, 1, 0);
+            this.tabLayoutEmailAccount.Controls.Add(this.lvAccount, 0, 0);
+            this.tabLayoutEmailAccount.Location = new System.Drawing.Point(9, 33);
+            this.tabLayoutEmailAccount.Name = "tabLayoutEmailAccount";
+            this.tabLayoutEmailAccount.RowCount = 1;
+            this.tabLayoutEmailAccount.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tabLayoutEmailAccount.Size = new System.Drawing.Size(670, 363);
+            this.tabLayoutEmailAccount.TabIndex = 1;
+            // 
+            // panelAccountDetail
+            // 
+            this.panelAccountDetail.Controls.Add(this.lblAccountInfo);
+            this.panelAccountDetail.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelAccountDetail.Location = new System.Drawing.Point(192, 3);
+            this.panelAccountDetail.Name = "panelAccountDetail";
+            this.panelAccountDetail.Size = new System.Drawing.Size(475, 357);
+            this.panelAccountDetail.TabIndex = 1;
+            // 
+            // lblAccountInfo
+            // 
+            this.lblAccountInfo.AutoSize = true;
+            this.lblAccountInfo.Location = new System.Drawing.Point(12, 12);
+            this.lblAccountInfo.Name = "lblAccountInfo";
+            this.lblAccountInfo.Size = new System.Drawing.Size(259, 13);
+            this.lblAccountInfo.TabIndex = 0;
+            this.lblAccountInfo.Text = "Click on an account name to configure its connection";
+            // 
+            // lvAccount
+            // 
+            this.lvAccount.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvAccount.FormattingEnabled = true;
+            this.lvAccount.Location = new System.Drawing.Point(3, 3);
+            this.lvAccount.Name = "lvAccount";
+            this.lvAccount.Size = new System.Drawing.Size(183, 357);
+            this.lvAccount.TabIndex = 2;
+            this.lvAccount.SelectedIndexChanged += new System.EventHandler(this.lvAccount_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(266, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "You can configure multiple email account for each user";
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.btnRuleDelete);
+            this.tabPage4.Controls.Add(this.btnRuleAdd);
+            this.tabPage4.Controls.Add(this.tableLayoutPanel2);
+            this.tabPage4.Controls.Add(this.label10);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(685, 457);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Notification Rules";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // btnRuleDelete
+            // 
+            this.btnRuleDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRuleDelete.Image = global::SupportAlerter.Properties.Resources.delete_account;
+            this.btnRuleDelete.Location = new System.Drawing.Point(48, 402);
+            this.btnRuleDelete.Name = "btnRuleDelete";
+            this.btnRuleDelete.Size = new System.Drawing.Size(32, 32);
+            this.btnRuleDelete.TabIndex = 5;
+            this.btnRuleDelete.UseVisualStyleBackColor = true;
+            this.btnRuleDelete.Click += new System.EventHandler(this.btnRuleDelete_Click);
+            // 
+            // btnRuleAdd
+            // 
+            this.btnRuleAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRuleAdd.Image = global::SupportAlerter.Properties.Resources.add_account;
+            this.btnRuleAdd.Location = new System.Drawing.Point(10, 402);
+            this.btnRuleAdd.Name = "btnRuleAdd";
+            this.btnRuleAdd.Size = new System.Drawing.Size(32, 32);
+            this.btnRuleAdd.TabIndex = 4;
+            this.btnRuleAdd.UseVisualStyleBackColor = true;
+            this.btnRuleAdd.Click += new System.EventHandler(this.btnRuleAdd_Click);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.24561F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.75439F));
+            this.tableLayoutPanel2.Controls.Add(this.pnlRuleDetail, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.listRuleName, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(9, 33);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(670, 363);
+            this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // pnlRuleDetail
+            // 
+            this.pnlRuleDetail.Controls.Add(this.lblRuleInfo);
+            this.pnlRuleDetail.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlRuleDetail.Location = new System.Drawing.Point(192, 3);
+            this.pnlRuleDetail.Name = "pnlRuleDetail";
+            this.pnlRuleDetail.Size = new System.Drawing.Size(475, 357);
+            this.pnlRuleDetail.TabIndex = 1;
+            // 
+            // lblRuleInfo
+            // 
+            this.lblRuleInfo.AutoSize = true;
+            this.lblRuleInfo.Location = new System.Drawing.Point(12, 12);
+            this.lblRuleInfo.Name = "lblRuleInfo";
+            this.lblRuleInfo.Size = new System.Drawing.Size(180, 13);
+            this.lblRuleInfo.TabIndex = 0;
+            this.lblRuleInfo.Text = "Click on a rule name to define its rule";
+            // 
+            // listRuleName
+            // 
+            this.listRuleName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listRuleName.FormattingEnabled = true;
+            this.listRuleName.Location = new System.Drawing.Point(3, 3);
+            this.listRuleName.Name = "listRuleName";
+            this.listRuleName.Size = new System.Drawing.Size(183, 357);
+            this.listRuleName.TabIndex = 2;
+            this.listRuleName.SelectedIndexChanged += new System.EventHandler(this.listRuleName_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 14);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(404, 13);
+            this.label10.TabIndex = 1;
+            this.label10.Text = "You can define rules of notification of all the messages receive in the email acc" +
+    "ounts";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 91.58878F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.411215F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(699, 535);
+            this.tableLayoutPanel1.TabIndex = 4;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnOK);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 492);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(693, 40);
+            this.panel1.TabIndex = 4;
+            // 
+            // btnOK
+            // 
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOK.Location = new System.Drawing.Point(609, 8);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.TabIndex = 0;
+            this.btnOK.Text = "&Close";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // Settings
             // 
-            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(599, 412);
+            this.ClientSize = new System.Drawing.Size(699, 535);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Settings";
@@ -429,15 +529,20 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEmailCheckInterval)).EndInit();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.panelAccountDetail.ResumeLayout(false);
-            this.panelAccountDetail.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabLayoutEmailAccount.ResumeLayout(false);
+            this.panelAccountDetail.ResumeLayout(false);
+            this.panelAccountDetail.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.pnlRuleDetail.ResumeLayout(false);
+            this.pnlRuleDetail.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -450,7 +555,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tabLayoutEmailAccount;
         private System.Windows.Forms.Button btnRemoveAccount;
         private System.Windows.Forms.Button btnAddAccount;
         private System.Windows.Forms.Panel panelAccountDetail;
@@ -476,5 +581,13 @@
         private System.Windows.Forms.TextBox txtDatabase;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnTestDatabaseConnection;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Panel pnlRuleDetail;
+        private System.Windows.Forms.Label lblRuleInfo;
+        private System.Windows.Forms.ListBox listRuleName;
+        private System.Windows.Forms.Button btnRuleDelete;
+        private System.Windows.Forms.Button btnRuleAdd;
     }
 }

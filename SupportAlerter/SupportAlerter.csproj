@@ -84,6 +84,12 @@
     <Compile Include="Forms\EmailAccount.Designer.cs">
       <DependentUpon>EmailAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RuleConfiguration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\RuleConfiguration.Designer.cs">
+      <DependentUpon>RuleConfiguration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helper\MinutesData.cs" />
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
@@ -108,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EmailAccount.resx">
       <DependentUpon>EmailAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RuleConfiguration.resx">
+      <DependentUpon>RuleConfiguration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

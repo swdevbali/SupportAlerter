@@ -46,7 +46,6 @@ namespace SupportAlerterService
             MySqlDataReader rdr = null;
             try
             {   
-                if(CoreFeature.getInstance().getDataConnection().State==ConnectionState.Closed) CoreFeature.getInstance().getDataConnection().Open();
                 MySqlCommand cmd = CoreFeature.getInstance().getDataConnection().CreateCommand();
                 cmd.CommandText = "select name, server,port,use_ssl,username,password from account where active=1";
                 cmd.CommandType = CommandType.Text;
@@ -60,7 +59,7 @@ namespace SupportAlerterService
                     string username = rdr.GetString(rdr.GetOrdinal("username"));
                     string password = Cryptho.Decrypt(rdr.GetString(rdr.GetOrdinal("password")));
 
-                    if (SupportAlerterLibrary.CoreFeature.getInstance().TestConnection(name, server, port, use_ssl, username, password))
+                    if (SupportAlerterLibrary.CoreFeature.getInstance().Connect(name, server, port, use_ssl, username, password))
                     {
                         int count = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessageCount();
                         EventLog.WriteEntry(Program.EventLogName, "Login success for " + name + " will processed " + count + " message(s)");
@@ -68,7 +67,11 @@ namespace SupportAlerterService
                         {
                             //Regards to : http://hpop.sourceforge.net/exampleSpecificParts.php
                             Message message = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessage(i);
-                            string messageBody = message.FindFirstPlainTextVersion().GetBodyAsText();
+                            MessagePart messagePart = message.FindFirstPlainTextVersion();
+                            if (messagePart == null) messagePart = message.FindFirstHtmlVersion(); 
+                            string messageBody = null;
+                            if(messagePart!=null) messageBody = messagePart.GetBodyAsText();
+
                             //NEXT : processed this messageBody based on rules!
                             EventLog.WriteEntry(Program.EventLogName, message.Headers.Subject + " -- " + messageBody);
                         }
@@ -82,7 +85,6 @@ namespace SupportAlerterService
                 EventLog.WriteEntry(Program.EventLogName, "This is my error " + ex.Message);
                 rdr.Close();
                 CoreFeature.getInstance().getDataConnection().Close();
-                
             }
             timer.Start();
         }

@@ -13,6 +13,7 @@ namespace SupportAlerter
 {
     public class Program : Form
     {
+        public const string EventLogName = "eMail To SMS";
         [STAThread]
         static void Main()
         {

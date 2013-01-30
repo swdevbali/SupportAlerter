@@ -479,7 +479,7 @@ namespace OpenPop.TestApplication
 				if (pop3Client.Connected)
 					pop3Client.Disconnect();
 				pop3Client.Connect(popServerTextBox.Text, int.Parse(portTextBox.Text), useSslCheckBox.Checked);
-				pop3Client.Authenticate(loginTextBox.Text, passwordTextBox.Text);
+                pop3Client.Authenticate(loginTextBox.Text, passwordTextBox.Text);
 				int count = pop3Client.GetMessageCount();
 				totalMessagesTextBox.Text = count.ToString();
 				messageTextBox.Text = "";

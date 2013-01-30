@@ -29,7 +29,7 @@ namespace SupportAlerter
             this.settings = settings;
             MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
             MySqlCommand cmd = connection.CreateCommand();
-            cmd.CommandText = "select * from account where name='" + accountName  + "' order by name";
+            cmd.CommandText = "select * from account where name='" + accountName  + "'";
             cmd.CommandType = CommandType.Text;
             MySqlDataReader rdr = cmd.ExecuteReader();
                 
@@ -45,7 +45,7 @@ namespace SupportAlerter
             }
 
             cmd.Dispose();
-            rdr.Dispose();
+            rdr.Close();
             connection.Close();
             
         }

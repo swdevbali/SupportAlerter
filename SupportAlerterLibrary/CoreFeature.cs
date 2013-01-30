@@ -49,14 +49,13 @@ namespace SupportAlerterLibrary
                 {
                     //MessageBox.Show("Database connection error : " + ex.Message);
                     EventLog.WriteEntry(Program.EventLogName, "Database connection error : " + ex.Message);
-                  
                     return null;
                 }
             }
             return dataConnection;
         }
 
-        public bool TestConnection(string name, string server, int port, bool use_ssl, string username, string password)
+        public bool Connect(string name, string server, int port, bool use_ssl, string username, string password)
         {
             try
             {

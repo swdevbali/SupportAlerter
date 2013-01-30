@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SupportAlerter.Forms;
 
 namespace SupportAlerter
 {
@@ -27,18 +28,34 @@ namespace SupportAlerter
 
             if (connection != null)
             {
-                MySqlCommand cmd = connection.CreateCommand();
+                //email accounts
+                MySqlCommand cmd;
+                MySqlDataReader rdr;
+                cmd = connection.CreateCommand();
                 cmd.CommandText = "select name from account order by name";
                 cmd.CommandType = CommandType.Text;
-                MySqlDataReader rdr = cmd.ExecuteReader();
+                rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
                     lvAccount.Items.Add(rdr.GetString(0));
                 }
-
                 cmd.Dispose();
                 rdr.Dispose();
+
+                //rules
+                cmd = connection.CreateCommand();
+                cmd.CommandText = "select name from rule order by name";
+                cmd.CommandType = CommandType.Text;
+                rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    listRuleName.Items.Add(rdr.GetString(0));
+                }
+                cmd.Dispose();
+                rdr.Dispose();
+                
                 connection.Close();
             }
             cboDatabaseType.SelectedIndex = 0;
@@ -181,8 +198,54 @@ namespace SupportAlerter
             }
         }
 
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
 
-       
+        }
 
+        private void btnRuleAdd_Click(object sender, EventArgs e)
+        {
+            listRuleName.Items.Add("");
+            listRuleName.SelectedIndex = listRuleName.Items.Count - 1;
+        }
+
+        private void listRuleName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listRuleName.SelectedIndex >= 0)
+            {
+                pnlRuleDetail.Controls.Clear();
+                pnlRuleDetail.Controls.Add(new RuleConfiguration(listRuleName.Text, this));
+
+            }
+            else
+            {
+                pnlRuleDetail.Controls.Clear();
+                pnlRuleDetail.Controls.Add(lblRuleInfo);
+            }
+        }
+
+        internal void updateListRuleName(string p)
+        {
+            listRuleName.Items[listRuleName.SelectedIndex] = p;   
+        }
+
+        private void btnRuleDelete_Click(object sender, EventArgs e)
+        {
+            if (listRuleName.SelectedIndex >= 0)
+            {
+                if (MessageBox.Show("Are you sure you want to delete this rule?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
+                    MySqlCommand cmd = connection.CreateCommand();
+                    cmd.CommandText = "delete from rule where name='" + listRuleName.Text + "'";
+                    cmd.CommandType = CommandType.Text;
+                    cmd.ExecuteNonQuery();
+                    listRuleName.Items.RemoveAt(listRuleName.SelectedIndex);
+                    cmd.Dispose();
+                    connection.Close();
+
+                }
+            }
+        }
     }
 }
