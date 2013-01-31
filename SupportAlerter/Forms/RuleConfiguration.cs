@@ -109,15 +109,16 @@ namespace SupportAlerter.Forms
                         cmdInbox.CommandText = "SELECT count(*) FROM inbox i, account a where i.account_name = a.name and a.name='" + emailAccount.name + "'";
                         cmdInbox.CommandType = CommandType.Text;
                         rdrInbox = cmdInbox.ExecuteReader();
+                        
                         if (rdrInbox.Read())
                         {
                             if (rdrInbox.GetInt32(0) == 0)
                             {
+                                rdrInbox.Dispose();
                                 FetchRecentMessages(emailAccount);
                             }
 
                         }
-                        rdrInbox.Dispose();
                         cmdInbox.Dispose();
                         
                     }
@@ -135,6 +136,8 @@ namespace SupportAlerter.Forms
         //focusing first on gMail account using recent: in username
         private static void FetchRecentMessages(Account emailAccount)
         {
+            MySqlConnection connection = null;
+            MySqlCommand cmd = null;
             if (SupportAlerterLibrary.CoreFeature.getInstance().Connect(emailAccount.name, emailAccount.server, emailAccount.port, emailAccount.use_ssl, "recent:" + emailAccount.username, emailAccount.password))
             {
                 int count = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessageCount();
@@ -148,20 +151,31 @@ namespace SupportAlerter.Forms
                     if (messagePart != null) messageBody = messagePart.GetBodyAsText();
 
                     //save to appropriate inbox
-                    MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
-                    MySqlCommand cmd = connection.CreateCommand();
-                    cmd.CommandText = "insert into inbox(account_name,sender,subject,body) values ('" + emailAccount.name + "','" + message.Headers.From + "','" +  message.Headers.Subject + "','" +  messageBody + "')";
-                    cmd.CommandType = CommandType.Text;
-                    int rowAffected = cmd.ExecuteNonQuery();
-                    if (rowAffected != 1)
+                    connection = CoreFeature.getInstance().getDataConnection();
+                    string sql = "insert into inbox(account_name,sender,subject,body) values (@account_name,@sender,@subject,@body)";
+                    cmd = new MySqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("@account_name", emailAccount.name);
+                    cmd.Parameters.AddWithValue("@sender", message.Headers.From);
+                    cmd.Parameters.AddWithValue("@subject", message.Headers.Subject);
+                    cmd.Parameters.AddWithValue("@body", messageBody);
+
+                    try
                     {
-                        MessageBox.Show("Error occured in saving your connection info. Please correct them before testing connection");
-                        cmd.Dispose();
-                        connection.Close();
+                        int rowAffected = cmd.ExecuteNonQuery();
+                        if (rowAffected != 1)
+                        {
+                            MessageBox.Show("Error occured in saving your connection info. Please correct them before testing connection");
+                            cmd.Dispose();
+                            connection.Close();
+                        }
                     }
-                    cmd.Dispose();
-                    connection.Close();
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
+                cmd.Dispose();
+                connection.Close();
             }
         }
     }
