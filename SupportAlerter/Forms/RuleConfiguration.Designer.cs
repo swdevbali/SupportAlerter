@@ -37,6 +37,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.chkVoiceCall = new System.Windows.Forms.CheckBox();
             this.btnSaveTest = new System.Windows.Forms.Button();
+            this.lvEmails = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // label1
@@ -79,13 +85,13 @@
             this.txtContains.Multiline = true;
             this.txtContains.Name = "txtContains";
             this.txtContains.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.txtContains.Size = new System.Drawing.Size(178, 117);
+            this.txtContains.Size = new System.Drawing.Size(178, 38);
             this.txtContains.TabIndex = 1;
             // 
             // chkSmsAlert
             // 
             this.chkSmsAlert.AutoSize = true;
-            this.chkSmsAlert.Location = new System.Drawing.Point(130, 202);
+            this.chkSmsAlert.Location = new System.Drawing.Point(130, 123);
             this.chkSmsAlert.Name = "chkSmsAlert";
             this.chkSmsAlert.Size = new System.Drawing.Size(100, 17);
             this.chkSmsAlert.TabIndex = 2;
@@ -94,7 +100,7 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(18, 199);
+            this.label3.Location = new System.Drawing.Point(18, 120);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(112, 23);
             this.label3.TabIndex = 19;
@@ -103,7 +109,7 @@
             // chkVoiceCall
             // 
             this.chkVoiceCall.AutoSize = true;
-            this.chkVoiceCall.Location = new System.Drawing.Point(236, 202);
+            this.chkVoiceCall.Location = new System.Drawing.Point(236, 123);
             this.chkVoiceCall.Name = "chkVoiceCall";
             this.chkVoiceCall.Size = new System.Drawing.Size(72, 17);
             this.chkVoiceCall.TabIndex = 3;
@@ -120,10 +126,51 @@
             this.btnSaveTest.UseVisualStyleBackColor = true;
             this.btnSaveTest.Click += new System.EventHandler(this.btnSaveTest_Click);
             // 
+            // lvEmails
+            // 
+            this.lvEmails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvEmails.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5});
+            this.lvEmails.GridLines = true;
+            this.lvEmails.Location = new System.Drawing.Point(21, 162);
+            this.lvEmails.Name = "lvEmails";
+            this.lvEmails.Size = new System.Drawing.Size(484, 247);
+            this.lvEmails.TabIndex = 20;
+            this.lvEmails.UseCompatibleStateImageBehavior = false;
+            this.lvEmails.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "No.";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Account";
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Date";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Sender";
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Subject";
+            this.columnHeader5.Width = 220;
+            // 
             // RuleConfiguration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lvEmails);
             this.Controls.Add(this.btnSaveTest);
             this.Controls.Add(this.chkVoiceCall);
             this.Controls.Add(this.label3);
@@ -134,7 +181,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtName);
             this.Name = "RuleConfiguration";
-            this.Size = new System.Drawing.Size(429, 383);
+            this.Size = new System.Drawing.Size(519, 421);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,5 +198,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkVoiceCall;
         private System.Windows.Forms.Button btnSaveTest;
+        private System.Windows.Forms.ListView lvEmails;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
     }
 }

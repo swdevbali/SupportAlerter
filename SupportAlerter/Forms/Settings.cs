@@ -214,8 +214,9 @@ namespace SupportAlerter
             if (listRuleName.SelectedIndex >= 0)
             {
                 pnlRuleDetail.Controls.Clear();
-                pnlRuleDetail.Controls.Add(new RuleConfiguration(listRuleName.Text, this));
-
+                RuleConfiguration ruleConfiguration = new RuleConfiguration(listRuleName.Text, this);
+                ruleConfiguration.Dock = DockStyle.Fill;
+                pnlRuleDetail.Controls.Add(ruleConfiguration);
             }
             else
             {

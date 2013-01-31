@@ -8,6 +8,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SupportAlerterLibrary.model;
+using OpenPop.Mime;
+using System.Text.RegularExpressions;
 
 namespace SupportAlerterLibrary
 {
@@ -85,6 +88,54 @@ namespace SupportAlerterLibrary
                 EventLog.WriteEntry(Program.EventLogName, "[POP3 Retrieval] for " + name + ". Error occurred retrieving mail. " + e.Message, EventLogEntryType.FailureAudit, 1);
             }
             return false;
+        }
+
+        //focusing first on gMail account using recent: in username
+        public void FetchRecentMessages(Account emailAccount, bool isFetchLast30days)
+        {
+            MySqlConnection connection = null;
+            MySqlCommand cmd = null;
+            string emailUsername = null;
+
+            if (isFetchLast30days)
+                emailUsername = "recent:" + emailAccount.username;
+            else emailUsername = emailAccount.username;
+
+            if (SupportAlerterLibrary.CoreFeature.getInstance().Connect(emailAccount.name, emailAccount.server, emailAccount.port, emailAccount.use_ssl, emailUsername, emailAccount.password))
+            {
+                int count = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessageCount();
+                for (int i = 1; i <= count; i++)
+                {
+                    //Regards to : http://hpop.sourceforge.net/exampleSpecificParts.php
+                    OpenPop.Mime.Message message = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessage(i);
+                    MessagePart messagePart = message.FindFirstPlainTextVersion();
+                    if (messagePart == null) messagePart = message.FindFirstHtmlVersion();
+                    string messageBody = null;
+                    if (messagePart != null) messageBody = messagePart.GetBodyAsText();
+
+                    messageBody = Regex.Replace(messageBody, "<.*?>", string.Empty);
+                    //save to appropriate inbox
+                    connection = CoreFeature.getInstance().getDataConnection();
+                    string sql = "insert into inbox(account_name,sender,subject,body,date) values (@account_name,@sender,@subject,@body,@date)";
+                    cmd = new MySqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("@account_name", emailAccount.name);
+                    cmd.Parameters.AddWithValue("@sender", message.Headers.From);
+                    cmd.Parameters.AddWithValue("@subject", message.Headers.Subject);
+                    cmd.Parameters.AddWithValue("@body", messageBody);
+                    cmd.Parameters.AddWithValue("@date", message.Headers.Date);
+
+                    try
+                    {
+                        int rowAffected = cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        EventLog.WriteEntry(Program.EventLogName, ex.Message);
+                    }
+                    cmd.Dispose();
+                    connection.Close();
+                }
+            }
         }
     }
 }

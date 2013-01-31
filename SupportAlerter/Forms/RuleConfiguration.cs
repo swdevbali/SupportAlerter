@@ -12,6 +12,7 @@ using SupportAlerterLibrary;
 using System.Diagnostics;
 using OpenPop.Mime;
 using SupportAlerterLibrary.model;
+using System.Text.RegularExpressions;
 
 namespace SupportAlerter.Forms
 {
@@ -77,7 +78,7 @@ namespace SupportAlerter.Forms
                 connection.Close();
                 return false;
             }
-            settings.updateListRuleName(txtName.Text);
+            if(ruleName=="") settings.updateListRuleName(txtName.Text);
             cmd.Dispose();
             connection.Close();
 
@@ -86,6 +87,9 @@ namespace SupportAlerter.Forms
 
         private void btnSaveTest_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
+            lvEmails.Items.Clear();
+            int no = 0;
             if (saveRule())
             {
                 //check whether inbox is empty. If it's do the recent: connection to get lat 30days messages
@@ -104,6 +108,7 @@ namespace SupportAlerter.Forms
                     rdr.Close();
                     foreach (Account emailAccount in listAccount)
                     {
+                        //Application.DoEvents();
                         MySqlDataReader rdrInbox = null;
                         MySqlCommand cmdInbox = CoreFeature.getInstance().getDataConnection().CreateCommand();
                         cmdInbox.CommandText = "SELECT count(*) FROM inbox i, account a where i.account_name = a.name and a.name='" + emailAccount.name + "'";
@@ -113,14 +118,35 @@ namespace SupportAlerter.Forms
                         if (rdrInbox.Read())
                         {
                             if (rdrInbox.GetInt32(0) == 0)
-                            {
+                            {   //no messages in inbox, try to fetch all last 30 days message to test the rule
                                 rdrInbox.Dispose();
-                                FetchRecentMessages(emailAccount);
+                                CoreFeature.getInstance().FetchRecentMessages(emailAccount,true);
                             }
-
+                            else
+                            {   //already done that, now only fetch new message
+                                rdrInbox.Dispose();
+                                CoreFeature.getInstance().FetchRecentMessages(emailAccount, false);
+                            }
                         }
                         cmdInbox.Dispose();
-                        
+                        string sql = "SELECT account_name,date,sender,subject FROM inbox where body like '%" + txtContains.Text + "%'";
+                        cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
+                        rdrInbox = cmdInbox.ExecuteReader();
+                        string[] sub = new string[5];
+                        while (rdrInbox.Read())
+                        {
+                            ListViewItem item = new ListViewItem();
+                            item.Text = "" + ++no;
+                            item.SubItems.Add(rdrInbox.GetString(rdrInbox.GetOrdinal("account_name")));
+                            item.SubItems.Add(rdrInbox.GetString(rdrInbox.GetOrdinal("date")));
+                            item.SubItems.Add(rdrInbox.GetString(rdrInbox.GetOrdinal("sender")));
+                            item.SubItems.Add(rdrInbox.GetString(rdrInbox.GetOrdinal("subject")));
+                            lvEmails.Items.Add(item);
+                            
+                        }
+                        lvEmails.Refresh();
+                        rdrInbox.Close();
+                        cmdInbox.Dispose();
                     }
                     CoreFeature.getInstance().getDataConnection().Close();
                 }
@@ -131,52 +157,11 @@ namespace SupportAlerter.Forms
                     CoreFeature.getInstance().getDataConnection().Close();
                 }
             }
+
+           
+            Cursor = Cursors.Default;
         }
 
-        //focusing first on gMail account using recent: in username
-        private static void FetchRecentMessages(Account emailAccount)
-        {
-            MySqlConnection connection = null;
-            MySqlCommand cmd = null;
-            if (SupportAlerterLibrary.CoreFeature.getInstance().Connect(emailAccount.name, emailAccount.server, emailAccount.port, emailAccount.use_ssl, "recent:" + emailAccount.username, emailAccount.password))
-            {
-                int count = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessageCount();
-                for (int i = 1; i <= count; i++)
-                {
-                    //Regards to : http://hpop.sourceforge.net/exampleSpecificParts.php
-                    OpenPop.Mime.Message message = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessage(i);
-                    MessagePart messagePart = message.FindFirstPlainTextVersion();
-                    if (messagePart == null) messagePart = message.FindFirstHtmlVersion();
-                    string messageBody = null;
-                    if (messagePart != null) messageBody = messagePart.GetBodyAsText();
-
-                    //save to appropriate inbox
-                    connection = CoreFeature.getInstance().getDataConnection();
-                    string sql = "insert into inbox(account_name,sender,subject,body) values (@account_name,@sender,@subject,@body)";
-                    cmd = new MySqlCommand(sql, connection);
-                    cmd.Parameters.AddWithValue("@account_name", emailAccount.name);
-                    cmd.Parameters.AddWithValue("@sender", message.Headers.From);
-                    cmd.Parameters.AddWithValue("@subject", message.Headers.Subject);
-                    cmd.Parameters.AddWithValue("@body", messageBody);
-
-                    try
-                    {
-                        int rowAffected = cmd.ExecuteNonQuery();
-                        if (rowAffected != 1)
-                        {
-                            MessageBox.Show("Error occured in saving your connection info. Please correct them before testing connection");
-                            cmd.Dispose();
-                            connection.Close();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-                cmd.Dispose();
-                connection.Close();
-            }
-        }
+        
     }
 }
