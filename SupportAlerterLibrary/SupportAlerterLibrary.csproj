@@ -61,6 +61,7 @@
     <Compile Include="CoreFeature.cs" />
     <Compile Include="Cryptho.cs" />
     <Compile Include="model\Account.cs" />
+    <Compile Include="model\Rule.cs" />
     <Compile Include="ModifyRegistry.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

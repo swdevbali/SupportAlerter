@@ -44,117 +44,85 @@ namespace SupportAlerterService
         private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             timer.Stop();
-            MySqlDataReader rdr = null;
+            MySqlDataReader rdrAccount = null;
             try
             {   
-                MySqlCommand cmd = CoreFeature.getInstance().getDataConnection().CreateCommand();
-                cmd.CommandText = "select name, server,port,use_ssl,username,password from account where active=1";
-                cmd.CommandType = CommandType.Text;
-                rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                //1. LOOP ALL EMAIL ACCOUNTS
+                MySqlCommand cmdAccount = CoreFeature.getInstance().getDataConnection().CreateCommand();
+                cmdAccount.CommandText = "select name, server,port,use_ssl,username,password,active from account where active=1";
+                cmdAccount.CommandType = CommandType.Text;
+                rdrAccount = cmdAccount.ExecuteReader();
+                List<Account> listAccount = new List<Account>();
+                while (rdrAccount.Read())
                 {
-                    string name = rdr.GetString(rdr.GetOrdinal("name"));
-                    string server = rdr.GetString(rdr.GetOrdinal("server"));
-                    int port = rdr.GetInt32(rdr.GetOrdinal("port"));
-                    bool use_ssl = rdr.GetByte(rdr.GetOrdinal("use_ssl")) == 1;
-                    string username = rdr.GetString(rdr.GetOrdinal("username"));
-                    string password = Cryptho.Decrypt(rdr.GetString(rdr.GetOrdinal("password")));
+                    listAccount.Add(new Account(rdrAccount.GetString(rdrAccount.GetOrdinal("name")), rdrAccount.GetString(rdrAccount.GetOrdinal("server")), rdrAccount.GetInt32(rdrAccount.GetOrdinal("port")), rdrAccount.GetString(rdrAccount.GetOrdinal("username")), Cryptho.Decrypt(rdrAccount.GetString(rdrAccount.GetOrdinal("password"))), rdrAccount.GetByte(rdrAccount.GetOrdinal("use_ssl")) == 1, rdrAccount.GetByte(rdrAccount.GetOrdinal("active")) == 1));
+                }
+                rdrAccount.Close();
+                //must store this into array of list
+                            
+                //2. LOOP ALL NEW MESSAGES
+                foreach (Account emailAccount in listAccount)
+                {
+                    MySqlDataReader rdrInbox = null;
+                    MySqlCommand cmdInbox = CoreFeature.getInstance().getDataConnection().CreateCommand();
+                    cmdInbox.CommandText = "SELECT count(*) FROM inbox i, account a where i.account_name = a.name and a.name='" + emailAccount.name + "'";
+                    cmdInbox.CommandType = CommandType.Text;
+                    rdrInbox = cmdInbox.ExecuteReader();
 
-                    if (SupportAlerterLibrary.CoreFeature.getInstance().Connect(name, server, port, use_ssl, username, password))
+                    if (rdrInbox.Read())
                     {
-                        int count = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessageCount();
-                        EventLog.WriteEntry(Program.EventLogName, "Login success for " + name + " will processed " + count + " message(s)");
-                        for (int i = 1; i <= count; i++)
-                        {
-                            //Regards to : http://hpop.sourceforge.net/exampleSpecificParts.php
-                            Message message = SupportAlerterLibrary.CoreFeature.getInstance().getPop3Client().GetMessage(i);
-                            MessagePart messagePart = message.FindFirstPlainTextVersion();
-                            if (messagePart == null) messagePart = message.FindFirstHtmlVersion(); 
-                            string messageBody = null;
-                            if(messagePart!=null) messageBody = messagePart.GetBodyAsText();
-
-                            //check whether inbox is empty. If it's do the recent: connection to get lat 30days messages
-                            MySqlDataReader rdrAccount = null;
-                            try
-                            {
-                                MySqlCommand cmdAccount = CoreFeature.getInstance().getDataConnection().CreateCommand();
-                                cmdAccount.CommandText = "select name, server,port,use_ssl,username,password,active from account where active=1";
-                                cmdAccount.CommandType = CommandType.Text;
-                                rdrAccount = cmdAccount.ExecuteReader();
-                                List<Account> listAccount = new List<Account>();
-                                while (rdr.Read())
-                                {
-                                    listAccount.Add(new Account(rdr.GetString(rdr.GetOrdinal("name")), rdr.GetString(rdr.GetOrdinal("server")), rdr.GetInt32(rdr.GetOrdinal("port")), rdr.GetString(rdr.GetOrdinal("username")), Cryptho.Decrypt(rdr.GetString(rdr.GetOrdinal("password"))), rdr.GetByte(rdr.GetOrdinal("use_ssl")) == 1, rdr.GetByte(rdr.GetOrdinal("active")) == 1));
-                                }
-                                rdr.Close();
-                                foreach (Account emailAccount in listAccount)
-                                {
-                                    //Application.DoEvents();
-                                    MySqlDataReader rdrInbox = null;
-                                    MySqlCommand cmdInbox = CoreFeature.getInstance().getDataConnection().CreateCommand();
-                                    cmdInbox.CommandText = "SELECT count(*) FROM inbox i, account a where i.account_name = a.name and a.name='" + emailAccount.name + "'";
-                                    cmdInbox.CommandType = CommandType.Text;
-                                    rdrInbox = cmdInbox.ExecuteReader();
-
-                                    if (rdrInbox.Read())
-                                    {
-                                        if (rdrInbox.GetInt32(0) == 0)
-                                        {   //no messages in inbox, try to fetch all last 30 days message to test the rule
-                                            rdrInbox.Dispose();
-                                            CoreFeature.getInstance().FetchRecentMessages(emailAccount, true);
-                                        }
-                                        else
-                                        {   //already done that, now only fetch new message
-                                            rdrInbox.Dispose();
-                                            CoreFeature.getInstance().FetchRecentMessages(emailAccount, false);
-                                        }
-                                    }
-
-                                    MySqlCommand cmdRule;
-                                    MySqlDataReader rdrRule;
-                                    string ruleContains;
-                                    string sqlRule = "SELECT contains,send_sms,voice_call FROM rule r";
-                                    cmdRule = new MySqlCommand(sqlRule, CoreFeature.getInstance().getDataConnection());
-                                    rdrRule = cmdRule.ExecuteReader();
-                                    while (rdrRule.Read())
-                                    {
-                                        ruleContains = rdrRule.GetString(rdrRule.GetOrdinal("contains"));
-                                        string sql = "SELECT account_name,date,sender,subject FROM inbox where body like '%" + ruleContains + "%'";
-                                        cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
-                                        rdrInbox = cmdInbox.ExecuteReader();
-                                        string[] sub = new string[5];
-                                        while (rdrInbox.Read())
-                                        {
-                                            EventLog.WriteEntry(Program.EventLogName, "Acted upon the rule " + ruleContains);
-                                        }
-                                    }
-                                    rdrRule.Close();
-                                    cmdRule.Dispose();
-                                    rdrInbox.Close();
-                                    cmdInbox.Dispose();
-                                }
-                                CoreFeature.getInstance().getDataConnection().Close();
-                            }
-                            catch (Exception ex)
-                            {
-                                EventLog.WriteEntry(Program.EventLogName, "This is my error " + ex.Message);
-                                rdr.Close();
-                                CoreFeature.getInstance().getDataConnection().Close();
-                            }
-                            CoreFeature.getInstance().FetchRecentMessages(null, true);
-
-
-                            //EventLog.WriteEntry(Program.EventLogName, message.Headers.Subject + " -- " + messageBody);
+                        if (rdrInbox.GetInt32(0) == 0)
+                        {   //no messages in inbox, try to fetch all last 30 days message to test the rule
+                            rdrInbox.Dispose();
+                            CoreFeature.getInstance().FetchRecentMessages(emailAccount, true);
+                        }
+                        else
+                        {   //already done that, now only fetch new message
+                            rdrInbox.Dispose();
+                            CoreFeature.getInstance().FetchRecentMessages(emailAccount, false);
                         }
                     }
+                    rdrInbox.Close();
+                    cmdInbox.Dispose();
+
+                    //3. APPLY THE RULES
+                    MySqlCommand cmdRule;
+                    MySqlDataReader rdrRule;
+                    string sqlRule = "SELECT name,contains,send_sms,voice_call FROM rule r";
+                    cmdRule = new MySqlCommand(sqlRule, CoreFeature.getInstance().getDataConnection());
+                    rdrRule = cmdRule.ExecuteReader();
+                    List<SupportAlerterLibrary.model.Rule> listRule = new List<SupportAlerterLibrary.model.Rule>();
+                    
+                    while (rdrRule.Read())
+                    {
+                        listRule.Add(new SupportAlerterLibrary.model.Rule(rdrRule.GetString(rdrRule.GetOrdinal("name")), rdrRule.GetString(rdrRule.GetOrdinal("contains")), rdrRule.GetByte(rdrRule.GetOrdinal("send_sms"))==1,rdrRule.GetByte(rdrRule.GetOrdinal("voice_call"))==1));
+                    }
+                    rdrRule.Close();
+                    cmdRule.Dispose();
+
+                    foreach (SupportAlerterLibrary.model.Rule rule in listRule)
+                    {
+                        string sql = "SELECT account_name,date,sender,subject FROM inbox where body like '%" + rule.contains + "%'";
+                        cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
+                        rdrInbox = cmdInbox.ExecuteReader();
+                        while (rdrInbox.Read())
+                        {
+                            EventLog.WriteEntry(Program.EventLogName, "Acted upon the rule " + rule.contains);
+                            //ONCE GOT THE MESSAGE, QUEUED IT IN ACTION TABLES
+
+                        }
+                        rdrInbox.Close();
+                        cmdInbox.Dispose();
+                    }
+                    
+                    rdrRule.Close();
+                    cmdRule.Dispose();
                 }
-                rdr.Close();
                 CoreFeature.getInstance().getDataConnection().Close();
             }
             catch (Exception ex)
             {
                 EventLog.WriteEntry(Program.EventLogName, "This is my error " + ex.Message);
-                rdr.Close();
                 CoreFeature.getInstance().getDataConnection().Close();
             }
             timer.Start();
