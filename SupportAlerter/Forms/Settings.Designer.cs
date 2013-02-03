@@ -31,6 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnTestDatabaseConnection = new System.Windows.Forms.Button();
+            this.cboDatabaseType = new System.Windows.Forms.ComboBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtHost = new System.Windows.Forms.TextBox();
+            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtDatabase = new System.Windows.Forms.TextBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.lblInfoService = new System.Windows.Forms.Label();
@@ -57,20 +69,9 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
-            this.btnTestDatabaseConnection = new System.Windows.Forms.Button();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtDatabase = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtHost = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cboDatabaseType = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEmailCheckInterval)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.tabLayoutEmailAccount.SuspendLayout();
@@ -80,7 +81,6 @@
             this.pnlRuleDetail.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -112,6 +112,121 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "General";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.btnTestDatabaseConnection);
+            this.groupBox1.Controls.Add(this.cboDatabaseType);
+            this.groupBox1.Controls.Add(this.txtPassword);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.txtHost);
+            this.groupBox1.Controls.Add(this.txtUsername);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.txtDatabase);
+            this.groupBox1.Location = new System.Drawing.Point(18, 127);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(280, 202);
+            this.groupBox1.TabIndex = 22;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Database storage";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 25);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(76, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Database type";
+            // 
+            // btnTestDatabaseConnection
+            // 
+            this.btnTestDatabaseConnection.Location = new System.Drawing.Point(106, 157);
+            this.btnTestDatabaseConnection.Name = "btnTestDatabaseConnection";
+            this.btnTestDatabaseConnection.Size = new System.Drawing.Size(121, 23);
+            this.btnTestDatabaseConnection.TabIndex = 21;
+            this.btnTestDatabaseConnection.Text = "&Test Connection";
+            this.btnTestDatabaseConnection.UseVisualStyleBackColor = true;
+            this.btnTestDatabaseConnection.Click += new System.EventHandler(this.btnTestDatabaseConnection_Click);
+            // 
+            // cboDatabaseType
+            // 
+            this.cboDatabaseType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDatabaseType.FormattingEnabled = true;
+            this.cboDatabaseType.Items.AddRange(new object[] {
+            "MySQL"});
+            this.cboDatabaseType.Location = new System.Drawing.Point(106, 25);
+            this.cboDatabaseType.Name = "cboDatabaseType";
+            this.cboDatabaseType.Size = new System.Drawing.Size(121, 21);
+            this.cboDatabaseType.TabIndex = 11;
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(106, 130);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(121, 20);
+            this.txtPassword.TabIndex = 17;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 52);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Host";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 130);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 13);
+            this.label9.TabIndex = 20;
+            this.label9.Text = "Password";
+            // 
+            // txtHost
+            // 
+            this.txtHost.Location = new System.Drawing.Point(106, 52);
+            this.txtHost.Name = "txtHost";
+            this.txtHost.Size = new System.Drawing.Size(121, 20);
+            this.txtHost.TabIndex = 12;
+            // 
+            // txtUsername
+            // 
+            this.txtUsername.Location = new System.Drawing.Point(106, 104);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(121, 20);
+            this.txtUsername.TabIndex = 15;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 78);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 13);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Database";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 104);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 13);
+            this.label8.TabIndex = 19;
+            this.label8.Text = "Username";
+            // 
+            // txtDatabase
+            // 
+            this.txtDatabase.Location = new System.Drawing.Point(106, 78);
+            this.txtDatabase.Name = "txtDatabase";
+            this.txtDatabase.Size = new System.Drawing.Size(121, 20);
+            this.txtDatabase.TabIndex = 14;
             // 
             // btnStop
             // 
@@ -408,120 +523,6 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // btnTestDatabaseConnection
-            // 
-            this.btnTestDatabaseConnection.Location = new System.Drawing.Point(106, 157);
-            this.btnTestDatabaseConnection.Name = "btnTestDatabaseConnection";
-            this.btnTestDatabaseConnection.Size = new System.Drawing.Size(121, 23);
-            this.btnTestDatabaseConnection.TabIndex = 21;
-            this.btnTestDatabaseConnection.Text = "&Test Connection";
-            this.btnTestDatabaseConnection.UseVisualStyleBackColor = true;
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(106, 130);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(121, 20);
-            this.txtPassword.TabIndex = 17;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 130);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 13);
-            this.label9.TabIndex = 20;
-            this.label9.Text = "Password";
-            // 
-            // txtUsername
-            // 
-            this.txtUsername.Location = new System.Drawing.Point(106, 104);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(121, 20);
-            this.txtUsername.TabIndex = 15;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 104);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 13);
-            this.label8.TabIndex = 19;
-            this.label8.Text = "Username";
-            // 
-            // txtDatabase
-            // 
-            this.txtDatabase.Location = new System.Drawing.Point(106, 78);
-            this.txtDatabase.Name = "txtDatabase";
-            this.txtDatabase.Size = new System.Drawing.Size(121, 20);
-            this.txtDatabase.TabIndex = 14;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 78);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 13);
-            this.label7.TabIndex = 18;
-            this.label7.Text = "Database";
-            // 
-            // txtHost
-            // 
-            this.txtHost.Location = new System.Drawing.Point(106, 52);
-            this.txtHost.Name = "txtHost";
-            this.txtHost.Size = new System.Drawing.Size(121, 20);
-            this.txtHost.TabIndex = 12;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 52);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(29, 13);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Host";
-            // 
-            // cboDatabaseType
-            // 
-            this.cboDatabaseType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboDatabaseType.FormattingEnabled = true;
-            this.cboDatabaseType.Items.AddRange(new object[] {
-            "MySQL"});
-            this.cboDatabaseType.Location = new System.Drawing.Point(106, 25);
-            this.cboDatabaseType.Name = "cboDatabaseType";
-            this.cboDatabaseType.Size = new System.Drawing.Size(121, 21);
-            this.cboDatabaseType.TabIndex = 11;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 25);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(76, 13);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Database type";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.btnTestDatabaseConnection);
-            this.groupBox1.Controls.Add(this.cboDatabaseType);
-            this.groupBox1.Controls.Add(this.txtPassword);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.txtHost);
-            this.groupBox1.Controls.Add(this.txtUsername);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.txtDatabase);
-            this.groupBox1.Location = new System.Drawing.Point(18, 127);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 202);
-            this.groupBox1.TabIndex = 22;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Database storage";
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -535,6 +536,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEmailCheckInterval)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -548,8 +551,6 @@
             this.pnlRuleDetail.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }

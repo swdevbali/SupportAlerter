@@ -136,6 +136,10 @@ namespace SupportAlerterLibrary
                     connection.Close();
                 }
             }
+            else
+            {
+                EventLog.WriteEntry(Program.EventLogName, "Unable to login to your email");
+            }
         }
     }
 }

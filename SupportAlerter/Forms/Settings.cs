@@ -84,6 +84,12 @@ namespace SupportAlerter
                 btnStart.Enabled = true;
                 btnStop.Enabled = false;
             }
+            else if (lblInfoService.Text.Contains("not installed"))
+            {
+                btnStart.Enabled = false;
+                btnStop.Enabled = false;
+                lblInfoService.Text = lblInfoService.Text + ". Please reinstall application";
+            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -177,26 +183,7 @@ namespace SupportAlerter
             btnStart.Enabled = true;
         }
 
-        private void btnTestDatabaseConnection_Click(object sender, EventArgs e)
-        {
-            SaveValues();
-            RegistrySettings.writeValues();
-            try
-            {
-                MySqlConnection con = new MySqlConnection("Server=" + RegistrySettings.mysqlHost + ";Database=" + RegistrySettings.mysqlDatabase + ";Uid=" + RegistrySettings.mysqlUsername + ";Pwd=" + RegistrySettings.mysqlPassword);
-                con.Open();
-                if (con.State == ConnectionState.Open)
-                {
-                    MessageBox.Show("Connection succees!");
-                    con.Close();
-                    con.Dispose();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Connection error : " + ex.Message);
-            }
-        }
+       
 
         private void tabPage1_Click(object sender, EventArgs e)
         {
@@ -248,5 +235,28 @@ namespace SupportAlerter
                 }
             }
         }
+
+        private void btnTestDatabaseConnection_Click(object sender, EventArgs e)
+        {
+            SaveValues();
+            RegistrySettings.writeValues();
+            try
+            {
+                MySqlConnection con = new MySqlConnection("Server=" + RegistrySettings.mysqlHost + ";Database=" + RegistrySettings.mysqlDatabase + ";Uid=" + RegistrySettings.mysqlUsername + ";Pwd=" + RegistrySettings.mysqlPassword);
+                con.Open();
+                if (con.State == ConnectionState.Open)
+                {
+                    MessageBox.Show("Connection succees!");
+                    con.Close();
+                    con.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Connection error : " + ex.Message);
+            }
+        }
+
+        
     }
 }
