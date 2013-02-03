@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.txtPhoneNotify = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnTestDatabaseConnection = new System.Windows.Forms.Button();
@@ -69,8 +71,6 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
-            this.txtPhoneNotify = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -116,6 +116,22 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "General";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // txtPhoneNotify
+            // 
+            this.txtPhoneNotify.Location = new System.Drawing.Point(174, 348);
+            this.txtPhoneNotify.Name = "txtPhoneNotify";
+            this.txtPhoneNotify.Size = new System.Drawing.Size(124, 20);
+            this.txtPhoneNotify.TabIndex = 3;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(15, 351);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(140, 13);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "Phone number to be notified";
             // 
             // groupBox1
             // 
@@ -237,7 +253,7 @@
             this.btnStop.Location = new System.Drawing.Point(196, 80);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
-            this.btnStop.TabIndex = 3;
+            this.btnStop.TabIndex = 2;
             this.btnStop.Text = "&Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
@@ -247,7 +263,7 @@
             this.btnStart.Location = new System.Drawing.Point(115, 80);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 2;
+            this.btnStart.TabIndex = 1;
             this.btnStart.Text = "&Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -526,22 +542,6 @@
             this.btnOK.Text = "&Close";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            // 
-            // txtPhoneNotify
-            // 
-            this.txtPhoneNotify.Location = new System.Drawing.Point(457, 14);
-            this.txtPhoneNotify.Name = "txtPhoneNotify";
-            this.txtPhoneNotify.Size = new System.Drawing.Size(121, 20);
-            this.txtPhoneNotify.TabIndex = 1;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(311, 17);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(140, 13);
-            this.label11.TabIndex = 24;
-            this.label11.Text = "Phone number to be notified";
             // 
             // Settings
             // 
