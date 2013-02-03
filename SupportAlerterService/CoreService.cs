@@ -102,17 +102,36 @@ namespace SupportAlerterService
 
                     foreach (SupportAlerterLibrary.model.Rule rule in listRule)
                     {
-                        string sql = "SELECT account_name,date,sender,subject FROM inbox where body like '%" + rule.contains + "%'";
+                        string sql = "SELECT idinbox, account_name,date,sender,subject FROM inbox where body like '%" + rule.contains + "%' and handled=0";
                         cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
                         rdrInbox = cmdInbox.ExecuteReader();
+                        List<Inbox> listInbox = new List<Inbox>();
                         while (rdrInbox.Read())
                         {
-                            EventLog.WriteEntry(Program.EventLogName, "Acted upon the rule " + rule.contains);
-                            //ONCE GOT THE MESSAGE, QUEUED IT IN ACTION TABLES
-
+                            listInbox.Add(new Inbox(rdrInbox.GetInt32(rdrInbox.GetOrdinal("idinbox")), rdrInbox.GetString(rdrInbox.GetOrdinal("subject"))));
                         }
                         rdrInbox.Close();
                         cmdInbox.Dispose();
+                        foreach(Inbox inbox in listInbox)
+                        {
+                            EventLog.WriteEntry(Program.EventLogName, "Acted upon the rule " + rule.contains + " of message " + inbox.subject);
+                            if (rule.send_sms)
+                            {
+                                MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft')", CoreFeature.getInstance().getDataConnection());
+                                cmdSend.ExecuteNonQuery();
+
+                            }
+                            if (rule.voice_call)
+                            {
+                                MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status) values(" + inbox.idinbox + ",'Draft')", CoreFeature.getInstance().getDataConnection());
+                                cmdSend.ExecuteNonQuery();
+
+                            }
+
+                            
+                            MySqlCommand cmdUpdateInbox = new MySqlCommand("update inbox set handled=1 where idinbox=" + inbox.idinbox, CoreFeature.getInstance().getDataConnection());
+                            cmdUpdateInbox.ExecuteNonQuery();
+                        }
                     }
                     
                     rdrRule.Close();

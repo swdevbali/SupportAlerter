@@ -116,7 +116,7 @@ namespace SupportAlerterLibrary
                     messageBody = Regex.Replace(messageBody, "<.*?>", string.Empty);
                     //save to appropriate inbox
                     connection = CoreFeature.getInstance().getDataConnection();
-                    string sql = "insert into inbox(account_name,sender,subject,body,date) values (@account_name,@sender,@subject,@body,@date)";
+                    string sql = "insert into inbox(account_name,sender,subject,body,date, handled) values (@account_name,@sender,@subject,@body,@date, 0)";
                     cmd = new MySqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("@account_name", emailAccount.name);
                     cmd.Parameters.AddWithValue("@sender", message.Headers.From);
