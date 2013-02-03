@@ -44,21 +44,19 @@ namespace SupportAlerterService
         private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             timer.Stop();
-            MySqlDataReader rdrAccount = null;
             try
             {   
                 //1. LOOP ALL EMAIL ACCOUNTS
                 MySqlCommand cmdAccount = CoreFeature.getInstance().getDataConnection().CreateCommand();
                 cmdAccount.CommandText = "select name, server,port,use_ssl,username,password,active from account where active=1";
                 cmdAccount.CommandType = CommandType.Text;
-                rdrAccount = cmdAccount.ExecuteReader();
+                MySqlDataReader rdrAccount = cmdAccount.ExecuteReader();
                 List<Account> listAccount = new List<Account>();
                 while (rdrAccount.Read())
                 {
                     listAccount.Add(new Account(rdrAccount.GetString(rdrAccount.GetOrdinal("name")), rdrAccount.GetString(rdrAccount.GetOrdinal("server")), rdrAccount.GetInt32(rdrAccount.GetOrdinal("port")), rdrAccount.GetString(rdrAccount.GetOrdinal("username")), Cryptho.Decrypt(rdrAccount.GetString(rdrAccount.GetOrdinal("password"))), rdrAccount.GetByte(rdrAccount.GetOrdinal("use_ssl")) == 1, rdrAccount.GetByte(rdrAccount.GetOrdinal("active")) == 1));
                 }
                 rdrAccount.Close();
-                //must store this into array of list
                             
                 //2. LOOP ALL NEW MESSAGES
                 foreach (Account emailAccount in listAccount)
@@ -119,15 +117,12 @@ namespace SupportAlerterService
                             {
                                 MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft')", CoreFeature.getInstance().getDataConnection());
                                 cmdSend.ExecuteNonQuery();
-
                             }
                             if (rule.voice_call)
                             {
                                 MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status) values(" + inbox.idinbox + ",'Draft')", CoreFeature.getInstance().getDataConnection());
                                 cmdSend.ExecuteNonQuery();
-
                             }
-
                             
                             MySqlCommand cmdUpdateInbox = new MySqlCommand("update inbox set handled=1 where idinbox=" + inbox.idinbox, CoreFeature.getInstance().getDataConnection());
                             cmdUpdateInbox.ExecuteNonQuery();
@@ -137,6 +132,38 @@ namespace SupportAlerterService
                     rdrRule.Close();
                     cmdRule.Dispose();
                 }
+
+                //4. PROCESS, IF ANY, VOICE_CALL / SMS THAT NEED TO BE DELIVERED
+                MySqlCommand cmdSms = new MySqlCommand("select idsend_sms, content from send_sms where status='Draft'", CoreFeature.getInstance().getDataConnection());
+                MySqlDataReader rdrSms = cmdSms.ExecuteReader();
+                List<SendSms> listSendSms = new List<SendSms>();
+                while (rdrSms.Read())
+                {
+                    listSendSms.Add(new SendSms(rdrSms.GetInt32(rdrSms.GetOrdinal("idsend_sms")),rdrSms.GetString(rdrSms.GetOrdinal("content"))));
+                }
+                rdrSms.Close();
+                cmdSms.Dispose();
+
+                foreach(SendSms sendSms in listSendSms)
+                {
+                    SmsGateway.getInstance().processSmsNotification(sendSms);//once processed, the status will change into DELIVERED/FAILED
+                }
+
+                MySqlCommand cmdVoiceCall = new MySqlCommand("select idvoice_call,status from voice_call where status='Draft'", CoreFeature.getInstance().getDataConnection());
+                MySqlDataReader rdrVoiceCall = cmdVoiceCall.ExecuteReader();
+                List<VoiceCall> listVoiceCall = new List<VoiceCall>();
+                while (rdrVoiceCall.Read())
+                {
+                    listVoiceCall.Add(new VoiceCall(rdrVoiceCall.GetInt32(rdrVoiceCall.GetOrdinal("idvoice_call")), rdrVoiceCall.GetString(rdrVoiceCall.GetOrdinal("status"))));
+                }
+                rdrVoiceCall.Close();
+                cmdVoiceCall.Dispose();
+
+                foreach (VoiceCall voiceCall in listVoiceCall)
+                {
+                    SmsGateway.getInstance().processCallNotification(voiceCall);//once processed, the status will change into DELIVERED/FAILED
+                }
+
                 CoreFeature.getInstance().getDataConnection().Close();
             }
             catch (Exception ex)

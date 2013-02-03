@@ -69,6 +69,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
+            this.txtPhoneNotify = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -97,6 +99,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.txtPhoneNotify);
+            this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.btnStop);
             this.tabPage2.Controls.Add(this.btnStart);
@@ -147,7 +151,7 @@
             this.btnTestDatabaseConnection.Location = new System.Drawing.Point(106, 157);
             this.btnTestDatabaseConnection.Name = "btnTestDatabaseConnection";
             this.btnTestDatabaseConnection.Size = new System.Drawing.Size(121, 23);
-            this.btnTestDatabaseConnection.TabIndex = 21;
+            this.btnTestDatabaseConnection.TabIndex = 5;
             this.btnTestDatabaseConnection.Text = "&Test Connection";
             this.btnTestDatabaseConnection.UseVisualStyleBackColor = true;
             this.btnTestDatabaseConnection.Click += new System.EventHandler(this.btnTestDatabaseConnection_Click);
@@ -161,7 +165,7 @@
             this.cboDatabaseType.Location = new System.Drawing.Point(106, 25);
             this.cboDatabaseType.Name = "cboDatabaseType";
             this.cboDatabaseType.Size = new System.Drawing.Size(121, 21);
-            this.cboDatabaseType.TabIndex = 11;
+            this.cboDatabaseType.TabIndex = 0;
             // 
             // txtPassword
             // 
@@ -169,7 +173,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(121, 20);
-            this.txtPassword.TabIndex = 17;
+            this.txtPassword.TabIndex = 4;
             // 
             // label6
             // 
@@ -194,14 +198,14 @@
             this.txtHost.Location = new System.Drawing.Point(106, 52);
             this.txtHost.Name = "txtHost";
             this.txtHost.Size = new System.Drawing.Size(121, 20);
-            this.txtHost.TabIndex = 12;
+            this.txtHost.TabIndex = 1;
             // 
             // txtUsername
             // 
             this.txtUsername.Location = new System.Drawing.Point(106, 104);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(121, 20);
-            this.txtUsername.TabIndex = 15;
+            this.txtUsername.TabIndex = 3;
             // 
             // label7
             // 
@@ -226,14 +230,14 @@
             this.txtDatabase.Location = new System.Drawing.Point(106, 78);
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(121, 20);
-            this.txtDatabase.TabIndex = 14;
+            this.txtDatabase.TabIndex = 2;
             // 
             // btnStop
             // 
             this.btnStop.Location = new System.Drawing.Point(196, 80);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
-            this.btnStop.TabIndex = 8;
+            this.btnStop.TabIndex = 3;
             this.btnStop.Text = "&Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
@@ -243,7 +247,7 @@
             this.btnStart.Location = new System.Drawing.Point(115, 80);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 7;
+            this.btnStart.TabIndex = 2;
             this.btnStart.Text = "&Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -272,7 +276,7 @@
             this.label3.Location = new System.Drawing.Point(171, 17);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
-            this.label3.TabIndex = 2;
+            this.label3.TabIndex = 0;
             this.label3.Text = "second(s)";
             // 
             // numEmailCheckInterval
@@ -285,7 +289,7 @@
             0});
             this.numEmailCheckInterval.Name = "numEmailCheckInterval";
             this.numEmailCheckInterval.Size = new System.Drawing.Size(50, 20);
-            this.numEmailCheckInterval.TabIndex = 1;
+            this.numEmailCheckInterval.TabIndex = 0;
             this.numEmailCheckInterval.Value = new decimal(new int[] {
             1,
             0,
@@ -523,6 +527,22 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // txtPhoneNotify
+            // 
+            this.txtPhoneNotify.Location = new System.Drawing.Point(457, 14);
+            this.txtPhoneNotify.Name = "txtPhoneNotify";
+            this.txtPhoneNotify.Size = new System.Drawing.Size(121, 20);
+            this.txtPhoneNotify.TabIndex = 1;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(311, 17);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(140, 13);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "Phone number to be notified";
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -597,5 +617,7 @@
         private System.Windows.Forms.ComboBox cboDatabaseType;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox txtPhoneNotify;
+        private System.Windows.Forms.Label label11;
     }
 }

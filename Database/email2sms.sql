@@ -45,6 +45,30 @@ INSERT INTO `account` VALUES ('support-pv@datasam.com.au','pop.gmail.com',995,'s
 UNLOCK TABLES;
 
 --
+-- Table structure for table `configuration`
+--
+
+DROP TABLE IF EXISTS `configuration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `configuration` (
+  `idconfiguration` int(11) NOT NULL AUTO_INCREMENT,
+  `phone_notify` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idconfiguration`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `configuration`
+--
+
+LOCK TABLES `configuration` WRITE;
+/*!40000 ALTER TABLE `configuration` DISABLE KEYS */;
+INSERT INTO `configuration` VALUES (1,'0812221975');
+/*!40000 ALTER TABLE `configuration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `inbox`
 --
 
@@ -163,4 +187,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-04  2:49:24
+-- Dump completed on 2013-02-04  3:22:02

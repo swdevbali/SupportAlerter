@@ -59,11 +59,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreFeature.cs" />
-    <Compile Include="Cryptho.cs" />
+    <Compile Include="helper\Cryptho.cs" />
     <Compile Include="model\Account.cs" />
     <Compile Include="model\Inbox.cs" />
     <Compile Include="model\Rule.cs" />
-    <Compile Include="ModifyRegistry.cs" />
+    <Compile Include="model\SendSms.cs" />
+    <Compile Include="helper\ModifyRegistry.cs" />
+    <Compile Include="model\VoiceCall.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -72,6 +74,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RegistrySettings.cs" />
+    <Compile Include="SmsGateway.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

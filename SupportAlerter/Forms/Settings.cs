@@ -56,6 +56,18 @@ namespace SupportAlerter
                 cmd.Dispose();
                 rdr.Dispose();
                 
+                //configuration
+                cmd = connection.CreateCommand();
+                cmd.CommandText = "select phone_notify from configuration limit 0,1";
+                cmd.CommandType = CommandType.Text;
+                rdr = cmd.ExecuteReader();
+
+                if (rdr.Read())
+                {
+                    txtPhoneNotify.Text = rdr.GetString(rdr.GetOrdinal("phone_notify"));
+                }
+                cmd.Dispose();
+                rdr.Dispose();
                 connection.Close();
             }
             cboDatabaseType.SelectedIndex = 0;
@@ -107,6 +119,14 @@ namespace SupportAlerter
             RegistrySettings.mysqlDatabase = txtDatabase.Text;
             RegistrySettings.mysqlUsername = txtUsername.Text;
             RegistrySettings.mysqlPassword = txtPassword.Text;
+           
+            //configuration in database
+            //configuration
+            MySqlCommand cmd = CoreFeature.getInstance().getDataConnection().CreateCommand();
+            cmd.CommandText = "update configuration set phone_notify=@phone_notify"; //NOTE : assume only one configuration
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("phone_notify", txtPhoneNotify.Text);
+            cmd.ExecuteNonQuery();
         }
 
         private void btnApply_Click(object sender, EventArgs e)
