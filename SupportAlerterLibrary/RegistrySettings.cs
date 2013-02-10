@@ -17,6 +17,7 @@ namespace SupportAlerterLibrary
         public static string mysqlDatabase;
         public static string mysqlUsername;
         public static string mysqlPassword;
+        public static string loggingLevel;
 
         private RegistrySettings()
         {
@@ -41,7 +42,7 @@ namespace SupportAlerterLibrary
             mysqlDatabase = (string)reg.Read("mysqlDatabase", "email2sms");
             mysqlUsername = (string)reg.Read("mysqlUsername", "root");
             mysqlPassword = Cryptho.Decrypt((string)reg.Read("mysqlPassword", Cryptho.Encrypt("adminadmin")));
-           
+            loggingLevel = (string)reg.Read("loggingLevel", "Normal");
         }
 
         public static void writeValues()
@@ -51,8 +52,7 @@ namespace SupportAlerterLibrary
             reg.Write("mysqlDatabase", mysqlDatabase);
             reg.Write("mysqlUsername", mysqlUsername);
             reg.Write("mysqlPassword", Cryptho.Encrypt(mysqlPassword));
-
-
+            reg.Write("loggingLevel", loggingLevel);
         }
     }
 }

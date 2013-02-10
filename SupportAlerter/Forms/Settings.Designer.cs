@@ -71,6 +71,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.cboLogLevel = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -99,6 +101,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cboLogLevel);
+            this.tabPage2.Controls.Add(this.label12);
             this.tabPage2.Controls.Add(this.txtPhoneNotify);
             this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.groupBox1);
@@ -148,7 +152,7 @@
             this.groupBox1.Controls.Add(this.txtDatabase);
             this.groupBox1.Location = new System.Drawing.Point(18, 127);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 202);
+            this.groupBox1.Size = new System.Drawing.Size(312, 202);
             this.groupBox1.TabIndex = 22;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Database storage";
@@ -164,7 +168,7 @@
             // 
             // btnTestDatabaseConnection
             // 
-            this.btnTestDatabaseConnection.Location = new System.Drawing.Point(106, 157);
+            this.btnTestDatabaseConnection.Location = new System.Drawing.Point(156, 157);
             this.btnTestDatabaseConnection.Name = "btnTestDatabaseConnection";
             this.btnTestDatabaseConnection.Size = new System.Drawing.Size(121, 23);
             this.btnTestDatabaseConnection.TabIndex = 5;
@@ -178,14 +182,14 @@
             this.cboDatabaseType.FormattingEnabled = true;
             this.cboDatabaseType.Items.AddRange(new object[] {
             "MySQL"});
-            this.cboDatabaseType.Location = new System.Drawing.Point(106, 25);
+            this.cboDatabaseType.Location = new System.Drawing.Point(156, 25);
             this.cboDatabaseType.Name = "cboDatabaseType";
             this.cboDatabaseType.Size = new System.Drawing.Size(121, 21);
             this.cboDatabaseType.TabIndex = 0;
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(106, 130);
+            this.txtPassword.Location = new System.Drawing.Point(156, 130);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(121, 20);
@@ -211,14 +215,14 @@
             // 
             // txtHost
             // 
-            this.txtHost.Location = new System.Drawing.Point(106, 52);
+            this.txtHost.Location = new System.Drawing.Point(156, 52);
             this.txtHost.Name = "txtHost";
             this.txtHost.Size = new System.Drawing.Size(121, 20);
             this.txtHost.TabIndex = 1;
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(106, 104);
+            this.txtUsername.Location = new System.Drawing.Point(156, 104);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(121, 20);
             this.txtUsername.TabIndex = 3;
@@ -243,14 +247,14 @@
             // 
             // txtDatabase
             // 
-            this.txtDatabase.Location = new System.Drawing.Point(106, 78);
+            this.txtDatabase.Location = new System.Drawing.Point(156, 78);
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(121, 20);
             this.txtDatabase.TabIndex = 2;
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(196, 80);
+            this.btnStop.Location = new System.Drawing.Point(255, 82);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 2;
@@ -260,7 +264,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(115, 80);
+            this.btnStart.Location = new System.Drawing.Point(174, 82);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 1;
@@ -271,7 +275,7 @@
             // lblInfoService
             // 
             this.lblInfoService.AutoSize = true;
-            this.lblInfoService.Location = new System.Drawing.Point(112, 51);
+            this.lblInfoService.Location = new System.Drawing.Point(171, 53);
             this.lblInfoService.Name = "lblInfoService";
             this.lblInfoService.Size = new System.Drawing.Size(65, 13);
             this.lblInfoService.TabIndex = 6;
@@ -289,7 +293,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(171, 17);
+            this.label3.Location = new System.Drawing.Point(230, 19);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 0;
@@ -297,7 +301,7 @@
             // 
             // numEmailCheckInterval
             // 
-            this.numEmailCheckInterval.Location = new System.Drawing.Point(115, 15);
+            this.numEmailCheckInterval.Location = new System.Drawing.Point(174, 17);
             this.numEmailCheckInterval.Maximum = new decimal(new int[] {
             60,
             0,
@@ -543,6 +547,28 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(15, 390);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(103, 13);
+            this.label12.TabIndex = 25;
+            this.label12.Text = "Activity logging level";
+            // 
+            // cboLogLevel
+            // 
+            this.cboLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboLogLevel.FormattingEnabled = true;
+            this.cboLogLevel.Items.AddRange(new object[] {
+            "None",
+            "Normal",
+            "Debug"});
+            this.cboLogLevel.Location = new System.Drawing.Point(174, 387);
+            this.cboLogLevel.Name = "cboLogLevel";
+            this.cboLogLevel.Size = new System.Drawing.Size(121, 21);
+            this.cboLogLevel.TabIndex = 26;
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -619,5 +645,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txtPhoneNotify;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox cboLogLevel;
     }
 }

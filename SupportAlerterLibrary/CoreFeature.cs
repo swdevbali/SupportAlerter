@@ -141,5 +141,24 @@ namespace SupportAlerterLibrary
                 EventLog.WriteEntry(Program.EventLogName, "Unable to login to your email");
             }
         }
+
+        public void LogActivity(LogLevel logLevel, string message, EventLogEntryType eventLogEntryType)
+        {
+            if (RegistrySettings.loggingLevel.Equals("None")) return;
+            if (logLevel == LogLevel.Debug && RegistrySettings.loggingLevel.Equals("Debug"))
+            {
+                EventLog.WriteEntry(Program.EventLogName, message, eventLogEntryType);
+            }
+            else if (logLevel == LogLevel.Normal && RegistrySettings.loggingLevel.Equals("Normal"))
+            {
+                EventLog.WriteEntry(Program.EventLogName, message, eventLogEntryType);
+            }
+         }
+    }
+
+    public enum LogLevel
+    {
+        Normal,
+        Debug
     }
 }

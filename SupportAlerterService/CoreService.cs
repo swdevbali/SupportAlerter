@@ -30,7 +30,7 @@ namespace SupportAlerterService
         protected override void OnStart(string[] args)
         {
             RegistrySettings.loadValues();
-            EventLog.WriteEntry(Program.EventLogName, "The service was started successfully. Will checking email every " + RegistrySettings.emailCheckInterval + " minute(s)", EventLogEntryType.Information);
+            CoreFeature.getInstance().LogActivity(LogLevel.Normal, "The service was started successfully. Will checking email every " + RegistrySettings.emailCheckInterval + " second(s)", EventLogEntryType.Information);
             timer = new Timer(RegistrySettings.emailCheckInterval * 1000);// in seconds
             timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
             timer.Start(); // <- important
@@ -38,44 +38,50 @@ namespace SupportAlerterService
 
         protected override void OnStop()
         {
-            EventLog.WriteEntry(Program.EventLogName, "The service was stopped successfully.", EventLogEntryType.Information);
+            CoreFeature.getInstance().LogActivity(LogLevel.Normal, "The service was stopped successfully.", EventLogEntryType.Information);
         }
 
         private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             timer.Stop();
+            string sql;
+            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Begin timed activity : Logging to email account and processing the rules", EventLogEntryType.Information);
             try
             {   
                 //1. LOOP ALL EMAIL ACCOUNTS
-                MySqlCommand cmdAccount = CoreFeature.getInstance().getDataConnection().CreateCommand();
-                cmdAccount.CommandText = "select name, server,port,use_ssl,username,password,active from account where active=1";
-                cmdAccount.CommandType = CommandType.Text;
+                sql = "select name, server,port,use_ssl,username,password,active from account where active=1";
+                MySqlCommand cmdAccount = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
                 MySqlDataReader rdrAccount = cmdAccount.ExecuteReader();
                 List<Account> listAccount = new List<Account>();
                 while (rdrAccount.Read())
                 {
-                    listAccount.Add(new Account(rdrAccount.GetString(rdrAccount.GetOrdinal("name")), rdrAccount.GetString(rdrAccount.GetOrdinal("server")), rdrAccount.GetInt32(rdrAccount.GetOrdinal("port")), rdrAccount.GetString(rdrAccount.GetOrdinal("username")), Cryptho.Decrypt(rdrAccount.GetString(rdrAccount.GetOrdinal("password"))), rdrAccount.GetByte(rdrAccount.GetOrdinal("use_ssl")) == 1, rdrAccount.GetByte(rdrAccount.GetOrdinal("active")) == 1));
+                    Account emailAccount = new Account(rdrAccount.GetString(rdrAccount.GetOrdinal("name")), rdrAccount.GetString(rdrAccount.GetOrdinal("server")), rdrAccount.GetInt32(rdrAccount.GetOrdinal("port")), rdrAccount.GetString(rdrAccount.GetOrdinal("username")), Cryptho.Decrypt(rdrAccount.GetString(rdrAccount.GetOrdinal("password"))), rdrAccount.GetByte(rdrAccount.GetOrdinal("use_ssl")) == 1, rdrAccount.GetByte(rdrAccount.GetOrdinal("active")) == 1);
+                    listAccount.Add(emailAccount);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will use active email " + emailAccount.name, EventLogEntryType.Information);
                 }
                 rdrAccount.Close();
                             
                 //2. LOOP ALL NEW MESSAGES
                 foreach (Account emailAccount in listAccount)
                 {
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Logging in to email account " + emailAccount.name, EventLogEntryType.Information);
                     MySqlDataReader rdrInbox = null;
-                    MySqlCommand cmdInbox = CoreFeature.getInstance().getDataConnection().CreateCommand();
-                    cmdInbox.CommandText = "SELECT count(*) FROM inbox i, account a where i.account_name = a.name and a.name='" + emailAccount.name + "'";
-                    cmdInbox.CommandType = CommandType.Text;
+                    sql = "SELECT count(*) FROM inbox i, account a where i.account_name = a.name and a.name=@name";
+                    MySqlCommand cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
+                    cmdInbox.Parameters.AddWithValue("name", emailAccount.name);
                     rdrInbox = cmdInbox.ExecuteReader();
 
                     if (rdrInbox.Read())
                     {
                         if (rdrInbox.GetInt32(0) == 0)
-                        {   //no messages in inbox, try to fetch all last 30 days message to test the rule
+                        {
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "No messages in inbox, try to fetch all last 30 days message to test the rule", EventLogEntryType.Information);
                             rdrInbox.Dispose();
                             CoreFeature.getInstance().FetchRecentMessages(emailAccount, true);
                         }
                         else
-                        {   //already done that, now only fetch new message
+                        {
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Inbox already consisted of previous fetched message, now only fetch new message", EventLogEntryType.Information);
                             rdrInbox.Dispose();
                             CoreFeature.getInstance().FetchRecentMessages(emailAccount, false);
                         }
@@ -84,6 +90,7 @@ namespace SupportAlerterService
                     cmdInbox.Dispose();
 
                     //3. APPLY THE RULES
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "About to apply notification rules", EventLogEntryType.Information);
                     MySqlCommand cmdRule;
                     MySqlDataReader rdrRule;
                     string sqlRule = "SELECT name,contains,send_sms,voice_call FROM rule r";
@@ -93,26 +100,30 @@ namespace SupportAlerterService
                     
                     while (rdrRule.Read())
                     {
-                        listRule.Add(new SupportAlerterLibrary.model.Rule(rdrRule.GetString(rdrRule.GetOrdinal("name")), rdrRule.GetString(rdrRule.GetOrdinal("contains")), rdrRule.GetByte(rdrRule.GetOrdinal("send_sms"))==1,rdrRule.GetByte(rdrRule.GetOrdinal("voice_call"))==1));
+                        SupportAlerterLibrary.model.Rule rule = new SupportAlerterLibrary.model.Rule(rdrRule.GetString(rdrRule.GetOrdinal("name")), rdrRule.GetString(rdrRule.GetOrdinal("contains")), rdrRule.GetByte(rdrRule.GetOrdinal("send_sms")) == 1, rdrRule.GetByte(rdrRule.GetOrdinal("voice_call")) == 1);
+                        listRule.Add(rule);
+                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will use the rule " + rule.name + ". Body contains " + rule.contains + ". Send sms = " + rule.send_sms + ". Voice call = " + rule.voice_call, EventLogEntryType.Information);
                     }
                     rdrRule.Close();
                     cmdRule.Dispose();
 
                     foreach (SupportAlerterLibrary.model.Rule rule in listRule)
                     {
-                        string sql = "SELECT idinbox, account_name,date,sender,subject FROM inbox where body like '%" + rule.contains + "%' and handled=0";
+                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Using the rule " + rule.name, EventLogEntryType.Information);
+                        sql = "SELECT idinbox, account_name,date,sender,subject FROM inbox where body like '%" + rule.contains + "%' and handled=0";
                         cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
                         rdrInbox = cmdInbox.ExecuteReader();
                         List<Inbox> listInbox = new List<Inbox>();
                         while (rdrInbox.Read())
                         {
                             listInbox.Add(new Inbox(rdrInbox.GetInt32(rdrInbox.GetOrdinal("idinbox")), rdrInbox.GetString(rdrInbox.GetOrdinal("subject"))));
+                            //NEXT : debug on this and the next activity.
                         }
                         rdrInbox.Close();
                         cmdInbox.Dispose();
                         foreach(Inbox inbox in listInbox)
                         {
-                            EventLog.WriteEntry(Program.EventLogName, "Acted upon the rule " + rule.contains + " of message " + inbox.subject);
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Acted upon the rule " + rule.contains + " of message " + inbox.subject, EventLogEntryType.Information);
                             if (rule.send_sms)
                             {
                                 MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft')", CoreFeature.getInstance().getDataConnection());
@@ -168,7 +179,7 @@ namespace SupportAlerterService
             }
             catch (Exception ex)
             {
-                EventLog.WriteEntry(Program.EventLogName, "This is my error " + ex.Message);
+                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "[Internal Application Error] " + ex.Message, EventLogEntryType.Error);
                 CoreFeature.getInstance().getDataConnection().Close();
             }
             timer.Start();

@@ -81,6 +81,7 @@ namespace SupportAlerter
             txtDatabase.Text = RegistrySettings.mysqlDatabase;
             txtUsername.Text = RegistrySettings.mysqlUsername;
             txtPassword.Text = RegistrySettings.mysqlPassword;
+            cboLogLevel.Text = RegistrySettings.loggingLevel;
         }
 
         private void updateServiceStatus()
@@ -127,6 +128,8 @@ namespace SupportAlerter
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.AddWithValue("phone_notify", txtPhoneNotify.Text);
             cmd.ExecuteNonQuery();
+
+            RegistrySettings.loggingLevel = cboLogLevel.Text;
         }
 
         private void btnApply_Click(object sender, EventArgs e)
