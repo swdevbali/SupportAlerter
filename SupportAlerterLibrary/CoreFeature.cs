@@ -98,8 +98,15 @@ namespace SupportAlerterLibrary
             string emailUsername = null;
 
             if (isFetchLast30days)
+            {
                 emailUsername = "recent:" + emailAccount.username;
-            else emailUsername = emailAccount.username;
+                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Fetching *last 30 days* message", EventLogEntryType.Information);
+            }
+            else
+            {
+                emailUsername = emailAccount.username;
+                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Fetching *new* message", EventLogEntryType.Information);
+            }
 
             if (SupportAlerterLibrary.CoreFeature.getInstance().Connect(emailAccount.name, emailAccount.server, emailAccount.port, emailAccount.use_ssl, emailUsername, emailAccount.password))
             {
@@ -127,10 +134,11 @@ namespace SupportAlerterLibrary
                     try
                     {
                         int rowAffected = cmd.ExecuteNonQuery();
+                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Inserting email inbox from " + message.Headers.From + ", subject=" + message.Headers.Subject + ", body=" + messageBody, EventLogEntryType.Information);
                     }
                     catch (Exception ex)
                     {
-                        EventLog.WriteEntry(Program.EventLogName, ex.Message);
+                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "[Internal Application Error] FetchRecentMessages " + ex.Message, EventLogEntryType.Information);
                     }
                     cmd.Dispose();
                     connection.Close();
@@ -138,7 +146,7 @@ namespace SupportAlerterLibrary
             }
             else
             {
-                EventLog.WriteEntry(Program.EventLogName, "Unable to login to your email");
+                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Unable to login to your email", EventLogEntryType.Information);
             }
         }
 

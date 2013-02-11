@@ -93,16 +93,27 @@ namespace SupportAlerterService
                     CoreFeature.getInstance().LogActivity(LogLevel.Debug, "About to apply notification rules", EventLogEntryType.Information);
                     MySqlCommand cmdRule;
                     MySqlDataReader rdrRule;
-                    string sqlRule = "SELECT name,contains,send_sms,voice_call FROM rule r";
+                    string sqlRule = "SELECT * FROM rule r";
                     cmdRule = new MySqlCommand(sqlRule, CoreFeature.getInstance().getDataConnection());
                     rdrRule = cmdRule.ExecuteReader();
                     List<SupportAlerterLibrary.model.Rule> listRule = new List<SupportAlerterLibrary.model.Rule>();
                     
                     while (rdrRule.Read())
                     {
-                        SupportAlerterLibrary.model.Rule rule = new SupportAlerterLibrary.model.Rule(rdrRule.GetString(rdrRule.GetOrdinal("name")), rdrRule.GetString(rdrRule.GetOrdinal("contains")), rdrRule.GetByte(rdrRule.GetOrdinal("send_sms")) == 1, rdrRule.GetByte(rdrRule.GetOrdinal("voice_call")) == 1);
+                        SupportAlerterLibrary.model.Rule rule = 
+                            new SupportAlerterLibrary.model.Rule(
+                            rdrRule.GetString(rdrRule.GetOrdinal("name")),
+                            rdrRule.GetString(rdrRule.GetOrdinal("contains")), 
+                            rdrRule.GetByte(rdrRule.GetOrdinal("send_sms")) == 1, 
+                            rdrRule.GetByte(rdrRule.GetOrdinal("voice_call")) == 1,
+                            rdrRule.GetByte(rdrRule.GetOrdinal("use_body")) == 1, 
+                            rdrRule.GetByte(rdrRule.GetOrdinal("use_sender")) == 1,
+                            rdrRule.GetString(rdrRule.GetOrdinal("sender_contains")),
+                             rdrRule.GetByte(rdrRule.GetOrdinal("use_subject")) == 1,
+                            rdrRule.GetString(rdrRule.GetOrdinal("subject_contains"))
+                            );
                         listRule.Add(rule);
-                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will use the rule " + rule.name + ". Body contains " + rule.contains + ". Send sms = " + rule.send_sms + ". Voice call = " + rule.voice_call, EventLogEntryType.Information);
+                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will use the rule " + rule.name + ". Use body=" + rule.use_body + ", body contains " + rule.contains + ". Use sender=" + rule.use_sender + ", sender contains=" + rule.sender_contains + ". Use subject=" + rule.use_subject + ", subject contains=" + rule.subject_contains + ". Send sms = " + rule.send_sms + ". Voice call = " + rule.voice_call, EventLogEntryType.Information);
                     }
                     rdrRule.Close();
                     cmdRule.Dispose();
@@ -110,33 +121,66 @@ namespace SupportAlerterService
                     foreach (SupportAlerterLibrary.model.Rule rule in listRule)
                     {
                         CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Using the rule " + rule.name, EventLogEntryType.Information);
-                        sql = "SELECT idinbox, account_name,date,sender,subject FROM inbox where body like '%" + rule.contains + "%' and handled=0";
+                        string use_rules = "";
+                        if (rule.use_body)
+                        {
+                            use_rules = " body like '%" + rule.contains + "%' ";
+                        }
+
+                        if (rule.use_sender)
+                        {
+                            if(use_rules.Equals(""))
+                                use_rules += " sender like '%" + rule.sender_contains + "%' ";
+                            else
+                                use_rules += " and sender like '%" + rule.sender_contains + "%' ";
+                        }
+
+                        if (rule.use_subject)
+                        {
+                            if (use_rules.Equals(""))
+                                use_rules += " subject like '%" + rule.subject_contains + "%' ";
+                            else
+                                use_rules += " and subject like '%" + rule.subject_contains + "%' ";
+                        }
+
+                        sql = "SELECT idinbox, account_name,date,sender,subject FROM inbox where " + use_rules + " and handled=0";
                         cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
                         rdrInbox = cmdInbox.ExecuteReader();
                         List<Inbox> listInbox = new List<Inbox>();
                         while (rdrInbox.Read())
                         {
-                            listInbox.Add(new Inbox(rdrInbox.GetInt32(rdrInbox.GetOrdinal("idinbox")), rdrInbox.GetString(rdrInbox.GetOrdinal("subject"))));
-                            //NEXT : debug on this and the next activity.
+                            Inbox inbox = new Inbox(rdrInbox.GetInt32(rdrInbox.GetOrdinal("idinbox")), rdrInbox.GetString(rdrInbox.GetOrdinal("subject")));
+                            listInbox.Add(inbox);
+                            if (RegistrySettings.loggingLevel.Equals("Normal"))
+                            {
+                                CoreFeature.getInstance().LogActivity(LogLevel.Normal, "Email information : Date=" + inbox.date + ", Sender=" + inbox.sender + ", Subject=" + inbox.subject, EventLogEntryType.Information);
+                            }
+                            else if (RegistrySettings.loggingLevel.Equals("Debug"))
+                            {
+                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Email information : Date=" + inbox.date + ", Sender=" + inbox.sender + ", Subject=" + inbox.subject + ", Body = " + inbox.body, EventLogEntryType.Information);
+                            }
                         }
                         rdrInbox.Close();
                         cmdInbox.Dispose();
                         foreach(Inbox inbox in listInbox)
                         {
-                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Acted upon the rule " + rule.contains + " of message " + inbox.subject, EventLogEntryType.Information);
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Acted upon the rule " + rule.name + " of message " + inbox.subject, EventLogEntryType.Information);
                             if (rule.send_sms)
                             {
                                 MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft')", CoreFeature.getInstance().getDataConnection());
                                 cmdSend.ExecuteNonQuery();
+                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will send sms into for the rule " + rule.name, EventLogEntryType.Information);
                             }
                             if (rule.voice_call)
                             {
                                 MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status) values(" + inbox.idinbox + ",'Draft')", CoreFeature.getInstance().getDataConnection());
                                 cmdSend.ExecuteNonQuery();
+                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will voice call for the rule " + rule.name, EventLogEntryType.Information);
                             }
                             
                             MySqlCommand cmdUpdateInbox = new MySqlCommand("update inbox set handled=1 where idinbox=" + inbox.idinbox, CoreFeature.getInstance().getDataConnection());
                             cmdUpdateInbox.ExecuteNonQuery();
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Set HANDLED=1 for the inbox entry ID = " + inbox.idinbox, EventLogEntryType.Information);
                         }
                     }
                     
@@ -145,6 +189,7 @@ namespace SupportAlerterService
                 }
 
                 //4. PROCESS, IF ANY, VOICE_CALL / SMS THAT NEED TO BE DELIVERED
+                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Processing of SMS/Voice Call", EventLogEntryType.Information);
                 MySqlCommand cmdSms = new MySqlCommand("select idsend_sms, content from send_sms where status='Draft'", CoreFeature.getInstance().getDataConnection());
                 MySqlDataReader rdrSms = cmdSms.ExecuteReader();
                 List<SendSms> listSendSms = new List<SendSms>();
@@ -158,6 +203,7 @@ namespace SupportAlerterService
                 foreach(SendSms sendSms in listSendSms)
                 {
                     SmsGateway.getInstance().processSmsNotification(sendSms);//once processed, the status will change into DELIVERED/FAILED
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Sending sms of '" +  sendSms.content + "'", EventLogEntryType.Information);
                 }
 
                 MySqlCommand cmdVoiceCall = new MySqlCommand("select idvoice_call,status from voice_call where status='Draft'", CoreFeature.getInstance().getDataConnection());
@@ -173,6 +219,8 @@ namespace SupportAlerterService
                 foreach (VoiceCall voiceCall in listVoiceCall)
                 {
                     SmsGateway.getInstance().processCallNotification(voiceCall);//once processed, the status will change into DELIVERED/FAILED
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Voice call for voiceCall.id=" + voiceCall.idvoice_call, EventLogEntryType.Information);
+                
                 }
 
                 CoreFeature.getInstance().getDataConnection().Close();

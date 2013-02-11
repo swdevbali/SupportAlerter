@@ -26,10 +26,10 @@ namespace SupportAlerter.Forms
             InitializeComponent();
         }
 
-        public RuleConfiguration(string p, Settings settings)
+        public RuleConfiguration(string ruleName, Settings settings)
         {
             InitializeComponent();
-            this.ruleName = p;
+            this.ruleName = ruleName;
             this.settings = settings;
 
             MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
@@ -41,9 +41,19 @@ namespace SupportAlerter.Forms
             if (rdr.Read())
             {
                 txtName.Text = rdr.GetString(rdr.GetOrdinal("name"));
-                txtContains.Text = rdr.GetString(rdr.GetOrdinal("contains"));
+                txtBodyContains.Text = rdr.GetString(rdr.GetOrdinal("contains"));
                 chkSmsAlert.Checked = rdr.GetByte(rdr.GetOrdinal("send_sms")) == 1;
                 chkVoiceCall.Checked = rdr.GetByte(rdr.GetOrdinal("voice_call")) == 1;
+                chkBody.Checked = rdr.GetByte(rdr.GetOrdinal("use_body")) == 1;
+                chkSubject.Checked = rdr.GetByte(rdr.GetOrdinal("use_subject")) == 1;
+                chkSender.Checked = rdr.GetByte(rdr.GetOrdinal("use_sender")) == 1;
+                txtSubjectContains.Text = rdr.GetString(rdr.GetOrdinal("subject_contains"));
+                txtSenderContains.Text = rdr.GetString(rdr.GetOrdinal("sender_contains"));
+
+            }
+            else
+            {
+                chkBody.Checked = true;
             }
 
             cmd.Dispose();
@@ -59,17 +69,43 @@ namespace SupportAlerter.Forms
 
         private bool saveRule()
         {
+            if (!PassValidation())
+            {
+                return false;
+            }
+            string sql;
             MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
-            MySqlCommand cmd = connection.CreateCommand();
+            MySqlCommand cmd = null;
             if (ruleName == "")
             {
-                cmd.CommandText = "insert into rule(name,contains,send_sms,voice_call) values ('" + txtName.Text + "','" + txtContains.Text + "'," + Convert.ToInt32(chkSmsAlert.Checked) + "," + Convert.ToInt32(chkVoiceCall.Checked) +  ")";
+                sql = "insert into rule(name,contains,send_sms,voice_call,use_body,use_sender,sender_contains,use_subject,subject_contains) values (@name,@body,@send_sms,@voice_call,@use_body,@use_sender,@sender_contains,@use_subject,@subject_contains)";
+                cmd = new MySqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("name", txtName.Text);
+                cmd.Parameters.AddWithValue("body", txtBodyContains.Text);
+                cmd.Parameters.AddWithValue("send_sms", Convert.ToInt32(chkSmsAlert.Checked));
+                cmd.Parameters.AddWithValue("voice_call", Convert.ToInt32(chkVoiceCall.Checked));
+                cmd.Parameters.AddWithValue("use_body", Convert.ToInt32(chkBody.Checked));
+                cmd.Parameters.AddWithValue("use_sender", Convert.ToInt32(chkSender.Checked));
+                cmd.Parameters.AddWithValue("sender_contains", txtSenderContains.Text);
+                cmd.Parameters.AddWithValue("use_subject", Convert.ToInt32(chkSubject.Checked));
+                cmd.Parameters.AddWithValue("subject_contains", txtSubjectContains.Text);
             }
             else
             {
-                cmd.CommandText = "update rule set name='" + txtName.Text + "', contains='" + txtContains.Text + "',send_sms=" + Convert.ToInt32(chkSmsAlert.Checked) + ",voice_call=" + Convert.ToInt32(chkVoiceCall.Checked) +  " where name='" + ruleName + "'";
+                sql = "update rule set name=@name, contains=@body,send_sms=@send_sms,voice_call=@voice_call,use_body=@use_body,use_sender=@use_sender,sender_contains=@sender_contains,use_subject=@use_subject,subject_contains=@subject_contains where name=@oldName";
+                cmd = new MySqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("name", txtName.Text);
+                cmd.Parameters.AddWithValue("body", txtBodyContains.Text);
+                cmd.Parameters.AddWithValue("send_sms", Convert.ToInt32(chkSmsAlert.Checked));
+                cmd.Parameters.AddWithValue("voice_call", Convert.ToInt32(chkVoiceCall.Checked));
+                cmd.Parameters.AddWithValue("use_body", Convert.ToInt32(chkBody.Checked));
+                cmd.Parameters.AddWithValue("use_sender", Convert.ToInt32(chkSender.Checked));
+                cmd.Parameters.AddWithValue("sender_contains", txtSenderContains.Text);
+                cmd.Parameters.AddWithValue("use_subject", Convert.ToInt32(chkSubject.Checked));
+                cmd.Parameters.AddWithValue("subject_contains", txtSubjectContains.Text);
+                cmd.Parameters.AddWithValue("oldName", ruleName);
             }
-            cmd.CommandType = CommandType.Text;
+            
             int rowAffected = cmd.ExecuteNonQuery();
             if (rowAffected != 1)
             {
@@ -83,6 +119,19 @@ namespace SupportAlerter.Forms
             connection.Close();
 
             return true;
+        }
+
+        private bool PassValidation()
+        {
+            if (chkSubject.Checked || chkBody.Checked || chkSender.Checked)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("At least you must check one checkbox : sender, subject or body");
+            }
+            return false;
         }
 
         private void btnSaveTest_Click(object sender, EventArgs e)
@@ -129,7 +178,33 @@ namespace SupportAlerter.Forms
                             }
                         }
                         cmdInbox.Dispose();
-                        string sql = "SELECT account_name,date,sender,subject FROM inbox where body like '%" + txtContains.Text + "%'";
+
+                        SupportAlerterLibrary.model.Rule rule = new SupportAlerterLibrary.model.Rule
+                        (txtName.Text, txtBodyContains.Text, chkSmsAlert.Checked, chkVoiceCall.Checked, chkBody.Checked, chkSender.Checked, txtSenderContains.Text, chkSubject.Checked, txtSubjectContains.Text);
+
+                        string use_rules = "";
+                        if (rule.use_body)
+                        {
+                            use_rules = " body like '%" + rule.contains + "%' ";
+                        }
+
+                        if (rule.use_sender)
+                        {
+                            if (use_rules.Equals(""))
+                                use_rules += " sender like '%" + rule.sender_contains + "%' ";
+                            else
+                                use_rules += " and sender like '%" + rule.sender_contains + "%' ";
+                        }
+
+                        if (rule.use_subject)
+                        {
+                            if (use_rules.Equals(""))
+                                use_rules += " subject like '%" + rule.subject_contains + "%' ";
+                            else
+                                use_rules += " and subject like '%" + rule.subject_contains + "%' ";
+                        }
+
+                        string sql = "SELECT account_name,date,sender,subject FROM inbox where " + use_rules;
                         cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
                         rdrInbox = cmdInbox.ExecuteReader();
                         string[] sub = new string[5];
@@ -160,6 +235,21 @@ namespace SupportAlerter.Forms
 
            
             Cursor = Cursors.Default;
+        }
+
+        private void chkBody_CheckedChanged(object sender, EventArgs e)
+        {
+            txtBodyContains.Enabled = chkBody.Checked;
+        }
+
+        private void chkSender_CheckedChanged(object sender, EventArgs e)
+        {
+            txtSenderContains.Enabled = chkSender.Checked;
+        }
+
+        private void chkSubject_CheckedChanged(object sender, EventArgs e)
+        {
+            txtSubjectContains.Enabled = chkSubject.Checked;
         }
 
         
