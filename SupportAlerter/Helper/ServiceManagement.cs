@@ -9,7 +9,7 @@ namespace SupportAlerter.Helper
 {
     class ServiceManagement
     {
-        private static string SERVICENAME = "eMail To SMS";
+        private static string SERVICENAME = "SMS Alert from eMail";
         public static string getServiceStatus()
         {
             ServiceController sc = new ServiceController(SERVICENAME);

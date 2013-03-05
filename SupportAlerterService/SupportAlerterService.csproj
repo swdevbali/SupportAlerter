@@ -70,11 +70,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="InstallUtil.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="CoreService.resx">
       <DependentUpon>CoreService.cs</DependentUpon>
       <SubType>Designer</SubType>

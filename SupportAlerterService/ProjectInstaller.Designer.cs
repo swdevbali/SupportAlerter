@@ -40,8 +40,8 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.Description = "This service is the core part of eMail to SMS alert in support system";
-            this.serviceInstaller1.DisplayName = "eMail To SMS";
-            this.serviceInstaller1.ServiceName = "eMail To SMS";
+            this.serviceInstaller1.DisplayName = "SMS Alert from eMail";
+            this.serviceInstaller1.ServiceName = "SMS Alert from eMail";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

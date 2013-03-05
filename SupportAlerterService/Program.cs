@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration.Install;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +12,7 @@ namespace SupportAlerterService
 {
     static class Program
     {
-        public const string EventLogName = "eMail To SMS";
+        public const string EventLogName = "SMS Alert from eMail";
         private static object _lockObject = new object();
         private static int _runningTasks = 0;
 
@@ -35,27 +37,43 @@ namespace SupportAlerterService
             }
         }
 
-        static void Main()
+        static void Main(string[] args)
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
-            { 
-                new CoreService() 
-            };
-            if (Environment.UserInteractive)
+            if (System.Environment.UserInteractive)
             {
-                // This used to run the service as a console (development phase only)
 
-                
-                CoreService service = (CoreService) ServicesToRun[0];
-                service.DoStart();
-                Console.WriteLine("Press Enter to terminate ...");
-                Console.ReadLine();
+                if (args.Length > 0)
+                {
+                    switch (args[0])
+                    {
+                        case "i":
+                            {
+                                ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
+                                break;
+                            }
 
-                service.DoStop();
+                        case "u":
+                            {
+                                ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+                                break;
+                            }
+
+                        case "c":
+                            {
+                                CoreService service = new CoreService();
+                                service.DoStart();
+                                Console.WriteLine("Press Enter to terminate ...");
+                                Console.ReadLine();
+                                service.DoStop();
+                                break;
+                            }
+                    }
+                }
             }
             else
             {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[] { new CoreService() };
                 ServiceBase.Run(ServicesToRun);
             }
         }

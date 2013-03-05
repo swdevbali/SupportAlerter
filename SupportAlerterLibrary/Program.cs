@@ -8,6 +8,6 @@ namespace SupportAlerterLibrary
 {
     class Program
     {
-        public static string EventLogName = "eMail To SMS";
+        public static string EventLogName = "SMS Alert from eMail";
     }
 }

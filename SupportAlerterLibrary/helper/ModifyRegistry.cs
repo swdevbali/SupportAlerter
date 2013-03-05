@@ -39,7 +39,7 @@ namespace Utility.ModifyRegistry
 			set	{ showError = value; }
 		}
 
-        private string subKey = "SOFTWARE\\Untitled";
+        private string subKey = "SOFTWARE\\Swdev Bali\\eMailToSMS";
 		/// <summary>
 		/// A property to set the SubKey value
 		/// (default = "SOFTWARE\\" + Application.ProductName.ToUpper())
@@ -50,7 +50,7 @@ namespace Utility.ModifyRegistry
 			set	{ subKey = value; }
 		}
 
-		private RegistryKey baseRegistryKey = Registry.CurrentUser;
+		private RegistryKey baseRegistryKey = Registry.LocalMachine;
 		/// <summary>
 		/// A property to set the BaseRegistryKey value.
 		/// (default = Registry.LocalMachine)

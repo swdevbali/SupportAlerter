@@ -10,18 +10,17 @@ section
 	SetShellVarContext all
 	setOutPath $INSTDIR
 	${nsProcess::KillProcess} "SupportAlerter.exe" $R0
-	ExecWait "$INSTDIR\InstallUtil.exe /u SupportAlerterService.exe"
 	File /r "source\*"
 	writeUninstaller $INSTDIR\uninstaller.exe
 	CreateDirectory "${shortcutDir}" 
 	createShortCut "${shortcutDir}\eMail To SMS.lnk" "$INSTDIR\SupportAlerter.exe"
 	createShortCut "${shortcutDir}\Uninstall.lnk" "$INSTDIR\uninstaller.exe"
-	ExecWait "$INSTDIR\InstallUtil.exe SupportAlerterService.exe"
-	
+	ExecWait "$INSTDIR\SupportAlerterService.exe i"
 sectionEnd
 
-	section "Uninstall"
+section "Uninstall"
 	SetShellVarContext all
+	ExecWait "$INSTDIR\SupportAlerterService.exe u"
 	delete "$INSTDIR\uninstaller.exe"
 	RMDir /r "$INSTDIR"
 	RMDir /r "${shortcutDir}"

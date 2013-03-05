@@ -13,7 +13,7 @@ namespace SupportAlerter
 {
     public class Program : Form
     {
-        public const string EventLogName = "eMail To SMS";
+        public const string EventLogName = "SMS Alert from eMail";
         [STAThread]
         static void Main()
         {
@@ -41,7 +41,7 @@ namespace SupportAlerter
             // standard system icon for simplicity, but you
             // can of course use your own custom icon too.
             trayIcon = new NotifyIcon();
-            trayIcon.Text = "eMail To SMS";
+            trayIcon.Text = "SMS Alert from eMail";
             trayIcon.Icon = new Icon("icon/sms-32.ico");
 
             // Add menu to tray icon and show it.
