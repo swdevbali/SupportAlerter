@@ -90,6 +90,18 @@
     <Compile Include="Forms\RuleConfiguration.Designer.cs">
       <DependentUpon>RuleConfiguration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ShowLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShowLog.Designer.cs">
+      <DependentUpon>ShowLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewInbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewInbox.Designer.cs">
+      <DependentUpon>ViewInbox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helper\MinutesData.cs" />
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
@@ -123,6 +135,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShowLog.resx">
+      <DependentUpon>ShowLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewInbox.resx">
+      <DependentUpon>ViewInbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

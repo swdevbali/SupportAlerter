@@ -33,9 +33,13 @@ namespace SupportAlerter
             // Create a simple tray menu with only one item.
             trayMenu = new ContextMenu();
             trayMenu.MenuItems.Add("&Settings", OnSettings);
+            trayMenu.MenuItems[0].DefaultItem = true;
+            trayMenu.MenuItems.Add("&View inbox", OnViewInbox);
+            trayMenu.MenuItems.Add("&Show log", OnShowLog);
             trayMenu.MenuItems.Add("&About", OnAbout);
             trayMenu.MenuItems.Add("-");
             trayMenu.MenuItems.Add("E&xit", OnExit);
+            
 
             // Create a tray icon. In this example we use a
             // standard system icon for simplicity, but you
@@ -43,7 +47,7 @@ namespace SupportAlerter
             trayIcon = new NotifyIcon();
             trayIcon.Text = "SMS Alert from eMail";
             trayIcon.Icon = new Icon("icon/sms-32.ico");
-
+            trayIcon.DoubleClick += new EventHandler(OnSettings); 
             // Add menu to tray icon and show it.
             trayIcon.ContextMenu = trayMenu;
             trayIcon.Visible = true;
@@ -67,6 +71,20 @@ namespace SupportAlerter
             Settings frmSettings = new Settings();
             frmSettings.ShowDialog();
             frmSettings.Dispose();
+        }
+
+        private void OnViewInbox(object sender, EventArgs e)
+        {
+            ViewInbox viewInbox = new ViewInbox();
+            viewInbox.ShowDialog();
+            viewInbox.Dispose();
+        }
+
+        private void OnShowLog(object sender, EventArgs e)
+        {
+            ShowLog showLog = new ShowLog();
+            showLog.ShowDialog();
+            showLog.Dispose();
         }
 
         private void OnAbout(object sender, EventArgs e)
