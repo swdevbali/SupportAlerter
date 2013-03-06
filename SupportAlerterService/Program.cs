@@ -48,13 +48,29 @@ namespace SupportAlerterService
                     {
                         case "i":
                             {
+                                ServiceController ctl = ServiceController.GetServices().Where(s => s.ServiceName == Program.EventLogName).FirstOrDefault();
+                                if (ctl != null)
+                                {
+                                    Console.WriteLine("Existing service detected, uninstalling...");
+                                    ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+                                }
                                 ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
+
                                 break;
                             }
 
                         case "u":
                             {
-                                ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+                                ServiceController ctl = ServiceController.GetServices().Where(s => s.ServiceName == Program.EventLogName).FirstOrDefault();
+                                if (ctl != null)
+                                {
+                                    Console.WriteLine("Existing service detected, uninstalling...");
+                                    ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Service not detected");
+                                }
                                 break;
                             }
 
