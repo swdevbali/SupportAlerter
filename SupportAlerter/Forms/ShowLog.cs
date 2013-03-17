@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using SupportAlerterLibrary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,14 +22,38 @@ namespace SupportAlerter.Forms
 
         private void btnShow_Click(object sender, EventArgs e)
         {
-            EventLog myLog = new EventLog();
+            
+        }
+
+        private void showLog()
+        {
+            /*EventLog myLog = new EventLog();
             myLog.Log = Program.EventLogName;
+            
             dataGridView1.Rows.Clear();
             foreach (EventLogEntry entry in myLog.Entries)
             {
                 dataGridView1.Rows.Add(new object[] { entry.TimeGenerated, entry.Message });
             }    
-            
+             */
+            MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
+            string sql = "select * from  log  order by occur desc";
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            dataGridView1.Rows.Clear();
+            while (rdr.Read())
+            {
+                dataGridView1.Rows.Add(new object[] { rdr.GetDateTime(rdr.GetOrdinal("occur")), rdr.GetString(rdr.GetOrdinal("message")) });
+            }
+            rdr.Close();
+            cmd.Dispose();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            showLog();
+            timer1.Start();
         }
     }
 }

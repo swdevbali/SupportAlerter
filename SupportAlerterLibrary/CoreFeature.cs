@@ -153,13 +153,22 @@ namespace SupportAlerterLibrary
         public void LogActivity(LogLevel logLevel, string message, EventLogEntryType eventLogEntryType)
         {
             if (RegistrySettings.loggingLevel.Equals("None")) return;
-            if (logLevel == LogLevel.Debug && RegistrySettings.loggingLevel.Equals("Debug"))
+            
+            MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
+            string sql = "insert into log(message) values (@message)";
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@message", message);
+            
+
+            if (logLevel == LogLevel.Debug && (RegistrySettings.loggingLevel.Equals("Debug") || RegistrySettings.loggingLevel.Equals("Normal")))
             {
-                EventLog.WriteEntry(Program.EventLogName, message, eventLogEntryType);
+                //EventLog.WriteEntry(Program.EventLogName, message, eventLogEntryType);
+                int rowAffected = cmd.ExecuteNonQuery();
             }
             else if (logLevel == LogLevel.Normal && RegistrySettings.loggingLevel.Equals("Normal"))
             {
-                EventLog.WriteEntry(Program.EventLogName, message, eventLogEntryType);
+                //EventLog.WriteEntry(Program.EventLogName, message, eventLogEntryType);
+                int rowAffected = cmd.ExecuteNonQuery();
             }
          }
     }
