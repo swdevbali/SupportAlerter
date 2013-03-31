@@ -46,11 +46,13 @@ namespace SupportAlerterService
             timer.Stop();
             string sql;
             CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Begin timed activity : Logging to email account and processing the rules", EventLogEntryType.Information);
+            MySqlConnection dataConnection = null;
             try
             {   
                 //1. LOOP ALL EMAIL ACCOUNTS
+                dataConnection = CoreFeature.getInstance().getDataConnection();
                 sql = "select name, server,port,use_ssl,username,password,active from account where active=1";
-                MySqlCommand cmdAccount = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
+                MySqlCommand cmdAccount = new MySqlCommand(sql, dataConnection);
                 MySqlDataReader rdrAccount = cmdAccount.ExecuteReader();
                 List<Account> listAccount = new List<Account>();
                 while (rdrAccount.Read())
@@ -67,7 +69,7 @@ namespace SupportAlerterService
                     CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Logging in to email account " + emailAccount.name, EventLogEntryType.Information);
                     MySqlDataReader rdrInbox = null;
                     sql = "SELECT count(*) FROM inbox i, account a where i.account_name = a.name and a.name=@name";
-                    MySqlCommand cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
+                    MySqlCommand cmdInbox = new MySqlCommand(sql, dataConnection);
                     cmdInbox.Parameters.AddWithValue("name", emailAccount.name);
                     rdrInbox = cmdInbox.ExecuteReader();
 
@@ -94,7 +96,7 @@ namespace SupportAlerterService
                     MySqlCommand cmdRule;
                     MySqlDataReader rdrRule;
                     string sqlRule = "SELECT * FROM rule r";
-                    cmdRule = new MySqlCommand(sqlRule, CoreFeature.getInstance().getDataConnection());
+                    cmdRule = new MySqlCommand(sqlRule, dataConnection);
                     rdrRule = cmdRule.ExecuteReader();
                     List<SupportAlerterLibrary.model.Rule> listRule = new List<SupportAlerterLibrary.model.Rule>();
                     
@@ -144,7 +146,7 @@ namespace SupportAlerterService
                         }
 
                         sql = "SELECT idinbox, account_name,date,sender,subject FROM inbox where " + use_rules + " and handled=0";
-                        cmdInbox = new MySqlCommand(sql, CoreFeature.getInstance().getDataConnection());
+                        cmdInbox = new MySqlCommand(sql, dataConnection);
                         rdrInbox = cmdInbox.ExecuteReader();
                         List<Inbox> listInbox = new List<Inbox>();
                         while (rdrInbox.Read())
@@ -167,18 +169,18 @@ namespace SupportAlerterService
                             CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Acted upon the rule " + rule.name + " of message " + inbox.subject, EventLogEntryType.Information);
                             if (rule.send_sms)
                             {
-                                MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft')", CoreFeature.getInstance().getDataConnection());
+                                MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft')", dataConnection);
                                 cmdSend.ExecuteNonQuery();
                                 CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will send sms into for the rule " + rule.name, EventLogEntryType.Information);
                             }
                             if (rule.voice_call)
                             {
-                                MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status) values(" + inbox.idinbox + ",'Draft')", CoreFeature.getInstance().getDataConnection());
+                                MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status) values(" + inbox.idinbox + ",'Draft')", dataConnection);
                                 cmdSend.ExecuteNonQuery();
                                 CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will voice call for the rule " + rule.name, EventLogEntryType.Information);
                             }
                             
-                            MySqlCommand cmdUpdateInbox = new MySqlCommand("update inbox set handled=1 where idinbox=" + inbox.idinbox, CoreFeature.getInstance().getDataConnection());
+                            MySqlCommand cmdUpdateInbox = new MySqlCommand("update inbox set handled=1 where idinbox=" + inbox.idinbox, dataConnection);
                             cmdUpdateInbox.ExecuteNonQuery();
                             CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Set HANDLED=1 for the inbox entry ID = " + inbox.idinbox, EventLogEntryType.Information);
                         }
@@ -190,7 +192,7 @@ namespace SupportAlerterService
 
                 //4. PROCESS, IF ANY, VOICE_CALL / SMS THAT NEED TO BE DELIVERED
                 CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Processing of SMS/Voice Call", EventLogEntryType.Information);
-                MySqlCommand cmdSms = new MySqlCommand("select idsend_sms, content from send_sms where status='Draft'", CoreFeature.getInstance().getDataConnection());
+                MySqlCommand cmdSms = new MySqlCommand("select idsend_sms, content from send_sms where status='Draft'", dataConnection);
                 MySqlDataReader rdrSms = cmdSms.ExecuteReader();
                 List<SendSms> listSendSms = new List<SendSms>();
                 while (rdrSms.Read())
@@ -206,7 +208,7 @@ namespace SupportAlerterService
                     CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Sending sms of '" +  sendSms.content + "'", EventLogEntryType.Information);
                 }
 
-                MySqlCommand cmdVoiceCall = new MySqlCommand("select idvoice_call,status from voice_call where status='Draft'", CoreFeature.getInstance().getDataConnection());
+                MySqlCommand cmdVoiceCall = new MySqlCommand("select idvoice_call,status from voice_call where status='Draft'", dataConnection);
                 MySqlDataReader rdrVoiceCall = cmdVoiceCall.ExecuteReader();
                 List<VoiceCall> listVoiceCall = new List<VoiceCall>();
                 while (rdrVoiceCall.Read())
@@ -230,6 +232,7 @@ namespace SupportAlerterService
                 CoreFeature.getInstance().LogActivity(LogLevel.Debug, "[Internal Application Error] " + ex.Message, EventLogEntryType.Error);
                 CoreFeature.getInstance().getDataConnection().Close();
             }
+            dataConnection.Close();
             timer.Start();
         }
 
