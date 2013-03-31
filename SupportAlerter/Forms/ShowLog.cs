@@ -25,19 +25,14 @@ namespace SupportAlerter.Forms
             
         }
 
-        private void showLog()
+        private void showLog(string sql=null)
         {
-            /*EventLog myLog = new EventLog();
-            myLog.Log = Program.EventLogName;
-            
-            dataGridView1.Rows.Clear();
-            foreach (EventLogEntry entry in myLog.Entries)
-            {
-                dataGridView1.Rows.Add(new object[] { entry.TimeGenerated, entry.Message });
-            }    
-             */
             MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
-            string sql = "select * from  log  order by occur desc limit 0, " + numLimit.Value;
+            if (sql == null)
+            {
+                 sql = "select * from  log  order by occur desc limit 0, " + numLimit.Value;
+            }
+
             MySqlCommand cmd = new MySqlCommand(sql, connection);
             MySqlDataReader rdr = cmd.ExecuteReader();
             dataGridView1.Rows.Clear();            
@@ -84,6 +79,14 @@ namespace SupportAlerter.Forms
                 timer1.Interval = Convert.ToInt32(numSeconds.Value) * 1000;
                 timer1.Start();
             }
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            string sql;
+
+            sql = "select * from  log  where occur >= " + dtStart.Value.Year + dtStart.Value.Month + dtStart.Value.Day + dtStart.Value.Hour + dtStart.Value.Minute + dtStart.Value.Second + " order by occur limit 0, " + numLimit.Value;
+            showLog(sql);
         }
     }
 }
