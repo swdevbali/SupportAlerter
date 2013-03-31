@@ -36,29 +36,32 @@
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkUseLimit = new System.Windows.Forms.CheckBox();
+            this.btnFilter = new System.Windows.Forms.Button();
+            this.numLimit = new System.Windows.Forms.NumericUpDown();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lstAccount = new System.Windows.Forms.CheckedListBox();
+            this.chkByAccount = new System.Windows.Forms.CheckBox();
+            this.chkByTime = new System.Windows.Forms.CheckBox();
+            this.chkUseEndTime = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dtEnd = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dtStart = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkAutoRefresh = new System.Windows.Forms.CheckBox();
-            this.numLimit = new System.Windows.Forms.NumericUpDown();
             this.numSeconds = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.dtStart = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.dtEnd = new System.Windows.Forms.DateTimePicker();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.btnFilter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSeconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -104,8 +107,11 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chkUseLimit);
             this.panel1.Controls.Add(this.btnFilter);
+            this.panel1.Controls.Add(this.numLimit);
             this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -113,13 +119,156 @@
             this.panel1.Size = new System.Drawing.Size(863, 180);
             this.panel1.TabIndex = 5;
             // 
+            // chkUseLimit
+            // 
+            this.chkUseLimit.AutoSize = true;
+            this.chkUseLimit.Checked = true;
+            this.chkUseLimit.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUseLimit.Location = new System.Drawing.Point(95, 153);
+            this.chkUseLimit.Name = "chkUseLimit";
+            this.chkUseLimit.Size = new System.Drawing.Size(15, 14);
+            this.chkUseLimit.TabIndex = 9;
+            this.chkUseLimit.UseVisualStyleBackColor = true;
+            this.chkUseLimit.CheckedChanged += new System.EventHandler(this.chkUseLimit_CheckedChanged);
+            // 
+            // btnFilter
+            // 
+            this.btnFilter.Location = new System.Drawing.Point(12, 151);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(75, 23);
+            this.btnFilter.TabIndex = 8;
+            this.btnFilter.Text = "&Display data";
+            this.btnFilter.UseVisualStyleBackColor = true;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            // 
+            // numLimit
+            // 
+            this.numLimit.Location = new System.Drawing.Point(150, 151);
+            this.numLimit.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numLimit.Name = "numLimit";
+            this.numLimit.Size = new System.Drawing.Size(67, 20);
+            this.numLimit.TabIndex = 5;
+            this.numLimit.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lstAccount);
+            this.groupBox2.Controls.Add(this.chkByAccount);
+            this.groupBox2.Controls.Add(this.chkByTime);
+            this.groupBox2.Controls.Add(this.chkUseEndTime);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.dtEnd);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.dtStart);
+            this.groupBox2.Location = new System.Drawing.Point(12, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(527, 113);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Filter Log";
+            // 
+            // lstAccount
+            // 
+            this.lstAccount.Enabled = false;
+            this.lstAccount.FormattingEnabled = true;
+            this.lstAccount.Location = new System.Drawing.Point(320, 42);
+            this.lstAccount.Name = "lstAccount";
+            this.lstAccount.Size = new System.Drawing.Size(201, 64);
+            this.lstAccount.TabIndex = 7;
+            // 
+            // chkByAccount
+            // 
+            this.chkByAccount.AutoSize = true;
+            this.chkByAccount.Location = new System.Drawing.Point(297, 21);
+            this.chkByAccount.Name = "chkByAccount";
+            this.chkByAccount.Size = new System.Drawing.Size(80, 17);
+            this.chkByAccount.TabIndex = 6;
+            this.chkByAccount.Text = "By account";
+            this.chkByAccount.UseVisualStyleBackColor = true;
+            this.chkByAccount.CheckedChanged += new System.EventHandler(this.chkByAccount_CheckedChanged);
+            // 
+            // chkByTime
+            // 
+            this.chkByTime.AutoSize = true;
+            this.chkByTime.Location = new System.Drawing.Point(21, 21);
+            this.chkByTime.Name = "chkByTime";
+            this.chkByTime.Size = new System.Drawing.Size(60, 17);
+            this.chkByTime.TabIndex = 5;
+            this.chkByTime.Text = "By time";
+            this.chkByTime.UseVisualStyleBackColor = true;
+            this.chkByTime.CheckedChanged += new System.EventHandler(this.chkUseTime_CheckedChanged);
+            // 
+            // chkUseEndTime
+            // 
+            this.chkUseEndTime.AutoSize = true;
+            this.chkUseEndTime.Enabled = false;
+            this.chkUseEndTime.Location = new System.Drawing.Point(41, 71);
+            this.chkUseEndTime.Name = "chkUseEndTime";
+            this.chkUseEndTime.Size = new System.Drawing.Size(15, 14);
+            this.chkUseEndTime.TabIndex = 4;
+            this.chkUseEndTime.UseVisualStyleBackColor = true;
+            this.chkUseEndTime.CheckedChanged += new System.EventHandler(this.chkUseEndTime_CheckedChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(62, 71);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(48, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "End time";
+            // 
+            // dtEnd
+            // 
+            this.dtEnd.CustomFormat = "MM/dd/yy - hh:mm:ss";
+            this.dtEnd.Enabled = false;
+            this.dtEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtEnd.Location = new System.Drawing.Point(128, 68);
+            this.dtEnd.Name = "dtEnd";
+            this.dtEnd.Size = new System.Drawing.Size(137, 20);
+            this.dtEnd.TabIndex = 2;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(62, 46);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(51, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Start time";
+            // 
+            // dtStart
+            // 
+            this.dtStart.CustomFormat = "MM/dd/yy - hh:mm:ss";
+            this.dtStart.Enabled = false;
+            this.dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtStart.Location = new System.Drawing.Point(128, 42);
+            this.dtStart.Name = "dtStart";
+            this.dtStart.Size = new System.Drawing.Size(137, 20);
+            this.dtStart.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(116, 153);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(28, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Limit";
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.chkAutoRefresh);
-            this.groupBox1.Controls.Add(this.numLimit);
             this.groupBox1.Controls.Add(this.numSeconds);
-            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(553, 12);
             this.groupBox1.Name = "groupBox1";
@@ -139,23 +288,6 @@
             this.chkAutoRefresh.UseVisualStyleBackColor = true;
             this.chkAutoRefresh.CheckedChanged += new System.EventHandler(this.chkAutoRefresh_CheckedChanged);
             // 
-            // numLimit
-            // 
-            this.numLimit.Location = new System.Drawing.Point(55, 47);
-            this.numLimit.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numLimit.Name = "numLimit";
-            this.numLimit.Size = new System.Drawing.Size(67, 20);
-            this.numLimit.TabIndex = 5;
-            this.numLimit.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
             // numSeconds
             // 
             this.numSeconds.Location = new System.Drawing.Point(144, 16);
@@ -168,15 +300,6 @@
             0,
             0});
             this.numSeconds.ValueChanged += new System.EventHandler(this.numSeconds_ValueChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 49);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(28, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Limit";
             // 
             // label2
             // 
@@ -198,86 +321,6 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.checkBox2);
-            this.groupBox2.Controls.Add(this.checkBox1);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.dtEnd);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.dtStart);
-            this.groupBox2.Location = new System.Drawing.Point(12, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(289, 113);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Filter Log";
-            // 
-            // dtStart
-            // 
-            this.dtStart.CustomFormat = "MM/dd/yy - hh:mm:ss";
-            this.dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtStart.Location = new System.Drawing.Point(128, 42);
-            this.dtStart.Name = "dtStart";
-            this.dtStart.Size = new System.Drawing.Size(137, 20);
-            this.dtStart.TabIndex = 0;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(62, 46);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Start time";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(62, 71);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "End time";
-            // 
-            // dtEnd
-            // 
-            this.dtEnd.CustomFormat = "MM/dd/yy - hh:mm:ss";
-            this.dtEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtEnd.Location = new System.Drawing.Point(128, 68);
-            this.dtEnd.Name = "dtEnd";
-            this.dtEnd.Size = new System.Drawing.Size(137, 20);
-            this.dtEnd.TabIndex = 2;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(41, 71);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 4;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(21, 21);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(64, 17);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "Use this";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // btnFilter
-            // 
-            this.btnFilter.Location = new System.Drawing.Point(12, 151);
-            this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(75, 23);
-            this.btnFilter.TabIndex = 8;
-            this.btnFilter.Text = "&Display data";
-            this.btnFilter.UseVisualStyleBackColor = true;
-            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
-            // 
             // ShowLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -289,15 +332,17 @@
             this.Name = "ShowLog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Show Log";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSeconds)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSeconds)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -322,8 +367,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dtEnd;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkByTime;
+        private System.Windows.Forms.CheckBox chkUseEndTime;
         private System.Windows.Forms.Button btnFilter;
+        private System.Windows.Forms.CheckBox chkUseLimit;
+        private System.Windows.Forms.CheckBox chkByAccount;
+        private System.Windows.Forms.CheckedListBox lstAccount;
     }
 }

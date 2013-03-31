@@ -18,6 +18,20 @@ namespace SupportAlerter.Forms
         public ShowLog()
         {
             InitializeComponent();
+            MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
+            string sql = "select name from account order by name";
+            MySqlCommand cmd = new MySqlCommand(sql, connection);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+
+            lstAccount.Items.Clear();
+            while (rdr.Read())
+            {
+                lstAccount.Items.Add(rdr.GetString(0));
+            }
+
+            rdr.Close();
+            cmd.Dispose();
+            connection.Close();
         }
 
         private void btnShow_Click(object sender, EventArgs e)
@@ -49,6 +63,7 @@ namespace SupportAlerter.Forms
             }
             rdr.Close();
             cmd.Dispose();
+            connection.Close();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -83,10 +98,88 @@ namespace SupportAlerter.Forms
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            string sql;
+            string sql = null;
 
-            sql = "select * from  log  where occur >= " + dtStart.Value.Year + dtStart.Value.Month + dtStart.Value.Day + dtStart.Value.Hour + dtStart.Value.Minute + dtStart.Value.Second + " order by occur limit 0, " + numLimit.Value;
+            if (chkByTime.Checked)
+            {
+                sql = "select * from log where occur >= " + dtStart.Value.Year + dtStart.Value.Month.ToString("D2") + dtStart.Value.Day.ToString("D2") + dtStart.Value.Hour.ToString("D2") + dtStart.Value.Minute.ToString("D2") + dtStart.Value.Second.ToString("D2");
+                
+                if (chkUseEndTime.Checked)
+                {
+                    sql = sql + " and occur <= " + dtEnd.Value.Year + dtEnd.Value.Month.ToString("D2") + dtEnd.Value.Day.ToString("D2") + dtEnd.Value.Hour.ToString("D2") + dtEnd.Value.Minute.ToString("D2") + dtEnd.Value.Second.ToString("D2");
+                }
+            }
+
+            if (chkByAccount.Checked && lstAccount.CheckedItems.Count > 0)
+            {
+                for(int i=0; i < lstAccount.CheckedItems.Count; i++)
+                {
+                    string name = lstAccount.CheckedItems[i].ToString();
+                    if (i == 0)
+                    {
+                        if (sql == null)
+                        {
+                            sql = "select * from log where (account_name='" + name + "' ";
+                        }
+                        else
+                        {
+                            sql = sql + " and (account_name='" + name + "' ";
+                        }
+                    }
+                    else
+                    {
+                        sql = sql + " or account_name='" + name + "' ";
+                    }
+
+                    if (i == lstAccount.CheckedItems.Count - 1)
+                    {
+                        sql = sql + ")";
+                    }
+                }
+                
+            }
+
+            
+
+
+            if (sql == null)
+            {
+                sql = "select * from log order by occur desc ";
+            }
+            else
+            {
+                sql = sql + " order by occur ";
+            }
+
+            if(chkUseLimit.Checked)
+                sql = sql + " limit 0, " + numLimit.Value;
+
             showLog(sql);
         }
+
+        private void chkUseTime_CheckedChanged(object sender, EventArgs e)
+        {
+            dtStart.Enabled = chkByTime.Checked;
+            chkUseEndTime.Enabled = chkByTime.Checked;
+            dtEnd.Enabled = chkByTime.Checked && chkUseEndTime.Checked;
+            
+        }
+
+        private void chkUseEndTime_CheckedChanged(object sender, EventArgs e)
+        {
+            dtEnd.Enabled = chkUseEndTime.Checked;
+        }
+
+        private void chkUseLimit_CheckedChanged(object sender, EventArgs e)
+        {
+            numLimit.Enabled = chkUseLimit.Checked;
+        }
+
+        private void chkByAccount_CheckedChanged(object sender, EventArgs e)
+        {
+            lstAccount.Enabled = chkByAccount.Checked;
+        }
+
+       
     }
 }
