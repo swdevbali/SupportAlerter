@@ -261,7 +261,7 @@ namespace Utility.ModifyRegistry
 		private void ShowErrorMessage(Exception e, string Title)
 		{
 			if (showError == true)
-                EventLog.WriteEntry(Program.EventLogName, "[RegistrySettings] " + e.Message, EventLogEntryType.FailureAudit, 1);
+                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "[RegistrySettings] " + e.Message, EventLogEntryType.FailureAudit);
             
 		}
 	}

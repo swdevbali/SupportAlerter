@@ -227,7 +227,7 @@ namespace SupportAlerter.Forms
                 }
                 catch (Exception ex)
                 {
-                    EventLog.WriteEntry(Program.EventLogName, "This is my error " + ex.Message);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "This is my error " + ex.Message, EventLogEntryType.Information);
                     rdr.Close();
                     CoreFeature.getInstance().getDataConnection().Close();
                 }

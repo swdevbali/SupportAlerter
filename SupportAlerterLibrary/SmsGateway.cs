@@ -26,13 +26,13 @@ namespace SupportAlerterLibrary
 
         public void processSmsNotification(SendSms sendSms)
         {
-            EventLog.WriteEntry(Program.EventLogName, "Processing Sms notification " + sendSms.content);
+            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Processing Sms notification " + sendSms.content,EventLogEntryType.Information);
         }
 
 
         public void processCallNotification(VoiceCall voiceCall)
         {
-            EventLog.WriteEntry(Program.EventLogName, "Processing voice call notification " + voiceCall.status);
+            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Processing voice call notification " + voiceCall.status,EventLogEntryType.Information);
         }
     }
 }

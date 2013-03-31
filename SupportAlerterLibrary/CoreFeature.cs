@@ -17,13 +17,18 @@ namespace SupportAlerterLibrary
     public class CoreFeature
     {
         private readonly Pop3Client pop3Client = new Pop3Client();
-        private readonly MySqlConnection  dataConnection = null;
+        //private MySqlConnection  dataConnection = null;
         private static CoreFeature instance = null;
         
         private CoreFeature()
         {
             RegistrySettings.loadValues();
-            dataConnection = new MySqlConnection("Server="+ RegistrySettings.mysqlHost + ";Database=" + RegistrySettings.mysqlDatabase  +";Uid=" + RegistrySettings.mysqlUsername + ";Pwd=" + RegistrySettings.mysqlPassword);
+            createConnection();
+        }
+
+        private MySqlConnection createConnection()
+        {
+            return new MySqlConnection("Server=" + RegistrySettings.mysqlHost + ";Database=" + RegistrySettings.mysqlDatabase + ";Uid=" + RegistrySettings.mysqlUsername + ";Pwd=" + RegistrySettings.mysqlPassword);
         }
 
         public static CoreFeature getInstance()
@@ -42,6 +47,8 @@ namespace SupportAlerterLibrary
 
         public MySqlConnection getDataConnection()
         {
+            MySqlConnection dataConnection;
+            dataConnection = createConnection();
             if (dataConnection.State == ConnectionState.Closed)
             {
                 try
@@ -51,7 +58,7 @@ namespace SupportAlerterLibrary
                 catch (Exception ex)
                 {
                     //MessageBox.Show("Database connection error : " + ex.Message);
-                    EventLog.WriteEntry(Program.EventLogName, "Database connection error : " + ex.Message);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Normal, "Database connection error : " + ex.Message,EventLogEntryType.Error);
                     return null;
                 }
             }
@@ -69,23 +76,23 @@ namespace SupportAlerterLibrary
             }
             catch (InvalidLoginException)
             {
-                EventLog.WriteEntry(Program.EventLogName, "[POP3 Server Authentication] for " + name + ". The server did not accept the user credentials!", EventLogEntryType.FailureAudit, 1);
+                CoreFeature.getInstance().LogActivity(LogLevel.Normal,  "[POP3 Server Authentication] for " + name + ". The server did not accept the user credentials!", EventLogEntryType.FailureAudit);
             }
             catch (PopServerNotFoundException)
             {
-                EventLog.WriteEntry(Program.EventLogName, "[POP3 Retrieval] for " + name + ". The server could not be found", EventLogEntryType.FailureAudit, 1);
+                CoreFeature.getInstance().LogActivity(LogLevel.Normal, "[POP3 Retrieval] for " + name + ". The server could not be found", EventLogEntryType.FailureAudit);
             }
             catch (PopServerLockedException)
             {
-                EventLog.WriteEntry(Program.EventLogName, "[POP3 Account Locked] for " + name + ". The mailbox is locked. It might be in use or under maintenance. Are you connected elsewhere?", EventLogEntryType.FailureAudit, 1);
+                CoreFeature.getInstance().LogActivity(LogLevel.Normal,  "[POP3 Account Locked] for " + name + ". The mailbox is locked. It might be in use or under maintenance. Are you connected elsewhere?", EventLogEntryType.FailureAudit);
             }
             catch (LoginDelayException)
             {
-                EventLog.WriteEntry(Program.EventLogName, "[POP3 Account Login Delay] for " + name + ". Login not allowed. Server enforces delay between logins. Have you connected recently?", EventLogEntryType.FailureAudit, 1);
+                CoreFeature.getInstance().LogActivity(LogLevel.Normal, "[POP3 Account Login Delay] for " + name + ". Login not allowed. Server enforces delay between logins. Have you connected recently?", EventLogEntryType.FailureAudit);
             }
             catch (Exception e)
             {
-                EventLog.WriteEntry(Program.EventLogName, "[POP3 Retrieval] for " + name + ". Error occurred retrieving mail. " + e.Message, EventLogEntryType.FailureAudit, 1);
+                CoreFeature.getInstance().LogActivity(LogLevel.Normal,  "[POP3 Retrieval] for " + name + ". Error occurred retrieving mail. " + e.Message, EventLogEntryType.FailureAudit);
             }
             return false;
         }
@@ -162,14 +169,14 @@ namespace SupportAlerterLibrary
 
             if (logLevel == LogLevel.Debug && (RegistrySettings.loggingLevel.Equals("Debug") || RegistrySettings.loggingLevel.Equals("Normal")))
             {
-                //EventLog.WriteEntry(Program.EventLogName, message, eventLogEntryType);
                 int rowAffected = cmd.ExecuteNonQuery();
             }
             else if (logLevel == LogLevel.Normal && RegistrySettings.loggingLevel.Equals("Normal"))
             {
-                //EventLog.WriteEntry(Program.EventLogName, message, eventLogEntryType);
                 int rowAffected = cmd.ExecuteNonQuery();
             }
+            cmd.Dispose();
+            connection.Close();
          }
     }
 
