@@ -8,10 +8,11 @@ namespace SupportAlerterLibrary.model
 {
     public class SendSms
     {
-        public SendSms(int idsend_sms, string content)
+        public SendSms(int idsend_sms, string content, string account_name)
         {
             this.idsend_sms = idsend_sms;
             this.content = content;
+            this.account_name = account_name;
         }
 
         public int idsend_sms { get; set; }
@@ -19,5 +20,7 @@ namespace SupportAlerterLibrary.model
         public string content { get; set; }
         public string status { get; set; }
 
+
+        public string account_name { get; set; }
     }
 }

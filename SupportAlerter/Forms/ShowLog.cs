@@ -40,10 +40,17 @@ namespace SupportAlerter.Forms
             string sql = "select * from  log  order by occur desc limit 0, " + numLimit.Value;
             MySqlCommand cmd = new MySqlCommand(sql, connection);
             MySqlDataReader rdr = cmd.ExecuteReader();
-            dataGridView1.Rows.Clear();
+            dataGridView1.Rows.Clear();            
+            int iAccountName;
             while (rdr.Read())
             {
-                dataGridView1.Rows.Add(new object[] { rdr.GetDateTime(rdr.GetOrdinal("occur")), rdr.GetString(rdr.GetOrdinal("message")) });
+                string accountName = "";
+                iAccountName = rdr.GetOrdinal("account_name");
+                if (!rdr.IsDBNull(iAccountName))
+                {
+                    accountName = rdr.GetString(iAccountName);
+                }
+                dataGridView1.Rows.Add(new object[] { rdr.GetDateTime(rdr.GetOrdinal("occur")), accountName, rdr.GetString(rdr.GetOrdinal("message")) });
             }
             rdr.Close();
             cmd.Dispose();

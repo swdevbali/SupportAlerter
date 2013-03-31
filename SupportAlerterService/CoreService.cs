@@ -59,14 +59,14 @@ namespace SupportAlerterService
                 {
                     Account emailAccount = new Account(rdrAccount.GetString(rdrAccount.GetOrdinal("name")), rdrAccount.GetString(rdrAccount.GetOrdinal("server")), rdrAccount.GetInt32(rdrAccount.GetOrdinal("port")), rdrAccount.GetString(rdrAccount.GetOrdinal("username")), Cryptho.Decrypt(rdrAccount.GetString(rdrAccount.GetOrdinal("password"))), rdrAccount.GetByte(rdrAccount.GetOrdinal("use_ssl")) == 1, rdrAccount.GetByte(rdrAccount.GetOrdinal("active")) == 1);
                     listAccount.Add(emailAccount);
-                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will use active email " + emailAccount.name, EventLogEntryType.Information);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will use active email " + emailAccount.name, EventLogEntryType.Information, emailAccount.name);
                 }
                 rdrAccount.Close();
                             
                 //2. LOOP ALL NEW MESSAGES
                 foreach (Account emailAccount in listAccount)
                 {
-                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Logging in to email account " + emailAccount.name, EventLogEntryType.Information);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Logging in to email account " + emailAccount.name, EventLogEntryType.Information,emailAccount.name);
                     MySqlDataReader rdrInbox = null;
                     sql = "SELECT count(*) FROM inbox i, account a where i.account_name = a.name and a.name=@name";
                     MySqlCommand cmdInbox = new MySqlCommand(sql, dataConnection);
@@ -77,13 +77,13 @@ namespace SupportAlerterService
                     {
                         if (rdrInbox.GetInt32(0) == 0)
                         {
-                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "No messages in inbox, try to fetch all last 30 days message to test the rule", EventLogEntryType.Information);
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "No messages in inbox, try to fetch all last 30 days message to test the rule", EventLogEntryType.Information,emailAccount.name);
                             rdrInbox.Dispose();
                             CoreFeature.getInstance().FetchRecentMessages(emailAccount, true);
                         }
                         else
                         {
-                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Inbox already consisted of previous fetched message, now only fetch new message", EventLogEntryType.Information);
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Inbox already consisted of previous fetched message, now only fetch new message", EventLogEntryType.Information, emailAccount.name);
                             rdrInbox.Dispose();
                             CoreFeature.getInstance().FetchRecentMessages(emailAccount, false);
                         }
@@ -92,7 +92,7 @@ namespace SupportAlerterService
                     cmdInbox.Dispose();
 
                     //3. APPLY THE RULES
-                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "About to apply notification rules", EventLogEntryType.Information);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "About to apply notification rules", EventLogEntryType.Information, emailAccount.name);
                     MySqlCommand cmdRule;
                     MySqlDataReader rdrRule;
                     string sqlRule = "SELECT * FROM rule r";
@@ -115,14 +115,14 @@ namespace SupportAlerterService
                             rdrRule.GetString(rdrRule.GetOrdinal("subject_contains"))
                             );
                         listRule.Add(rule);
-                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will use the rule " + rule.name + ". Use body=" + rule.use_body + ", body contains " + rule.contains + ". Use sender=" + rule.use_sender + ", sender contains=" + rule.sender_contains + ". Use subject=" + rule.use_subject + ", subject contains=" + rule.subject_contains + ". Send sms = " + rule.send_sms + ". Voice call = " + rule.voice_call, EventLogEntryType.Information);
+                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will use the rule " + rule.name + ". Use body=" + rule.use_body + ", body contains " + rule.contains + ". Use sender=" + rule.use_sender + ", sender contains=" + rule.sender_contains + ". Use subject=" + rule.use_subject + ", subject contains=" + rule.subject_contains + ". Send sms = " + rule.send_sms + ". Voice call = " + rule.voice_call, EventLogEntryType.Information, emailAccount.name);
                     }
                     rdrRule.Close();
                     cmdRule.Dispose();
 
                     foreach (SupportAlerterLibrary.model.Rule rule in listRule)
                     {
-                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Using the rule " + rule.name, EventLogEntryType.Information);
+                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Using the rule " + rule.name, EventLogEntryType.Information, emailAccount.name);
                         string use_rules = "";
                         if (rule.use_body)
                         {
@@ -155,34 +155,34 @@ namespace SupportAlerterService
                             listInbox.Add(inbox);
                             if (RegistrySettings.loggingLevel.Equals("Normal"))
                             {
-                                CoreFeature.getInstance().LogActivity(LogLevel.Normal, "Email information : Date=" + inbox.date + ", Sender=" + inbox.sender + ", Subject=" + inbox.subject, EventLogEntryType.Information);
+                                CoreFeature.getInstance().LogActivity(LogLevel.Normal, "Email information : Date=" + inbox.date + ", Sender=" + inbox.sender + ", Subject=" + inbox.subject, EventLogEntryType.Information, emailAccount.name);
                             }
                             else if (RegistrySettings.loggingLevel.Equals("Debug"))
                             {
-                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Email information : Date=" + inbox.date + ", Sender=" + inbox.sender + ", Subject=" + inbox.subject + ", Body = " + inbox.body, EventLogEntryType.Information);
+                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Email information : Date=" + inbox.date + ", Sender=" + inbox.sender + ", Subject=" + inbox.subject + ", Body = " + inbox.body, EventLogEntryType.Information, emailAccount.name);
                             }
                         }
                         rdrInbox.Close();
                         cmdInbox.Dispose();
                         foreach(Inbox inbox in listInbox)
                         {
-                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Acted upon the rule " + rule.name + " of message " + inbox.subject, EventLogEntryType.Information);
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Acted upon the rule " + rule.name + " of message " + inbox.subject, EventLogEntryType.Information, emailAccount.name);
                             if (rule.send_sms)
                             {
-                                MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft')", dataConnection);
+                                MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status,account_name) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft','" + emailAccount.name + "')", dataConnection);
                                 cmdSend.ExecuteNonQuery();
-                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will send sms into for the rule " + rule.name, EventLogEntryType.Information);
+                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will send sms into for the rule " + rule.name, EventLogEntryType.Information, emailAccount.name);
                             }
                             if (rule.voice_call)
                             {
-                                MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status) values(" + inbox.idinbox + ",'Draft')", dataConnection);
+                                MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status, email_account) values(" + inbox.idinbox + ",'Draft','" + emailAccount.name + "')", dataConnection);
                                 cmdSend.ExecuteNonQuery();
-                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will voice call for the rule " + rule.name, EventLogEntryType.Information);
+                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will voice call for the rule " + rule.name, EventLogEntryType.Information, emailAccount.name);
                             }
                             
                             MySqlCommand cmdUpdateInbox = new MySqlCommand("update inbox set handled=1 where idinbox=" + inbox.idinbox, dataConnection);
                             cmdUpdateInbox.ExecuteNonQuery();
-                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Set HANDLED=1 for the inbox entry ID = " + inbox.idinbox, EventLogEntryType.Information);
+                            CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Set HANDLED=1 for the inbox entry ID = " + inbox.idinbox, EventLogEntryType.Information, emailAccount.name);
                         }
                     }
                     
@@ -192,12 +192,12 @@ namespace SupportAlerterService
 
                 //4. PROCESS, IF ANY, VOICE_CALL / SMS THAT NEED TO BE DELIVERED
                 CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Processing of SMS/Voice Call", EventLogEntryType.Information);
-                MySqlCommand cmdSms = new MySqlCommand("select idsend_sms, content from send_sms where status='Draft'", dataConnection);
+                MySqlCommand cmdSms = new MySqlCommand("select idsend_sms, content,account_name from send_sms where status='Draft'", dataConnection);
                 MySqlDataReader rdrSms = cmdSms.ExecuteReader();
                 List<SendSms> listSendSms = new List<SendSms>();
                 while (rdrSms.Read())
                 {
-                    listSendSms.Add(new SendSms(rdrSms.GetInt32(rdrSms.GetOrdinal("idsend_sms")),rdrSms.GetString(rdrSms.GetOrdinal("content"))));
+                    listSendSms.Add(new SendSms(rdrSms.GetInt32(rdrSms.GetOrdinal("idsend_sms")), rdrSms.GetString(rdrSms.GetOrdinal("content")), rdrSms.GetString(rdrSms.GetOrdinal("account_name"))));
                 }
                 rdrSms.Close();
                 cmdSms.Dispose();
@@ -205,15 +205,15 @@ namespace SupportAlerterService
                 foreach(SendSms sendSms in listSendSms)
                 {
                     SmsGateway.getInstance().processSmsNotification(sendSms);//once processed, the status will change into DELIVERED/FAILED
-                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Sending sms of '" +  sendSms.content + "'", EventLogEntryType.Information);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Sending sms of '" +  sendSms.content + "'", EventLogEntryType.Information, sendSms.account_name);
                 }
 
-                MySqlCommand cmdVoiceCall = new MySqlCommand("select idvoice_call,status from voice_call where status='Draft'", dataConnection);
+                MySqlCommand cmdVoiceCall = new MySqlCommand("select idvoice_call,status,account_name from voice_call where status='Draft'", dataConnection);
                 MySqlDataReader rdrVoiceCall = cmdVoiceCall.ExecuteReader();
                 List<VoiceCall> listVoiceCall = new List<VoiceCall>();
                 while (rdrVoiceCall.Read())
                 {
-                    listVoiceCall.Add(new VoiceCall(rdrVoiceCall.GetInt32(rdrVoiceCall.GetOrdinal("idvoice_call")), rdrVoiceCall.GetString(rdrVoiceCall.GetOrdinal("status"))));
+                    listVoiceCall.Add(new VoiceCall(rdrVoiceCall.GetInt32(rdrVoiceCall.GetOrdinal("idvoice_call")), rdrVoiceCall.GetString(rdrVoiceCall.GetOrdinal("status")), rdrVoiceCall.GetString(rdrVoiceCall.GetOrdinal("account_name"))));
                 }
                 rdrVoiceCall.Close();
                 cmdVoiceCall.Dispose();
@@ -221,7 +221,7 @@ namespace SupportAlerterService
                 foreach (VoiceCall voiceCall in listVoiceCall)
                 {
                     SmsGateway.getInstance().processCallNotification(voiceCall);//once processed, the status will change into DELIVERED/FAILED
-                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Voice call for voiceCall.id=" + voiceCall.idvoice_call, EventLogEntryType.Information);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Voice call for voiceCall.id=" + voiceCall.idvoice_call, EventLogEntryType.Information, voiceCall.account_name);
                 
                 }
 

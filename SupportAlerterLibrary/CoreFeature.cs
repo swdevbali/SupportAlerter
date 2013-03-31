@@ -107,12 +107,12 @@ namespace SupportAlerterLibrary
             if (isFetchLast30days)
             {
                 emailUsername = "recent:" + emailAccount.username;
-                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Fetching *last 30 days* message", EventLogEntryType.Information);
+                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Fetching *last 30 days* message", EventLogEntryType.Information, emailAccount.name);
             }
             else
             {
                 emailUsername = emailAccount.username;
-                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Fetching *new* message", EventLogEntryType.Information);
+                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Fetching *new* message", EventLogEntryType.Information, emailAccount.name);
             }
 
             if (SupportAlerterLibrary.CoreFeature.getInstance().Connect(emailAccount.name, emailAccount.server, emailAccount.port, emailAccount.use_ssl, emailUsername, emailAccount.password))
@@ -157,14 +157,18 @@ namespace SupportAlerterLibrary
             }
         }
 
-        public void LogActivity(LogLevel logLevel, string message, EventLogEntryType eventLogEntryType)
+        public void LogActivity(LogLevel logLevel, string message, EventLogEntryType eventLogEntryType, string account=null)
         {
             if (RegistrySettings.loggingLevel.Equals("None")) return;
             
             MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
-            string sql = "insert into log(message) values (@message)";
+            string sql = "insert into log(message, account_name) values (@message, @account_name)";
+            
             MySqlCommand cmd = new MySqlCommand(sql, connection);
             cmd.Parameters.AddWithValue("@message", message);
+            cmd.Parameters.AddWithValue("@account_name", account);
+            
+
             
 
             if (logLevel == LogLevel.Debug && (RegistrySettings.loggingLevel.Equals("Debug") || RegistrySettings.loggingLevel.Equals("Normal")))

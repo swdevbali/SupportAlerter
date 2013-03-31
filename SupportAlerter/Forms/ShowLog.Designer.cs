@@ -32,8 +32,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowLog));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -42,11 +40,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.numLimit = new System.Windows.Forms.NumericUpDown();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSeconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -59,40 +62,22 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
+            this.Column3,
             this.Column2});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 90);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 120);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(863, 208);
+            this.dataGridView1.Size = new System.Drawing.Size(863, 178);
             this.dataGridView1.TabIndex = 4;
-            // 
-            // Column1
-            // 
-            this.Column1.FillWeight = 200F;
-            this.Column1.HeaderText = "Time generated";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 200;
-            // 
-            // Column2
-            // 
-            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column2.HeaderText = "Message";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.numLimit);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.numSeconds);
-            this.panel1.Controls.Add(this.chkAutoRefresh);
+            this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(863, 90);
+            this.panel1.Size = new System.Drawing.Size(863, 120);
             this.panel1.TabIndex = 5;
             // 
             // eventLog1
@@ -109,7 +94,7 @@
             // chkAutoRefresh
             // 
             this.chkAutoRefresh.AutoSize = true;
-            this.chkAutoRefresh.Location = new System.Drawing.Point(12, 13);
+            this.chkAutoRefresh.Location = new System.Drawing.Point(21, 19);
             this.chkAutoRefresh.Name = "chkAutoRefresh";
             this.chkAutoRefresh.Size = new System.Drawing.Size(117, 17);
             this.chkAutoRefresh.TabIndex = 1;
@@ -119,12 +104,12 @@
             // 
             // numSeconds
             // 
-            this.numSeconds.Location = new System.Drawing.Point(135, 10);
+            this.numSeconds.Location = new System.Drawing.Point(144, 16);
             this.numSeconds.Name = "numSeconds";
             this.numSeconds.Size = new System.Drawing.Size(47, 20);
             this.numSeconds.TabIndex = 2;
             this.numSeconds.Value = new decimal(new int[] {
-            1,
+            2,
             0,
             0,
             0});
@@ -133,7 +118,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(188, 15);
+            this.label2.Location = new System.Drawing.Point(197, 21);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 3;
@@ -142,7 +127,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 43);
+            this.label1.Location = new System.Drawing.Point(21, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(28, 13);
             this.label1.TabIndex = 4;
@@ -150,7 +135,7 @@
             // 
             // numLimit
             // 
-            this.numLimit.Location = new System.Drawing.Point(46, 41);
+            this.numLimit.Location = new System.Drawing.Point(55, 47);
             this.numLimit.Minimum = new decimal(new int[] {
             1,
             0,
@@ -160,10 +145,47 @@
             this.numLimit.Size = new System.Drawing.Size(67, 20);
             this.numLimit.TabIndex = 5;
             this.numLimit.Value = new decimal(new int[] {
-            1,
+            10,
             0,
             0,
             0});
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.chkAutoRefresh);
+            this.groupBox1.Controls.Add(this.numLimit);
+            this.groupBox1.Controls.Add(this.numSeconds);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Location = new System.Drawing.Point(553, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(298, 92);
+            this.groupBox1.TabIndex = 6;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Auto Refresh Settings";
+            // 
+            // Column1
+            // 
+            this.Column1.FillWeight = 200F;
+            this.Column1.HeaderText = "Time generated";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 200;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Account Name";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 200;
+            // 
+            // Column2
+            // 
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column2.HeaderText = "Message";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             // 
             // ShowLog
             // 
@@ -178,10 +200,11 @@
             this.Text = "Show Log";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSeconds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -191,13 +214,15 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel1;
         private System.Diagnostics.EventLog eventLog1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.CheckBox chkAutoRefresh;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numSeconds;
         private System.Windows.Forms.NumericUpDown numLimit;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
