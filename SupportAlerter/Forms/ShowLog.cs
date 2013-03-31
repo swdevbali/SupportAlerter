@@ -37,7 +37,7 @@ namespace SupportAlerter.Forms
             }    
              */
             MySqlConnection connection = CoreFeature.getInstance().getDataConnection();
-            string sql = "select * from  log  order by occur desc";
+            string sql = "select * from  log  order by occur desc limit 0, " + numLimit.Value;
             MySqlCommand cmd = new MySqlCommand(sql, connection);
             MySqlDataReader rdr = cmd.ExecuteReader();
             dataGridView1.Rows.Clear();
@@ -54,6 +54,29 @@ namespace SupportAlerter.Forms
             timer1.Stop();
             showLog();
             timer1.Start();
+        }
+
+        private void chkAutoRefresh_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAutoRefresh.Checked)
+            {
+                timer1.Interval = Convert.ToInt32(numSeconds.Value) * 1000;
+                timer1.Start();
+            }
+            else
+            {
+                timer1.Stop();
+            }
+        }
+
+        private void numSeconds_ValueChanged(object sender, EventArgs e)
+        {
+            if (chkAutoRefresh.Checked)
+            {
+                timer1.Stop();
+                timer1.Interval = Convert.ToInt32(numSeconds.Value) * 1000;
+                timer1.Start();
+            }
         }
     }
 }
