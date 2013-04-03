@@ -55,6 +55,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.chkBySmsContent = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtSmsContains = new System.Windows.Forms.TextBox();
+            this.txtEmailSubjectContains = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.chkByEmailSubject = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).BeginInit();
@@ -77,10 +83,10 @@
             this.Column3,
             this.Column2});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 180);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 262);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(863, 118);
+            this.dataGridView1.Size = new System.Drawing.Size(1131, 265);
             this.dataGridView1.TabIndex = 4;
             // 
             // Column1
@@ -116,7 +122,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(863, 180);
+            this.panel1.Size = new System.Drawing.Size(1131, 262);
             this.panel1.TabIndex = 5;
             // 
             // chkUseLimit
@@ -124,7 +130,7 @@
             this.chkUseLimit.AutoSize = true;
             this.chkUseLimit.Checked = true;
             this.chkUseLimit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseLimit.Location = new System.Drawing.Point(95, 153);
+            this.chkUseLimit.Location = new System.Drawing.Point(95, 231);
             this.chkUseLimit.Name = "chkUseLimit";
             this.chkUseLimit.Size = new System.Drawing.Size(15, 14);
             this.chkUseLimit.TabIndex = 9;
@@ -133,17 +139,17 @@
             // 
             // btnFilter
             // 
-            this.btnFilter.Location = new System.Drawing.Point(12, 151);
+            this.btnFilter.Location = new System.Drawing.Point(12, 229);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(75, 23);
-            this.btnFilter.TabIndex = 8;
+            this.btnFilter.TabIndex = 1;
             this.btnFilter.Text = "&Display data";
             this.btnFilter.UseVisualStyleBackColor = true;
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
             // numLimit
             // 
-            this.numLimit.Location = new System.Drawing.Point(150, 151);
+            this.numLimit.Location = new System.Drawing.Point(150, 229);
             this.numLimit.Minimum = new decimal(new int[] {
             1,
             0,
@@ -151,7 +157,7 @@
             0});
             this.numLimit.Name = "numLimit";
             this.numLimit.Size = new System.Drawing.Size(67, 20);
-            this.numLimit.TabIndex = 5;
+            this.numLimit.TabIndex = 0;
             this.numLimit.Value = new decimal(new int[] {
             10,
             0,
@@ -160,6 +166,12 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.txtEmailSubjectContains);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.chkByEmailSubject);
+            this.groupBox2.Controls.Add(this.txtSmsContains);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.chkBySmsContent);
             this.groupBox2.Controls.Add(this.lstAccount);
             this.groupBox2.Controls.Add(this.chkByAccount);
             this.groupBox2.Controls.Add(this.chkByTime);
@@ -170,7 +182,7 @@
             this.groupBox2.Controls.Add(this.dtStart);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(527, 113);
+            this.groupBox2.Size = new System.Drawing.Size(664, 211);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Filter Log";
@@ -179,18 +191,18 @@
             // 
             this.lstAccount.Enabled = false;
             this.lstAccount.FormattingEnabled = true;
-            this.lstAccount.Location = new System.Drawing.Point(320, 42);
+            this.lstAccount.Location = new System.Drawing.Point(369, 42);
             this.lstAccount.Name = "lstAccount";
-            this.lstAccount.Size = new System.Drawing.Size(201, 64);
-            this.lstAccount.TabIndex = 7;
+            this.lstAccount.Size = new System.Drawing.Size(276, 64);
+            this.lstAccount.TabIndex = 4;
             // 
             // chkByAccount
             // 
             this.chkByAccount.AutoSize = true;
-            this.chkByAccount.Location = new System.Drawing.Point(297, 21);
+            this.chkByAccount.Location = new System.Drawing.Point(346, 21);
             this.chkByAccount.Name = "chkByAccount";
             this.chkByAccount.Size = new System.Drawing.Size(80, 17);
-            this.chkByAccount.TabIndex = 6;
+            this.chkByAccount.TabIndex = 3;
             this.chkByAccount.Text = "By account";
             this.chkByAccount.UseVisualStyleBackColor = true;
             this.chkByAccount.CheckedChanged += new System.EventHandler(this.chkByAccount_CheckedChanged);
@@ -201,7 +213,7 @@
             this.chkByTime.Location = new System.Drawing.Point(21, 21);
             this.chkByTime.Name = "chkByTime";
             this.chkByTime.Size = new System.Drawing.Size(60, 17);
-            this.chkByTime.TabIndex = 5;
+            this.chkByTime.TabIndex = 0;
             this.chkByTime.Text = "By time";
             this.chkByTime.UseVisualStyleBackColor = true;
             this.chkByTime.CheckedChanged += new System.EventHandler(this.chkUseTime_CheckedChanged);
@@ -233,7 +245,7 @@
             this.dtEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtEnd.Location = new System.Drawing.Point(128, 68);
             this.dtEnd.Name = "dtEnd";
-            this.dtEnd.Size = new System.Drawing.Size(137, 20);
+            this.dtEnd.Size = new System.Drawing.Size(192, 20);
             this.dtEnd.TabIndex = 2;
             // 
             // label3
@@ -252,13 +264,13 @@
             this.dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtStart.Location = new System.Drawing.Point(128, 42);
             this.dtStart.Name = "dtStart";
-            this.dtStart.Size = new System.Drawing.Size(137, 20);
-            this.dtStart.TabIndex = 0;
+            this.dtStart.Size = new System.Drawing.Size(192, 20);
+            this.dtStart.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(116, 153);
+            this.label1.Location = new System.Drawing.Point(116, 231);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(28, 13);
             this.label1.TabIndex = 4;
@@ -270,7 +282,7 @@
             this.groupBox1.Controls.Add(this.chkAutoRefresh);
             this.groupBox1.Controls.Add(this.numSeconds);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(553, 12);
+            this.groupBox1.Location = new System.Drawing.Point(821, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(298, 113);
             this.groupBox1.TabIndex = 6;
@@ -293,7 +305,7 @@
             this.numSeconds.Location = new System.Drawing.Point(144, 16);
             this.numSeconds.Name = "numSeconds";
             this.numSeconds.Size = new System.Drawing.Size(47, 20);
-            this.numSeconds.TabIndex = 2;
+            this.numSeconds.TabIndex = 0;
             this.numSeconds.Value = new decimal(new int[] {
             2,
             0,
@@ -321,11 +333,68 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // chkBySmsContent
+            // 
+            this.chkBySmsContent.AutoSize = true;
+            this.chkBySmsContent.Location = new System.Drawing.Point(21, 146);
+            this.chkBySmsContent.Name = "chkBySmsContent";
+            this.chkBySmsContent.Size = new System.Drawing.Size(98, 17);
+            this.chkBySmsContent.TabIndex = 5;
+            this.chkBySmsContent.Text = "By sms content";
+            this.chkBySmsContent.UseVisualStyleBackColor = true;
+            this.chkBySmsContent.CheckedChanged += new System.EventHandler(this.chkBySmsContent_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(38, 166);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Contains";
+            // 
+            // txtSmsContains
+            // 
+            this.txtSmsContains.Enabled = false;
+            this.txtSmsContains.Location = new System.Drawing.Point(128, 166);
+            this.txtSmsContains.Name = "txtSmsContains";
+            this.txtSmsContains.Size = new System.Drawing.Size(192, 20);
+            this.txtSmsContains.TabIndex = 6;
+            // 
+            // txtEmailSubjectContains
+            // 
+            this.txtEmailSubjectContains.Enabled = false;
+            this.txtEmailSubjectContains.Location = new System.Drawing.Point(453, 166);
+            this.txtEmailSubjectContains.Name = "txtEmailSubjectContains";
+            this.txtEmailSubjectContains.Size = new System.Drawing.Size(192, 20);
+            this.txtEmailSubjectContains.TabIndex = 8;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(363, 166);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Contains";
+            // 
+            // chkByEmailSubject
+            // 
+            this.chkByEmailSubject.AutoSize = true;
+            this.chkByEmailSubject.Location = new System.Drawing.Point(346, 146);
+            this.chkByEmailSubject.Name = "chkByEmailSubject";
+            this.chkByEmailSubject.Size = new System.Drawing.Size(102, 17);
+            this.chkByEmailSubject.TabIndex = 7;
+            this.chkByEmailSubject.Text = "By email subject";
+            this.chkByEmailSubject.UseVisualStyleBackColor = true;
+            this.chkByEmailSubject.CheckedChanged += new System.EventHandler(this.chkByEmailSubject_CheckedChanged);
+            // 
             // ShowLog
             // 
+            this.AcceptButton = this.btnFilter;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 298);
+            this.ClientSize = new System.Drawing.Size(1131, 527);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -373,5 +442,11 @@
         private System.Windows.Forms.CheckBox chkUseLimit;
         private System.Windows.Forms.CheckBox chkByAccount;
         private System.Windows.Forms.CheckedListBox lstAccount;
+        private System.Windows.Forms.CheckBox chkBySmsContent;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtSmsContains;
+        private System.Windows.Forms.TextBox txtEmailSubjectContains;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox chkByEmailSubject;
     }
 }

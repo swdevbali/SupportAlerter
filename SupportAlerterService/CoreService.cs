@@ -169,15 +169,16 @@ namespace SupportAlerterService
                             CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Acted upon the rule " + rule.name + " of message " + inbox.subject, EventLogEntryType.Information, emailAccount.name);
                             if (rule.send_sms)
                             {
-                                MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status,account_name) values(" + inbox.idinbox + ",'You have warning notification from SENDER','Draft','" + emailAccount.name + "')", dataConnection);
+                                string smsContent = "You have warning notification from SENDER";
+                                MySqlCommand cmdSend = new MySqlCommand("insert into send_sms(idinbox,content,status,account_name) values(" + inbox.idinbox + ",'" + smsContent + "','Draft','" + emailAccount.name + "')", dataConnection);
                                 cmdSend.ExecuteNonQuery();
-                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will send sms into for the rule " + rule.name, EventLogEntryType.Information, emailAccount.name);
+                                CoreFeature.getInstance().LogActivity(LogLevel.Normal, "Inserting into SMS table. Content : " + smsContent, EventLogEntryType.Information, emailAccount.name);
                             }
                             if (rule.voice_call)
                             {
-                                MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status, email_account) values(" + inbox.idinbox + ",'Draft','" + emailAccount.name + "')", dataConnection);
+                                MySqlCommand cmdSend = new MySqlCommand("insert into voice_call(idinbox,status, account_name) values(" + inbox.idinbox + ",'Draft','" + emailAccount.name + "')", dataConnection);
                                 cmdSend.ExecuteNonQuery();
-                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Will voice call for the rule " + rule.name, EventLogEntryType.Information, emailAccount.name);
+                                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Inserting into Voice_call table ", EventLogEntryType.Information, emailAccount.name);
                             }
                             
                             MySqlCommand cmdUpdateInbox = new MySqlCommand("update inbox set handled=1 where idinbox=" + inbox.idinbox, dataConnection);
@@ -205,7 +206,7 @@ namespace SupportAlerterService
                 foreach(SendSms sendSms in listSendSms)
                 {
                     SmsGateway.getInstance().processSmsNotification(sendSms);//once processed, the status will change into DELIVERED/FAILED
-                    CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Sending sms of '" +  sendSms.content + "'", EventLogEntryType.Information, sendSms.account_name);
+                    CoreFeature.getInstance().LogActivity(LogLevel.Normal, "Sending SMS. Content : '" +  sendSms.content + "'", EventLogEntryType.Information, sendSms.account_name);
                 }
 
                 MySqlCommand cmdVoiceCall = new MySqlCommand("select idvoice_call,status,account_name from voice_call where status='Draft'", dataConnection);
@@ -229,7 +230,7 @@ namespace SupportAlerterService
             }
             catch (Exception ex)
             {
-                CoreFeature.getInstance().LogActivity(LogLevel.Debug, "[Internal Application Error] " + ex.Message, EventLogEntryType.Error);
+                CoreFeature.getInstance().LogActivity(LogLevel.Normal, "[Internal Application Error] " + ex.Message, EventLogEntryType.Error);
                 CoreFeature.getInstance().getDataConnection().Close();
             }
             dataConnection.Close();

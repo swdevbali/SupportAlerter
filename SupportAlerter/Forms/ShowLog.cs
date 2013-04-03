@@ -135,12 +135,32 @@ namespace SupportAlerter.Forms
                     {
                         sql = sql + ")";
                     }
-                }
-                
+                }                
             }
 
-            
+            if (chkByEmailSubject.Checked)
+            {
+                if (sql == null)
+                {
+                    sql = "select * from log where message like '%Inserting email to inbox table%' and message like '%" + txtEmailSubjectContains.Text + "%' ";
+                }
+                else
+                {
+                    sql = sql + " and (message like '%Inserting email to inbox table%' and message like '%" + txtEmailSubjectContains.Text + "%')";
+                }
+            }
 
+            if (chkBySmsContent.Checked)
+            {
+                if (sql == null)
+                {
+                    sql = "select * from log where message like '%Inserting into SMS table%' and message like '%" + txtSmsContains.Text + "%'";
+                }
+                else
+                {
+                    sql = sql + " and (message like '%Inserting into SMS table%' and message like '%" + txtSmsContains.Text + "%')";
+                }
+            }
 
             if (sql == null)
             {
@@ -178,6 +198,16 @@ namespace SupportAlerter.Forms
         private void chkByAccount_CheckedChanged(object sender, EventArgs e)
         {
             lstAccount.Enabled = chkByAccount.Checked;
+        }
+
+        private void chkBySmsContent_CheckedChanged(object sender, EventArgs e)
+        {
+            txtSmsContains.Enabled = chkBySmsContent.Checked;
+        }
+
+        private void chkByEmailSubject_CheckedChanged(object sender, EventArgs e)
+        {
+            txtEmailSubjectContains.Enabled = chkByEmailSubject.Checked;
         }
 
        

@@ -141,11 +141,11 @@ namespace SupportAlerterLibrary
                     try
                     {
                         int rowAffected = cmd.ExecuteNonQuery();
-                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "Inserting email inbox from " + message.Headers.From + ", subject=" + message.Headers.Subject + ", body=" + messageBody, EventLogEntryType.Information);
+                        CoreFeature.getInstance().LogActivity(LogLevel.Normal, "Inserting email to inbox table. Sender : " + message.Headers.From + "\nSubject : " + message.Headers.Subject + "\nBody : " + messageBody, EventLogEntryType.Information, emailAccount.name);
                     }
                     catch (Exception ex)
                     {
-                        CoreFeature.getInstance().LogActivity(LogLevel.Debug, "[Internal Application Error] FetchRecentMessages " + ex.Message, EventLogEntryType.Information);
+                        CoreFeature.getInstance().LogActivity(LogLevel.Normal, "[Internal Application Error] FetchRecentMessages " + ex.Message, EventLogEntryType.Information);
                     }
                     cmd.Dispose();
                     connection.Close();
