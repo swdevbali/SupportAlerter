@@ -61,6 +61,11 @@ namespace SupportAlerter.Forms
                 }
                 dataGridView1.Rows.Add(new object[] { rdr.GetDateTime(rdr.GetOrdinal("occur")), accountName, rdr.GetString(rdr.GetOrdinal("message")) });
             }
+
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("No log matched your criteria", Application.ProductName);
+            }
             rdr.Close();
             cmd.Dispose();
             connection.Close();
